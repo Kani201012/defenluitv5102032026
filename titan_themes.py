@@ -79,6 +79,9 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     }}
     
     body.dark-mode {{ --bg: #0f172a; --txt: #f8fafc; --card: #1e293b; --nav: rgba(15,23,42,0.95); --border: 1px solid #334155; }}
+    /* ADD THIS NEW LINK FIX: */
+    a {{ color: var(--s); text-decoration: none; transition: 0.3s; }}
+    a:hover {{ color: var(--p); }}
     
     p, span, li, div {{ color: inherit; }}
     h1, h2, h3, h4 {{ font-family: var(--h-font); color: var(--txt); line-height: 1.1; margin-bottom: 1rem; font-weight: 800; letter-spacing:-0.03em; }}
