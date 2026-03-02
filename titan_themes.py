@@ -376,6 +376,40 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     /* DARK MODE TOGGLE PHYSICS */
     #theme-toggle {{ position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: pointer; z-index: 999; font-size: 1.5rem; border: var(--border); transition: 0.3s; }}
     #theme-toggle:hover {{ transform: scale(1.1) rotate(15deg); border-color: var(--p); }}
+
+    /* VOICE SEARCH FLOATING PHYSICS */
+    #voice-btn {{ 
+        position: fixed; 
+        bottom: 170px; /* Sits perfectly above Cart and WhatsApp */
+        right: 30px; 
+        background: var(--p); 
+        color: #fff; 
+        border-radius: 50%; 
+        width: 50px; 
+        height: 50px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 1.2rem; 
+        cursor: pointer; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+        z-index: 997; 
+        border: 2px solid rgba(255,255,255,0.1);
+        transition: 0.3s;
+    }}
+    #voice-btn:hover {{ transform: scale(1.1); background: var(--s); }}
+
+    /* VOICE LISTENING ANIMATION */
+    .listening {{ 
+        animation: voice-pulse 1.5s infinite; 
+        background: var(--s) !important; 
+    }}
+    
+    @keyframes voice-pulse {{ 
+        0% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.4); }} 
+        70% {{ transform: scale(1.2); box-shadow: 0 0 0 20px rgba(255, 0, 60, 0); }} 
+        100% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }} 
+    }}
     
     /* MOBILE OPTIMIZATION */
     @media (max-width: 992px) {{
