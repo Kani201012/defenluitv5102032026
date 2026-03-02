@@ -262,6 +262,15 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     .lang-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }}
     .lang-opt {{ display: flex; align-items: center; justify-content: center; width: 100%; padding: 1.2rem; border: var(--border); border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; background: var(--bg); }}
     .lang-opt:hover {{ background: var(--p); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }}
+
+    /* TOP PROMO BAR PHYSICS */
+    #top-bar {{ position: fixed; top: 0; left: 0; width: 100%; background: var(--s); color: #fff; text-align: center; padding: 12px; z-index: 2000; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; transition: transform 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }}
+    #top-bar a {{ color: #fff !important; text-decoration: underline; text-underline-offset: 4px; margin-left: 10px; transition: 0.3s; }}
+    #top-bar a:hover {{ opacity: 0.8; }}
+
+    /* DARK MODE TOGGLE PHYSICS */
+    #theme-toggle {{ position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: pointer; z-index: 999; font-size: 1.5rem; border: var(--border); transition: 0.3s; }}
+    #theme-toggle:hover {{ transform: scale(1.1) rotate(15deg); border-color: var(--p); }}
     
     /* MOBILE OPTIMIZATION */
     @media (max-width: 992px) {{
