@@ -787,13 +787,19 @@ def build_page(title, content, extra_js=""):
     sw_script = "<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }</script>"
     ga_script_opt = f"<script async src='https://www.googletagmanager.com/gtag/js?id={ga_tag}'></script><script>window.dataLayer = window.dataLayer ||[]; function gtag(){{dataLayer.push(arguments);}} gtag('js', new Date()); gtag('config', '{ga_tag}');</script>" if ga_tag else ""
 
-    # CALL THE NEW THEME ENGINE HERE
-   modern_css = titan_themes.generate_modern_css(
-    theme_mode, h_font, b_font, hero_layout,
-    h_color=col_h, b_color=col_b, 
-    h1_size=f"{size_h1}rem", p_size=f"{size_p}rem",
-    cta_bg=cta_bg_color, cta_txt=cta_txt_color
-)
+    # This is the line that was likely misaligned:
+    modern_css = titan_themes.generate_modern_css(
+        theme_mode, 
+        h_font, 
+        b_font, 
+        hero_layout,
+        h_color=col_h, 
+        b_color=col_b, 
+        h1_size=f"{size_h1}rem", 
+        p_size=f"{size_p}rem",
+        cta_bg=cta_bg_color, 
+        cta_txt=cta_txt_color
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -807,7 +813,9 @@ def build_page(title, content, extra_js=""):
     <link rel="preload" as="image" href="{hero_img_1}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@400;500;700&display=swap">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@300;400;500;700&display=swap"></noscript>
     
     <style>{modern_css}</style>
     
