@@ -338,7 +338,8 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     /* 1. ASYMMETRICAL HERO WITH FLOATING GLASS */
     .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; z-index: 1; }}
     .modern-hero-bg {{ position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(128,128,128,0.05) 0%, transparent 50%); z-index: -1; animation: rotate 60s linear infinite; }}
-    .modern-hero-grid {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; width: 100%; }}
+.modern-hero-grid {{ display: grid; gap: 4rem; align-items: center; width: 100%; {h_align_logic} }}
+ .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; justify-content: {'center' if hero_align == 'Center' else 'flex-start'}; }}
     
     .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt); text-transform: uppercase; letter-spacing: 1px; }}
     .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; }}
