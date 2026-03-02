@@ -788,7 +788,12 @@ def build_page(title, content, extra_js=""):
     ga_script_opt = f"<script async src='https://www.googletagmanager.com/gtag/js?id={ga_tag}'></script><script>window.dataLayer = window.dataLayer ||[]; function gtag(){{dataLayer.push(arguments);}} gtag('js', new Date()); gtag('config', '{ga_tag}');</script>" if ga_tag else ""
 
     # CALL THE NEW THEME ENGINE HERE
-    modern_css = titan_themes.generate_modern_css(theme_mode, h_font, b_font, hero_layout)
+   modern_css = titan_themes.generate_modern_css(
+    theme_mode, h_font, b_font, hero_layout,
+    h_color=col_h, b_color=col_b, 
+    h1_size=f"{size_h1}rem", p_size=f"{size_p}rem",
+    cta_bg=cta_bg_color, cta_txt=cta_txt_color
+)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
