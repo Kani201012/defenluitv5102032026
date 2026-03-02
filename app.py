@@ -378,27 +378,36 @@ def gen_nav():
 
 def gen_hero():
     bg_media = f"""
-    <div class="carousel-slide active" style="background-image: url('{hero_img_1}')"></div>
-    <div class="carousel-slide" style="background-image: url('{hero_img_2}')"></div>
-    <div class="carousel-slide" style="background-image: url('{hero_img_3}')"></div>
+    <div class="carousel-slide active" style="background-image: url('{hero_img_1}')" fetchpriority="high"></div>
+    <div class="carousel-slide" style="background-image: url('{hero_img_2}')" loading="lazy"></div>
+    <div class="carousel-slide" style="background-image: url('{hero_img_3}')" loading="lazy"></div>
     <script defer>
         let slides = document.querySelectorAll('.carousel-slide'); let currentSlide = 0; 
         setInterval(() => {{ slides[currentSlide].classList.remove('active'); currentSlide = (currentSlide + 1) % slides.length; slides[currentSlide].classList.add('active'); }}, 4000);
     </script>
     """
     if hero_video_id: 
-        bg_media = f'<iframe src="https://www.youtube.com/embed/{hero_video_id}?autoplay=1&mute=1&loop=1&playlist={hero_video_id}&controls=0&showinfo=0&rel=0" style="position:absolute; top:50%; left:50%; width:100vw; height:100vh; transform:translate(-50%, -50%); pointer-events:none; object-fit:cover; z-index:0; min-width:177.77vh; min-height:56.25vw;" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
+        bg_media = f'<iframe src="https://www.youtube.com/embed/{hero_video_id}?autoplay=1&mute=1&loop=1&playlist={hero_video_id}&controls=0&showinfo=0&rel=0" class="hero-video" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
     
     return f"""
-    <section class="hero">
-        <div class="hero-overlay"></div>
-        {bg_media}
-        <div class="container hero-content">
-            <h1 id="hero-title">{hero_h}</h1>
-            <p id="hero-sub">{hero_sub}</p>
-            <div style="display:flex; gap:1rem; flex-wrap:wrap; {'justify-content:center;' if hero_layout == 'Center' else ''}">
-                <a href="#inventory" class="btn btn-accent">Explore Now</a>
-                <a href="contact.html" class="btn" style="background:rgba(255,255,255,0.2); backdrop-filter:blur(10px); color:white !important;">Contact Us</a>
+    <section class="modern-hero">
+        <div class="modern-hero-bg"></div>
+        <div class="container modern-hero-grid">
+            <div class="modern-hero-text reveal active">
+                <div class="hero-badge">🚀 Next-Generation Architecture</div>
+                <h1 id="hero-title">{hero_h}</h1>
+                <p id="hero-sub">{hero_sub}</p>
+                <div class="hero-btn-group">
+                    <a href="#inventory" class="btn btn-accent">Explore Now</a>
+                    <a href="contact.html" class="btn btn-outline-light">Contact Us</a>
+                </div>
+            </div>
+            <div class="modern-hero-visual reveal active" style="transition-delay: 0.2s;">
+                <div class="visual-frame">
+                    {bg_media}
+                </div>
+                <div class="floating-element glow-1"></div>
+                <div class="floating-element glow-2"></div>
             </div>
         </div>
     </section>
@@ -415,16 +424,24 @@ def get_simple_icon(name):
     return f'<svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="{path}"/></svg>'
 
 def gen_features():
-    cards = "".join([f'<div class="card reveal"><div style="color:var(--s); margin-bottom:1rem;">{get_simple_icon(p[0])}</div><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
-    return f'<section id="features"><div class="container"><div class="section-head reveal"><h2 id="feature-title">{f_title}</h2></div><div class="grid-3">{cards}</div></div></section>'
+    cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
+    return f'<section id="features" style="background:var(--bg); position:relative; z-index:2;"><div class="container"><div class="section-head reveal"><h2 id="feature-title">{f_title}</h2><p class="section-subtitle">Engineered for absolute dominance.</p></div><div class="modern-grid-3">{cards}</div></div></section>'
 
 def gen_stats():
     return f"""
-    <div style="background:var(--p); color:white; padding:3rem 0; text-align:center;">
-        <div class="container grid-3">
-            <div class="reveal"><h3 style="color:#ffffff; margin:0; font-size:3rem;">{stat_1}</h3><p style="color:rgba(255,255,255,0.7);">{label_1}</p></div>
-            <div class="reveal"><h3 style="color:#ffffff; margin:0; font-size:3rem;">{stat_2}</h3><p style="color:rgba(255,255,255,0.7);">{label_2}</p></div>
-            <div class="reveal"><h3 style="color:#ffffff; margin:0; font-size:3rem;">{stat_3}</h3><p style="color:rgba(255,255,255,0.7);">{label_3}</p></div>
+    <div class="stats-ribbon-container container reveal">
+        <div class="stats-ribbon">
+            <div class="stat-block">
+                <h3>{stat_1}</h3><p>{label_1}</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+                <h3>{stat_2}</h3><p>{label_2}</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+                <h3>{stat_3}</h3><p>{label_3}</p>
+            </div>
         </div>
     </div>
     """
@@ -659,9 +676,26 @@ def gen_inventory():
 
 def gen_about_section():
     if not show_gallery: return ""
-    # Added width="600" height="400" to satisfy Google metrics
-    return f'<section id="about"><div class="container"><div class="about-grid"><div class="reveal"><h2 id="about-title">{about_h_in}</h2><div>{format_text(about_short_in)}</div><a href="about.html" class="btn btn-primary" style="margin-top:1rem;">Read More</a></div><img src="{about_img}" class="reveal" style="width:100%; border-radius:var(--radius); height:auto;" width="600" height="400" loading="lazy" alt="About Us"></div></div></section>'
-
+    return f"""
+    <section id="about" class="modern-about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-visual reveal">
+                    <img src="{about_img}" width="600" height="500" loading="lazy" alt="About Us" class="about-main-img">
+                    <div class="about-experience-badge">
+                        <strong>100%</strong>
+                        <span>Client<br>Satisfaction</span>
+                    </div>
+                </div>
+                <div class="about-text reveal" style="transition-delay:0.2s;">
+                    <h2 id="about-title">{about_h_in}</h2>
+                    <div class="about-lead">{format_text(about_short_in)}</div>
+                    <div style="margin-top:2rem;"><a href="about.html" class="btn btn-primary">Read Our Story →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    """
 def gen_faq_section():
     if not show_faq: return ""
     items = "".join([f"<details class='reveal'><summary>{l.split('?')[0]}?</summary><p>{l.split('?')[1]}</p></details>" for l in faq_data.split('\n') if "?" in l])
