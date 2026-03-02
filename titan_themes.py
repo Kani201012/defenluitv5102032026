@@ -349,7 +349,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .stat-divider {{ width: 2px; height: 60px; background: rgba(128,128,128,0.2); }}
 
     /* 3. BENTO-STYLE FEATURES GRID */
-    .section-subtitle {{ font-size: 1.2rem; color: var(--txt); opacity: 0.7; margin-top: -1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
+    .section-subtitle {{ font-size: 1.2rem; color: var(--txt); opacity: 0.7; margin-top: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
     .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }}
     .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
     .modern-feature-card:hover {{ transform: translateY(-10px); border-color: var(--p); }}
