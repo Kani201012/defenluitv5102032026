@@ -300,13 +300,17 @@ def gen_schema():
     return f'<script type="application/ld+json">{json.dumps(schema)}</script>'
 
 def gen_pwa_manifest():
+    # Dynamically pull the primary color from the selected 2026 theme
+    current_theme = titan_themes.THEME_REGISTRY.get(theme_mode, titan_themes.THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
+    theme_primary_color = current_theme['p']
+
     return json.dumps({
         "name": biz_name, 
         "short_name": pwa_short, 
         "start_url": "./index.html",
         "display": "standalone", 
-        "background_color": "#ffffff", 
-        "theme_color": p_color,
+        "background_color": current_theme['bg'], 
+        "theme_color": theme_primary_color,
         "description": pwa_desc, 
         "icons": [{"src": pwa_icon, "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}]
     })
