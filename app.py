@@ -334,190 +334,6 @@ def gen_sw():
     });
     """
 
-def get_theme_css():
-    bg_color, text_color, card_bg, glass_nav = "#ffffff", "#0f172a", "#ffffff", "rgba(255, 255, 255, 0.95)"
-    
-    if "Midnight" in theme_mode: 
-        bg_color, text_color, card_bg, glass_nav = "#0f172a", "#f8fafc", "#1e293b", "rgba(15, 23, 42, 0.9)"
-    elif "Cyberpunk" in theme_mode: 
-        bg_color, text_color, card_bg, glass_nav = "#050505", "#00ff9d", "#111", "rgba(0,0,0,0.8)"
-    elif "Luxury" in theme_mode: 
-        bg_color, text_color, card_bg, glass_nav = "#1c1c1c", "#D4AF37", "#2a2a2a", "rgba(28,28,28,0.95)"
-    elif "Forest" in theme_mode: 
-        bg_color, text_color, card_bg, glass_nav = "#f1f8e9", "#1b5e20", "#ffffff", "rgba(241,248,233,0.9)"
-    elif "Ocean" in theme_mode: 
-        bg_color, text_color, card_bg, glass_nav = "#e0f7fa", "#006064", "#ffffff", "rgba(224,247,250,0.9)"
-    elif "Stark" in theme_mode: 
-        bg_color, text_color, card_bg, glass_nav = "#ffffff", "#000000", "#ffffff", "rgba(255,255,255,1)"
-
-    anim_css = ""
-    if anim_type == "Fade Up":
-        anim_css = ".reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; } .reveal.active { opacity: 1; transform: translateY(0); }"
-    elif anim_type == "Zoom In":
-        anim_css = ".reveal { opacity: 0; transform: scale(0.95); transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); } .reveal.active { opacity: 1; transform: scale(1); }"
-    
-    hero_align = "text-align: center; justify-content: center;"
-    if hero_layout == "Left":
-        hero_align = "text-align: left; justify-content: flex-start; align-items: center;"
-
-    card_hover_css = "box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15); transform: translateY(-5px);"
-    if card_hover_style == "Primary Color Border": 
-        card_hover_css += f" border-color: var(--p);"
-    elif card_hover_style == "Accent Color Border (Red)": 
-        card_hover_css += f" border-color: var(--s);"
-    else: 
-        card_hover_css += f" border-color: transparent;"
-
-    return f"""
-    :root {{
-        --p: {p_color}; --s: {s_color}; --btn-txt: {btn_txt_color};
-        --bg: {bg_color}; --txt: {text_color}; --card: {card_bg};
-        --radius: {border_rad}; --nav: {glass_nav};
-        --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
-    }}
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    html {{ scroll-behavior: smooth; font-size: 16px; }}
-    body {{ background-color: var(--bg); color: var(--txt); font-family: var(--b-font); line-height: 1.6; overflow-x: hidden; transition: background 0.3s, color 0.3s; }}
-    
-    body.dark-mode {{ --bg: #0f172a; --txt: #f8fafc; --card: #1e293b; --nav: rgba(15, 23, 42, 0.95); }}
-    
-    p, h1, h2, h3, h4, h5, h6, span, li, div {{ color: inherit; }}
-    h1, h2, h3, h4 {{ font-family: var(--h-font); color: var(--p); line-height: 1.2; margin-bottom: 1rem; }}
-    strong {{ color: var(--p); font-weight: 800; }}
-    h1 {{ font-size: clamp(2.5rem, 5vw, 4.5rem); }}
-    h2 {{ font-size: clamp(2rem, 4vw, 3rem); }}
-    p {{ margin-bottom: 1rem; }}
-    
-    .hero {{ position: relative; min-height: 90vh; overflow: hidden; display: flex; {hero_align} color: white; padding-top: 180px; background-color: var(--p); }}
-    .carousel-slide {{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.5s ease-in-out; z-index: 0; }}
-    .carousel-slide.active {{ opacity: 1; }}
-    .hero-overlay {{ background: rgba(0,0,0,{overlay_opacity}); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }}
-    .hero-content {{ z-index: 2; position: relative; width: 100%; padding: 0 20px; }}
-    .hero h1 {{ color: #ffffff !important; text-shadow: 0 4px 20px rgba(0,0,0,0.4); }}
-    .hero p {{ color: rgba(255,255,255,0.95) !important; font-size: clamp(1.1rem, 2vw, 1.3rem); max-width: 700px; margin: 0 auto 2rem auto; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }}
-    
-    input, textarea, select {{ width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; }}
-    label {{ color: var(--txt); font-weight: bold; margin-bottom: 0.5rem; display: block; }}
-    .container {{ max-width: 1280px; margin: 0 auto; padding: 0 20px; }}
-    
-    .btn {{ 
-        display: inline-flex; align-items: center; justify-content: center;
-        padding: 1rem 2rem; border-radius: var(--radius); 
-        font-weight: 700; text-decoration: none; transition: 0.3s; 
-        text-transform: uppercase; cursor: pointer; border: none; text-align: center;
-        line-height: 1.4; min-height: 3.5rem; word-wrap: break-word;
-    }}
-    .btn-primary {{ background: var(--p); color: var(--btn-txt) !important; }}
-    .btn-accent {{ background: var(--s); color: var(--btn-txt) !important; box-shadow: 0 10px 25px -5px var(--s); }}
-    .btn:hover {{ transform: translateY(-3px); filter: brightness(1.15); }}
-    
-    nav#main-navbar {{ position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--nav); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(100,100,100,0.1); padding: 1rem 0; transition: top 0.3s; }}
-    .nav-flex {{ display: flex; justify-content: space-between; align-items: center; }}
-    .nav-links {{ display: flex; align-items: center; gap: 1.5rem; }}
-    .nav-links a {{ text-decoration: none; font-weight: 600; color: var(--txt); font-size: 0.9rem; transition:0.2s; }}
-    .nav-links a:hover {{ color: var(--s); }}
-    .mobile-menu {{ display: none; font-size: 1.5rem; cursor: pointer; }}
-    
-    main section {{ padding: clamp(2rem, 4vw, 4rem) 0; }}
-    .section-head {{ text-align: center; margin-bottom: clamp(1rem, 3vw, 2.5rem); }}
-    .grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }}
-    
-    /* About stays simple */
-    .about-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }}
-    
-    /* Detail View gets the Premium Overhaul */
-    .detail-view {{ 
-        display: grid; 
-        grid-template-columns: 1.2fr 1fr; 
-        gap: 4rem; 
-        align-items: start; 
-        background: var(--card); 
-        padding: 3rem; 
-        border-radius: 24px; 
-        box-shadow: 0 20px 50px rgba(0,0,0,0.05); 
-        border: 1px solid rgba(100,100,100,0.1); 
-    }}
-    
-    .product-price-tag {{ font-size: 2.5rem; color: #059669; font-weight: 800; margin-bottom: 1.5rem; display: block; }}
-    .product-meta-box {{ background: rgba(100,100,100,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid var(--s); }}
-    .product-meta-box p {{ margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.4; }}
-    .back-btn {{ display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--txt); font-weight: 600; margin-bottom: 2rem; transition: 0.3s; }}
-    .back-btn:hover {{ color: var(--s); transform: translateX(-5px); }}
-
-    .contact-grid {{ display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; }}
-    
-    .card {{ background: var(--card); border-radius: var(--radius); border: 1px solid rgba(100,100,100,0.1); transition: 0.3s; display: flex; flex-direction: column; overflow: hidden; }}
-    .card:hover {{ {card_hover_css} }}
-    
-    .card h3, .card h4, .card a:not(.btn) {{ color: var(--txt) !important; text-decoration: none; }}
-    
-    .card-body {{ padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }}
-    .card-desc {{ font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
-    .prod-img {{ width: 100%; height: 250px; object-fit: cover; background: #f1f5f9; }}
-    
-    .gallery-thumbs {{ display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; }}
-    .thumb {{ width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: 0.2s; }}
-    .thumb:hover, .thumb.active {{ border-color: var(--s); opacity: 1; }}
-
-    .pricing-wrapper {{ overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; margin: 0 auto; }}
-    .pricing-table {{ width: 100%; border-collapse: collapse; min-width: 100%; }}
-    .pricing-table th {{ background: var(--p); color: white; padding: 1.5rem 1rem; text-align: left; }}
-    .pricing-table td {{ padding: 1.5rem 1rem; border-bottom: 1px solid rgba(100,100,100,0.1); background: var(--card); color: var(--txt); }}
-
-    details {{ background: var(--card); border: 1px solid rgba(100,100,100,0.1); border-radius: 8px; margin-bottom: 1rem; padding: 1rem; cursor: pointer; color: var(--txt); }}
-    details summary {{ font-weight: bold; font-size: 1.1rem; color: var(--txt); }}
-
-    footer {{ background: var(--p); color: white; padding: 4rem 0; margin-top: auto; }}
-    .footer-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; }}
-    footer a {{ color: rgba(255,255,255,0.8) !important; text-decoration: none; display: block; margin-bottom: 0.5rem; transition: 0.3s; }}
-    footer a:hover {{ color: #ffffff !important; text-decoration: underline; }}
-    .social-icon {{ width: 24px; height: 24px; fill: rgba(255,255,255,0.7); transition: 0.3s; }}
-    .social-icon:hover {{ fill: #ffffff; transform: scale(1.1); }}
-
-    .blog-badge {{ background: var(--s); color: var(--btn-txt); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase; font-weight: bold; width: fit-content; margin-bottom: 1rem; display:inline-block; }}
-    
-    #cart-float {{ position: fixed; bottom: 100px; right: 30px; background: var(--p); color: var(--btn-txt); padding: 15px 20px; border-radius: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); cursor: pointer; z-index: 998; display: flex; align-items: center; gap: 10px; font-weight: bold; }}
-    #cart-modal {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); width: 90%; max-width: 500px; padding: 2rem; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1001; border: 1px solid rgba(128,128,128,0.2); color: var(--txt); }}
-    #cart-overlay, #lang-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; }}
-    .cart-item {{ display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }}
-    
-    .local-vault {{ background: rgba(128,128,128,0.05); padding: 1rem; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(128,128,128,0.1); }}
-    .local-vault input {{ width: 100%; padding: 0.8rem; margin-top: 0.5rem; border-radius: 6px; border: 1px solid #ccc; background: var(--bg); color: var(--txt); }}
-    
-    #voice-btn {{ position: fixed; bottom: 170px; right: 30px; background: var(--p); color: var(--btn-txt); border-radius: 50px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 998; border: none; }}
-    .listening {{ animation: pulse 1s infinite; background: var(--s) !important; }}
-    @keyframes pulse {{ 0% {{ transform: scale(1); }} 50% {{ transform: scale(1.1); }} 100% {{ transform: scale(1); }} }}
-    model-viewer {{ width: 100%; height: 400px; background-color: transparent; border-radius: 12px; }}
-
-    #lang-modal {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); width: 90%; max-width: 400px; padding: 2rem; border-radius: 12px; z-index: 1002; color: var(--txt); text-align: center; }}
-    .lang-opt {{ display: block; width: 100%; padding: 1rem; border: 1px solid #eee; margin-bottom: 0.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; color: var(--txt); }}
-    .lang-opt:hover {{ background: var(--s); color: white; }}
-    
-    .share-row {{ display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }}
-    .share-btn {{ width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s; cursor: pointer; border: none; text-decoration: none; }}
-    .share-btn svg {{ width: 20px; height: 20px; fill: white; }}
-    .bg-fb {{ background: #1877F2; }} .bg-x {{ background: #000000; }} .bg-li {{ background: #0A66C2; }} .bg-wa {{ background: #25D366; }} .bg-rd {{ background: #FF4500; }} .bg-link {{ background: #64748b; }}
-    
-    #top-bar {{ position: fixed; top: 0; width: 100%; background: var(--s); color: var(--btn-txt); text-align: center; padding: 10px; z-index: 1002; font-weight: bold; font-size: 0.9rem; transition: transform 0.3s; }}
-    #top-bar a {{ color: var(--btn-txt); text-decoration: underline; }}
-    
-    #lead-popup {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 3rem; text-align: center; border-radius: var(--radius); z-index: 2000; box-shadow: 0 25px 100px rgba(0,0,0,0.5); width: 90%; max-width: 450px; border: 1px solid rgba(0,0,0,0.1); color: var(--txt); }}
-    .close-popup {{ position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 1.5rem; opacity: 0.5; }}
-    
-    #theme-toggle {{ position: fixed; bottom: 30px; left: 30px; width: 40px; height: 40px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; z-index: 999; font-size: 1.2rem; border: 1px solid rgba(0,0,0,0.1); }}
-    
-    {anim_css}
-    @media (max-width: 768px) {{
-        nav#main-navbar .nav-links {{ position: fixed; top: 60px; left: -100%; width: 100%; height: calc(100vh - 60px); background: var(--bg); flex-direction: column; padding: 2rem; transition: 0.3s; align-items: flex-start; gap: 1.5rem; overflow-y: auto; }}
-        nav#main-navbar .nav-links.active {{ left: 0; }}
-        .mobile-menu {{ display: block; }}
-        .about-grid, .contact-grid, .detail-view, .grid-3 {{ grid-template-columns: 1fr !important; }}
-    }}
-    /* 👉 ADD THIS NEW LINE HERE: */
-        .pricing-table th, .pricing-table td {{ padding: 1rem 0.5rem; font-size: 0.85rem; }}
-    }}
-    """
-
 def gen_2050_scripts():
     context_js = "if(new Date().getHours() >= 19 || new Date().getHours() <= 6) document.body.classList.add('dark-mode');" if enable_context else ""
     ab_js = "let variant = localStorage.getItem('titan_ab') || (Math.random() > 0.5 ? 'A' : 'B'); localStorage.setItem('titan_ab', variant); if(variant === 'B') document.documentElement.style.setProperty('--s', '#10b981');" if enable_ab else ""
@@ -877,12 +693,13 @@ def gen_scripts():
 
 def build_page(title, content, extra_js=""):
     gsc_meta = f'<meta name="google-site-verification" content="{gsc_tag}">' if gsc_tag else ""
-    
     og_meta = f'<meta property="og:title" content="{title} | {biz_name}"><meta property="og:description" content="{seo_d}"><meta property="og:image" content="{og_image or logo_url}"><meta name="twitter:card" content="summary_large_image">'
-    pwa_tags = f'<link rel="manifest" href="manifest.json"><meta name="theme-color" content="{p_color}"><link rel="apple-touch-icon" href="{pwa_icon}">'
+    pwa_tags = f'<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#000000"><link rel="apple-touch-icon" href="{pwa_icon}">'
     sw_script = "<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }</script>"
-    
     ga_script_opt = f"<script async src='https://www.googletagmanager.com/gtag/js?id={ga_tag}'></script><script>window.dataLayer = window.dataLayer ||[]; function gtag(){{dataLayer.push(arguments);}} gtag('js', new Date()); gtag('config', '{ga_tag}');</script>" if ga_tag else ""
+
+    # CALL THE NEW THEME ENGINE HERE
+    modern_css = titan_themes.generate_modern_css(theme_mode, h_font, b_font, hero_layout)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -893,16 +710,12 @@ def build_page(title, content, extra_js=""):
     <meta name="description" content="{seo_d}">
     {gsc_meta}{og_meta}{pwa_tags}{gen_schema()}
     
-    <!-- LCP FIX: Preload the absolute biggest image instantly -->
     <link rel="preload" as="image" href="{hero_img_1}">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;700;900&family={b_font.replace(' ', '+')}:wght@300;400;600&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;700;900&family={b_font.replace(' ', '+')}:wght@300;400;600&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;700;900&family={b_font.replace(' ', '+')}:wght@300;400;600&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@400;500;700&display=swap">
     
-    <style>{get_theme_css()}</style>
+    <style>{modern_css}</style>
     
     {ga_script_opt}
     {gen_2050_scripts()}
