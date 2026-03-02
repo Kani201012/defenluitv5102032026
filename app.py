@@ -50,7 +50,6 @@ with st.sidebar:
     st.caption("v60.0 | 2026 Next-Gen Engine")
     st.divider()
     
-    # --- AI GENERATOR ---
     with st.expander("🤖 Titan AI Generator", expanded=False):
         raw_key = st.text_input("Groq API Key", type="password")
         groq_key = raw_key.strip() if raw_key else ""
@@ -453,13 +452,88 @@ def gen_inventory_js(is_demo=False):
                 let allImgs = c[3] ? c[3].split('|') : []; let mainImg = allImgs.length > 0 ? allImgs[0] : '{custom_feat}';
                 if(c.length > 1) {{
                     const pName = encodeURIComponent(c[0]);
-                    box.innerHTML += `<div class="card reveal"><img src="${{mainImg}}" class="prod-img" width="300" height="250" loading="lazy" alt="${{c[0]}}"><div class="card-body"><h3>${{c[0]}}</h3><p style="font-weight:bold; color:var(--s); font-size:1.1rem;">${{c[1]}}</p><p class="card-desc">${{c[2]}}</p><div style="margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px;"><button onclick="addToCart('${{c[0]}}', '${{c[1]}}')" class="btn btn-primary" style="padding:0.5rem; font-size:0.8rem;">Add</button><a href="product.html?item=${{pName}}" class="btn btn-accent" style="padding:0.5rem; font-size:0.8rem;">View ${{c[0]}}</a></div></div></div>`;
+                    box.innerHTML += `<div class="card reveal"><img src="${{mainImg}}" class="prod-img" width="300" height="250" loading="lazy" alt="${{c[0]}}"><div class="card-body"><h3>${{c[0]}}</h3><p style="font-weight:bold; color:var(--s); font-size:1.1rem;">${{c[1]}}</p><p class="card-desc">${{c[2]}}</p><div style="margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px;"><button onclick="addToCart('${{c[0]}}', '${{c[1]}}')" class="btn btn-primary" style="padding:0.5rem; font-size:0.8rem;">Add</button><a href="product.html?item=${{pName}}" class="btn btn-accent" style="padding:0.5rem; font-size:0.8rem;">View Details</a></div></div></div>`;
                 }}
             }}
         }} catch(e) {{ console.log(e); }}
     }}
     if(document.getElementById('inv-grid')) window.addEventListener('load', loadInv);
     </script>
+    """
+
+# --- MISSING CORE UI FUNCTIONS RESTORED HERE ---
+
+def gen_hero():
+    bg_media = f"""
+    <div class="carousel-slide active" style="background-image: url('{hero_img_1}')" fetchpriority="high"></div>
+    <div class="carousel-slide" style="background-image: url('{hero_img_2}')" loading="lazy"></div>
+    <div class="carousel-slide" style="background-image: url('{hero_img_3}')" loading="lazy"></div>
+    <script defer>
+        let slides = document.querySelectorAll('.carousel-slide'); let currentSlide = 0; 
+        setInterval(() => {{ slides[currentSlide].classList.remove('active'); currentSlide = (currentSlide + 1) % slides.length; slides[currentSlide].classList.add('active'); }}, 4000);
+    </script>
+    """
+    if hero_video_id: 
+        bg_media = f'<iframe src="https://www.youtube.com/embed/{hero_video_id}?autoplay=1&mute=1&loop=1&playlist={hero_video_id}&controls=0&showinfo=0&rel=0" style="position:absolute; top:50%; left:50%; width:100vw; height:100vh; transform:translate(-50%, -50%); pointer-events:none; object-fit:cover; z-index:0; min-width:177.77vh; min-height:56.25vw;" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
+    
+    return f"""
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        {bg_media}
+        <div class="container hero-content">
+            <h1 id="hero-title">{hero_h}</h1>
+            <p id="hero-sub">{hero_sub}</p>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap; {'justify-content:center;' if hero_layout == 'Center' else ''}">
+                <a href="#inventory" class="btn btn-accent">Explore Now</a>
+                <a href="contact.html" class="btn" style="background:rgba(255,255,255,0.2); backdrop-filter:blur(10px); color:white !important;">Contact Us</a>
+            </div>
+        </div>
+    </section>
+    """
+
+def get_simple_icon(name):
+    icon_map = {
+        "bolt": "M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z", 
+        "wallet": "M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z", 
+        "table": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 19V5h14v14H5zm2-2h10v-2H7v2zm0-4h10v-2H7v2zm0-4h10V7H7v2z", 
+        "shield": "M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"
+    }
+    path = icon_map.get(name.lower().strip(), "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z")
+    return f'<svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="{path}"/></svg>'
+
+def gen_features():
+    cards = "".join([f'<div class="card reveal"><div style="color:var(--s); margin-bottom:1rem;">{get_simple_icon(p[0])}</div><h3>{p[1].strip()}</h3><div class="card-body" style="padding:0;">{format_text(p[2].strip())}</div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
+    return f'<section id="features"><div class="container"><div class="section-head reveal"><h2 id="feature-title">{f_title}</h2></div><div class="grid-3">{cards}</div></div></section>'
+
+def gen_stats():
+    return f"""
+    <div style="background:var(--p); color:white; padding:3rem 0; text-align:center;">
+        <div class="container grid-3">
+            <div class="reveal"><h3 style="color:#ffffff; margin:0; font-size:3rem;">{stat_1}</h3><p style="color:rgba(255,255,255,0.7);">{label_1}</p></div>
+            <div class="reveal"><h3 style="color:#ffffff; margin:0; font-size:3rem;">{stat_2}</h3><p style="color:rgba(255,255,255,0.7);">{label_2}</p></div>
+            <div class="reveal"><h3 style="color:#ffffff; margin:0; font-size:3rem;">{stat_3}</h3><p style="color:rgba(255,255,255,0.7);">{label_3}</p></div>
+        </div>
+    </div>
+    """
+
+def gen_pricing_table():
+    if not show_pricing: return ""
+    return f"""
+    <section id="pricing">
+        <div class="container">
+            <div class="section-head reveal"><h2>Pricing</h2></div>
+            <div class="pricing-wrapper reveal">
+                <table class="pricing-table">
+                    <thead><tr><th style="width:40%">Expense Category</th><th style="background:var(--s);">Titan</th><th>{wix_name}</th></tr></thead>
+                    <tbody>
+                        <tr><td>Initial Setup Fee</td><td><strong>{titan_price}</strong></td><td>$0</td></tr>
+                        <tr><td>Annual Costs</td><td><strong>{titan_mo}</strong></td><td>{wix_mo}</td></tr>
+                        <tr><td><strong>5-Year Savings</strong></td><td style="color:var(--s); font-size:1.3rem; font-weight:800;">You Save {save_val}</td><td>$0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
     """
 
 def gen_inventory():
@@ -499,219 +573,41 @@ def gen_footer():
     </div><div style="border-top:1px solid rgba(255,255,255,0.1); margin-top:3rem; padding-top:2rem; text-align:center; color:rgba(255,255,255,0.5);">&copy; {datetime.datetime.now().year} {biz_name}. Powered by Titan Engine.</div></div></footer>
     """
 
-def gen_scripts():
-    return "<script defer>window.addEventListener('scroll', () => { var r = document.querySelectorAll('.reveal'); for (var i = 0; i < r.length; i++) { if (r[i].getBoundingClientRect().top < window.innerHeight - 100) r[i].classList.add('active'); } }); window.dispatchEvent(new Event('scroll'));</script>"
-
-def gen_2050_scripts():
-    context_js = "if(new Date().getHours() >= 19 || new Date().getHours() <= 6) document.body.classList.add('dark-mode');" if enable_context else ""
-    ab_js = "let variant = localStorage.getItem('titan_ab') || (Math.random() > 0.5 ? 'A' : 'B'); localStorage.setItem('titan_ab', variant); if(variant === 'B') document.documentElement.style.setProperty('--s', '#059669');" if enable_ab else ""
-    voice_js = "function startVoiceSearch() { if (!('webkitSpeechRecognition' in window)) return alert('Voice search not supported.'); const rec = new webkitSpeechRecognition(); rec.lang = 'en-US'; const btn = document.getElementById('voice-btn'); btn.classList.add('listening'); rec.onresult = (e) => { const transcript = e.results[0][0].transcript.toLowerCase(); document.querySelectorAll('.card').forEach(c => { c.style.display = c.innerText.toLowerCase().includes(transcript) ? 'flex' : 'none'; }); }; rec.onend = () => btn.classList.remove('listening'); rec.start(); }" if enable_voice else ""
-    return f"<script defer>{context_js} {ab_js} {voice_js}</script>"
-
-def build_page(title, content, extra_js=""):
-    gsc_meta = f'<meta name="google-site-verification" content="{gsc_tag}">' if gsc_tag else ""
-    og_meta = f'<meta property="og:title" content="{title} | {biz_name}"><meta property="og:description" content="{seo_d}"><meta property="og:image" content="{og_image or logo_url}"><meta name="twitter:card" content="summary_large_image">'
-    pwa_tags = f'<link rel="manifest" href="manifest.json"><meta name="theme-color" content="{p_color}"><link rel="apple-touch-icon" href="{pwa_icon}">'
-    sw_script = "<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }</script>"
-    ga_script_opt = f"<script async src='https://www.googletagmanager.com/gtag/js?id={ga_tag}'></script><script>window.dataLayer = window.dataLayer ||[]; function gtag(){{dataLayer.push(arguments);}} gtag('js', new Date()); gtag('config', '{ga_tag}');</script>" if ga_tag else ""
-
-    # CALL THE NEW THEME ENGINE HERE
-    modern_css = titan_themes.generate_modern_css(theme_mode, h_font, b_font, hero_layout, anim_type, overlay_opacity)
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} | {biz_name}</title>
-    <meta name="description" content="{seo_d}">
-    {gsc_meta}{og_meta}{pwa_tags}{gen_schema()}
+def gen_nav():
+    logo_display = f'<img src="{logo_url}" height="40" width="auto" alt="{biz_name} Logo" loading="eager">' if logo_url else f'<span style="font-weight:900; font-size:1.5rem; color:var(--p)">{biz_name}</span>'
+    blog_link = '<a href="blog.html" onclick="toggleMenu()" aria-label="Read our blog">Blog</a>' if show_blog else ''
+    book_link = '<a href="booking.html" onclick="toggleMenu()" aria-label="Book an appointment">Book Now</a>' if show_booking else ''
+    lang_btn = f'<a href="#" onclick="openLangModal()" aria-label="Switch Language">🌐 ES</a>' if lang_sheet else ''
     
-    <link rel="preload" as="image" href="{hero_img_1}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@400;500;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;600;800;900&family={b_font.replace(' ', '+')}:wght@400;500;700&display=swap"></noscript>
-    
-    <style>{modern_css}</style>
-    {ga_script_opt}
-    {gen_2050_scripts()}
-</head>
-<body>
-    <main>
-        {gen_nav()}
-        {content}
-        {gen_footer()}
-        {gen_wa_widget()}
-        {gen_cart_system()}
-        {gen_lang_script()}
-        {gen_popup()}
-        {extra_js}
-    </main>
-    {gen_scripts()}
-    {sw_script}
-</body>
-</html>"""
-
-def gen_booking_content():
-    if not show_booking: return ""
-    return f'<section class="hero" style="min-height:30vh; padding-top:120px;"><div class="container hero-content" style="text-align:center;"><h1>{booking_title}</h1><p style="margin:0 auto;">{booking_desc}</p></div></section><section><div class="container" style="text-align:center;"><div style="background:var(--card); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); width:100%; border:var(--border);">{booking_embed}</div></div></section>'
-
-def gen_blog_index_html():
-    if not show_blog: return ""
     return f"""
-    <section class="hero" style="min-height:40vh; background-image: linear-gradient(rgba(0,0,0,{overlay_opacity}), rgba(0,0,0,{overlay_opacity})), url('{hero_img_1}'); background-size: cover; padding-top:120px;">
-        <div class="container hero-content" style="text-align:center;"><h1>{blog_hero_title}</h1><p style="margin:0 auto;">{blog_hero_sub}</p></div>
-    </section>
-    <section><div class="container"><div id="blog-grid" class="grid-3">Loading Posts...</div></div></section>
-    {gen_csv_parser()}
-    <script defer>
-    async function loadBlog() {{ 
-        try {{ 
-            const res = await fetch('{blog_sheet_url}'); const txt = await res.text(); const lines = txt.split(/\\r\\n|\\n/); 
-            const box = document.getElementById('blog-grid'); box.innerHTML = ''; 
-            for(let i=1; i<lines.length; i++) {{ 
-                const r = parseCSVLine(lines[i]); 
-                if(r.length > 4) {{ 
-                    box.innerHTML += `<article class="card reveal" style="display:flex; flex-direction:column; justify-content:space-between;"><div><img src="${{r[5]}}" class="prod-img" loading="lazy" alt="${{r[1]}}"><div class="card-body"><span class="blog-badge">${{r[3]}}</span><h3 style="margin-top:0.5rem;"><a href="post.html?id=${{r[0]}}">${{r[1]}}</a></h3><p class="card-desc">${{r[4]}}</p></div></div><a href="post.html?id=${{r[0]}}" class="btn btn-primary" style="margin:1rem; width:calc(100% - 2rem);">Read More</a></article>`; 
-                }} 
-            }} 
-        }} catch(e) {{ console.log(e); }} 
-    }} 
-    window.addEventListener('load', loadBlog);
-    </script>
-    """
-
-def gen_product_page_content(is_demo=False):
-    demo_flag = "const isDemo = true;" if is_demo else "const isDemo = false;"
-    ar_script = '<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>' if enable_ar else ''
-    return f"""
-    {ar_script}
-    <section style="padding-top:140px; min-height: 100vh;" id="product-section-root">
-        <div class="container">
-            <a href="index.html#inventory" class="back-btn">← BACK TO STORE</a>
-            <div id="product-detail-target">Loading Engineering Data...</div>
+    {f'<div id="top-bar"><a href="{top_bar_link}">{top_bar_text}</a></div>' if top_bar_enabled else ''}
+    <nav id="main-navbar" role="navigation" aria-label="Main Navigation">
+        <div class="container nav-flex">
+            <a href="index.html" aria-label="Go to homepage" style="text-decoration:none;">{logo_display}</a>
+            <button class="mobile-menu" aria-label="Toggle Navigation Menu" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
+            <div class="nav-links">
+                <a href="index.html" onclick="toggleMenu()">Home</a>
+                {'<a href="index.html#features" onclick="toggleMenu()">Features</a>' if show_features else ''}
+                {'<a href="index.html#pricing" onclick="toggleMenu()">Savings</a>' if show_pricing else ''}
+                {'<a href="index.html#inventory" onclick="toggleMenu()">Store</a>' if show_inventory else ''}
+                {blog_link}
+                {book_link}
+                {lang_btn}
+                <a href="contact.html" onclick="toggleMenu()">Contact</a>
+                <a href="tel:{biz_phone}" class="btn btn-accent" style="padding:0.6rem 1.5rem; border-radius:50px;" aria-label="Call us now">Call Now</a>
+            </div>
         </div>
-    </section>
-    {gen_csv_parser()}
-    <script defer>
-    {demo_flag}
-    function changeImg(src) {{ document.getElementById('main-img').src = src; }}
-    async function loadProduct() {{
-        const params = new URLSearchParams(window.location.search); 
-        let targetName = params.get('item'); 
-        if(isDemo && !targetName) targetName = "The Consultant Pro";
-        
-        try {{
-            const res = await fetch('{sheet_url}'); 
-            const txt = await res.text(); 
-            const lines = txt.split(/\\r\\n|\\n/);
-            for(let i=1; i<lines.length; i++) {{
-                const clean = parseCSVLine(lines[i]);
-                if(clean[0] === targetName || (isDemo && i===1)) {{
-                    let allImgs = clean[3] ? clean[3].split('|') : ['{custom_feat}'];
-                    let thumbHtml = '';
-                    allImgs.forEach(img => {{ thumbHtml += `<img src="${{img.trim()}}" class="thumb" onclick="changeImg('${{img.trim()}}')" alt="Thumb">`; }});
-                    
-                    let mainMedia = `<img src="${{allImgs[0]}}" id="main-img" style="width:100%; border-radius:var(--radius); height:450px; object-fit:cover; box-shadow: var(--shadow);" alt="${{clean[0]}}">`;
-                    if({str(enable_ar).lower()} && clean.length > 5 && clean[5].includes('.glb')) {{
-                        mainMedia = `<model-viewer src="${{clean[5]}}" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" auto-rotate style="width:100%; height:450px;"></model-viewer>`;
-                    }}
-
-                    let stripe = (clean.length > 4 && clean[4].includes('http') && !clean[4].match(/\\.(jpg|jpeg|png|gif|webp)$/i)) ? clean[4] : '';
-                    let btnAction = stripe ? 
-                    `<a href="${{stripe}}" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; text-decoration:none; display: inline-flex; align-items:center; justify-content:center; height:3.5rem;">BUY NOW</a>` : 
-                    `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:3.5rem;">ADD TO CART</button>`;
-                    
-                    const u = encodeURIComponent(window.location.href); 
-                    const t = encodeURIComponent(clean[0]);
-                    
-                    document.getElementById('product-detail-target').innerHTML = `
-                        <div class="detail-view">
-                            <div>
-                                ${{mainMedia}}
-                                <div class="gallery-thumbs">${{thumbHtml}}</div>
-                            </div>
-                            <div>
-                                <h1 style="margin-bottom:10px; color:var(--p);">${{clean[0]}}</h1>
-                                <span class="product-price-tag">${{clean[1]}}</span>
-                                <div class="product-meta-box">
-                                    ${{parseMarkdown(clean[2])}}
-                                </div>
-                                <div style="margin-top:30px;">${{btnAction}}</div>
-                                
-                                <div style="margin-top:40px; padding-top:20px; border-top:1px solid rgba(128,128,128,0.2);">
-                                    <p style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--txt); margin-bottom:15px; opacity:0.7;">Share Project Specifications:</p>
-                                    <div class="share-row" style="display:flex; gap:12px;">
-                                        <a href="https://wa.me/?text=${{t}}%20${{u}}" target="_blank" class="share-btn bg-wa" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#25D366;"><svg viewBox="0 0 24 24" fill="white" width="20"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.15l-.3-.17l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24m-3.53 3.16c-.13 0-.35.05-.54.26c-.19.2-.72.7-.72 1.72s.73 2.01.83 2.14c.1.13 1.44 2.19 3.48 3.07c.49.21.87.33 1.16.43c.49.16.94.13 1.29.08c.4-.06 1.21-.5 1.38-.98c.17-.48.17-.89.12-.98c-.05-.09-.18-.13-.37-.23c-.19-.1-.1.13-.1.13s-1.13-.56-1.32-.66c-.19-.1-.32-.15-.45.05c-.13.2-.51.65-.62.78c-.11.13-.23.15-.42.05c-.19-.1-.8-.3-1.53-.94c-.57-.5-1.02-1.12-1.21-1.45c-.11-.19-.01-.29.09-.38c.09-.08.19-.23.29-.34c.1-.11.13-.19.19-.32c.06-.13.03-.24-.01-.34c-.05-.1-.45-1.08-.62-1.48c-.16-.4-.36-.34-.51-.35c-.11-.01-.25-.01-.4-.01Z"/></svg></a>
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=${{u}}" target="_blank" class="share-btn bg-fb" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#1877F2;"><svg viewBox="0 0 24 24" fill="white" width="20"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-                                        <a href="https://twitter.com/intent/tweet?url=${{u}}&text=${{t}}" target="_blank" class="share-btn bg-x" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#000000;"><svg viewBox="0 0 24 24" fill="white" width="18"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584l-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path></svg></a>
-                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=${{u}}&title=${{t}}" target="_blank" class="share-btn bg-li" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#0A66C2;"><svg viewBox="0 0 24 24" fill="white" width="18"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2a2 2 0 0 1 2-2z"></path></svg></a>
-                                        <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link Copied!')" class="share-btn bg-link" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#64748b; border:none; cursor:pointer;"><svg viewBox="0 0 24 24" fill="white" width="18"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-                    document.title = clean[0] + " | {biz_name}";
-                    break;
-                }}
-            }}
-        }} catch(e) {{ console.error("Product Load Error:", e); }}
-    }}
-    window.addEventListener('load', loadProduct);
-    </script>
-    """
-
-def gen_blog_post_html():
-    if not show_blog: return ""
-    return f"""
-    <article id="post-container" style="padding-top:0px;">Loading Content...</article>
-    {gen_csv_parser()}
-    <script defer>
-    async function loadPost() {{
-        const params = new URLSearchParams(window.location.search); const slug = params.get('id');
-        try {{
-            const res = await fetch('{blog_sheet_url}'); const txt = await res.text(); const lines = txt.split(/\\r\\n|\\n/);
-            const container = document.getElementById('post-container');
-            for(let i=1; i<lines.length; i++) {{
-                const r = parseCSVLine(lines[i]);
-                if(r[0] === slug) {{
-                    const contentHtml = parseMarkdown(r[6]); const u = encodeURIComponent(window.location.href); const t = encodeURIComponent(r[1]);
-                    document.title = r[1] + " | {biz_name}";
-                    
-                    container.innerHTML = `
-                        <header style="background:var(--p); padding: 120px 1rem 4rem 1rem; color:white; text-align:center;">
-                            <div class="container"><span class="blog-badge">${{r[3]}}</span><h1 style="font-size:clamp(1.8rem, 5vw, 3.5rem); margin-top:1rem; color:white !important;">${{r[1]}}</h1></div>
-                        </header>
-                        <div class="container" style="max-width:800px; padding:3rem 1.5rem;">
-                            <img src="${{r[5]}}" style="width:100%; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:2rem;" alt="${{r[1]}}">
-                            <div style="line-height:1.8; font-size:1.1rem;">${{contentHtml}}</div>
-                            
-                            <div style="margin-top:4rem; border-top:1px solid rgba(128,128,128,0.2); padding-top:2rem;">
-                                <p style="font-weight:bold; font-size:1.1rem; margin-bottom:0.5rem;">Share this article:</p>
-                                <div class="share-row">
-                                    <a href="https://wa.me/?text=${{t}}%20${{u}}" target="_blank" class="share-btn bg-wa" title="Share on WhatsApp"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.15l-.3-.17l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24m-3.53 3.16c-.13 0-.35.05-.54.26c-.19.2-.72.7-.72 1.72s.73 2.01.83 2.14c.1.13 1.44 2.19 3.48 3.07c.49.21.87.33 1.16.43c.49.16.94.13 1.29.08c.4-.06 1.21-.5 1.38-.98c.17-.48.17-.89.12-.98c-.05-.09-.18-.13-.37-.23c-.19-.1-.1.13-.1.13s-1.13-.56-1.32-.66c-.19-.1-.32-.15-.45.05c-.13.2-.51.65-.62.78c-.11.13-.23.15-.42.05c-.19-.1-.8-.3-1.53-.94c-.57-.5-1.02-1.12-1.21-1.45c-.11-.19-.01-.29.09-.38c.09-.08.19-.23.29-.34c.1-.11.13-.19.19-.32c.06-.13.03-.24-.01-.34c-.05-.1-.45-1.08-.62-1.48c-.16-.4-.36-.34-.51-.35c-.11-.01-.25-.01-.4-.01Z"/></path></svg></a>
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u=${{u}}" target="_blank" class="share-btn bg-fb" title="Share on Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-                                    <a href="https://twitter.com/intent/tweet?url=${{u}}&text=${{t}}" target="_blank" class="share-btn bg-x" title="Share on X"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584l-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path></svg></a>
-                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=${{u}}&title=${{t}}" target="_blank" class="share-btn bg-li" title="Share on LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2a2 2 0 0 1 2-2z"></path></svg></a>
-                                    <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link Copied to Clipboard!');" class="share-btn bg-link" title="Copy Link" style="border:none; cursor:pointer;"><svg viewBox="0 0 24 24" fill="white"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></button>
-                                </div>
-                            </div>
-                            <hr style="margin:2rem 0; border:0; border-top:1px solid rgba(128,128,128,0.2);">
-                            <a href="blog.html" class="btn btn-primary" style="display:inline-block; margin-top:1rem;">&larr; Back to Blog</a>
-                        </div>`;
-                    break;
-                }}
-            }}
-        }} catch(e) {{}}
-    }}
-    window.addEventListener('load', loadPost);
+    </nav>
+    <div id="theme-toggle" onclick="document.body.classList.toggle('dark-mode')" aria-label="Toggle Dark or Light Mode" role="button">🌓</div>
+    <script>
+        function toggleMenu() {{ document.querySelector('.nav-links').classList.remove('active'); }}
+        if({str(top_bar_enabled).lower()}) {{ document.querySelector('#main-navbar').style.top = '40px'; }}
     </script>
     """
 
 def gen_inner_header(title):
     return f'<div class="hero" style="min-height: 40vh; background:var(--p); padding-top:120px;"><div class="container hero-content" style="text-align:center;"><h1 style="color:white !important;">{title}</h1></div></div>'
+
 
 # --- 6. PAGE ASSEMBLY ---
 home_content = ""
