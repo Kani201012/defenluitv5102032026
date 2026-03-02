@@ -109,12 +109,39 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .hero h1 {{ color: #ffffff !important; text-shadow: 0 10px 30px rgba(0,0,0,0.5); -webkit-text-fill-color: #fff; background: none; }}
     .hero p {{ color: rgba(255,255,255,0.9) !important; font-size: clamp(1.2rem, 2vw, 1.4rem); max-width: 800px; margin: 0 {'auto' if hero_align == 'Center' else '0'} 2.5rem {'auto' if hero_align == 'Center' else '0'}; font-weight: 400; }}
     
-    /* BENTO-STYLE GRID LAYOUTS */
+   /* BENTO-STYLE GRID LAYOUTS */
     .container {{ max-width: 1300px; margin: 0 auto; padding: 0 2rem; }}
     main section {{ padding: clamp(4rem, 8vw, 8rem) 0; position: relative; }}
     .section-head {{ text-align: center; margin-bottom: clamp(3rem, 5vw, 5rem); }}
-    .grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }}
+    
+    /* NEW: FEATURES GRID (BENTO) */
+    .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem; }}
+    .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
+    .modern-feature-card:hover {{ transform: translateY(-10px); border-color: var(--p); }}
+    .feature-icon-wrapper {{ width: 64px; height: 64px; border-radius: 16px; background: rgba(128,128,128,0.05); display: flex; align-items: center; justify-content: center; color: var(--s); border: 1px solid rgba(128,128,128,0.1); }}
+    .feature-content h3 {{ font-size: 1.5rem; margin-bottom: 1rem; color: var(--txt); }}
+    
+    /* NEW: ASYMMETRICAL ABOUT SECTION */
     .about-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }}
+    .about-visual {{ position: relative; }}
+    .about-main-img {{ width: 100%; height: 500px; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow); }}
+    .about-experience-badge {{ position: absolute; bottom: -30px; right: -30px; background: var(--p); color: #fff; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 1rem; border: 4px solid var(--card); }}
+    .about-experience-badge strong {{ font-size: 3rem; line-height: 1; color: #fff; }}
+    .about-experience-badge span {{ font-size: 1rem; font-weight: 700; text-transform: uppercase; line-height: 1.2; }}
+    .about-lead {{ font-size: 1.25rem; line-height: 1.8; opacity: 0.9; color: var(--txt); border-left: 4px solid var(--s); padding-left: 1.5rem; }}
+    
+    .contact-grid {{ display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; }}
+    
+    /* (Keep your existing product/pricing/footer CSS here) */
+    
+    /* MOBILE ADAPTATION (MUST BE UPDATED TO INCLUDE NEW GRIDS) */
+    @media (max-width: 992px) {{
+        /* ... (keep the existing mobile fixes for nav/card/detail-view) ... */
+        .modern-hero-grid {{ grid-template-columns: 1fr; text-align: center; }}
+        .about-grid, .detail-view, .grid-3 {{ grid-template-columns: 1fr !important; gap: 3rem; }}
+        .about-experience-badge {{ bottom: -20px; right: 20px; padding: 1.5rem; }}
+        .about-lead {{ border-left: none; border-top: 4px solid var(--s); padding-left: 0; padding-top: 1.5rem; }}
+    }}
     
     /* 2026 CARD PHYSICS & MICRO-INTERACTIONS */
     .card {{ 
