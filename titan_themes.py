@@ -254,6 +254,14 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     .about-lead {{ font-size: 1.25rem; line-height: 1.8; opacity: 0.9; color: var(--txt); border-left: 4px solid var(--s); padding-left: 1.5rem; }}
     
     @keyframes rotate {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
+
+    /* LANGUAGE MODAL PHYSICS */
+    #lang-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; }}
+    #lang-modal {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); width: 90%; max-width: 500px; padding: 3rem; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); z-index: 1001; border: var(--border); color: var(--txt); }}
+    #lang-modal h3 {{ margin-bottom: 1.5rem; color: var(--p); font-size: 1.8rem; border-bottom: 1px solid rgba(128,128,128,0.1); padding-bottom: 1rem; text-align:center; }}
+    .lang-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }}
+    .lang-opt {{ display: flex; align-items: center; justify-content: center; width: 100%; padding: 1.2rem; border: var(--border); border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; background: var(--bg); }}
+    .lang-opt:hover {{ background: var(--p); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }}
     
     /* MOBILE OPTIMIZATION */
     @media (max-width: 992px) {{
