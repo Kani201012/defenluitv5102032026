@@ -789,17 +789,17 @@ def build_page(title, content, extra_js=""):
 
     # This is the line that was likely misaligned:
     modern_css = titan_themes.generate_modern_css(
-        theme_mode, 
-        h_font, 
-        b_font, 
-        hero_layout,
-        h_color=col_h, 
-        b_color=col_b, 
-        h1_size=f"{size_h1}rem", 
-        p_size=f"{size_p}rem",
-        cta_bg=cta_bg_color, 
-        cta_txt=cta_txt_color
-    )
+    theme_mode, 
+    h_font, 
+    b_font, 
+    hero_layout,
+    h_color=col_h,    # From Headings Color picker
+    b_color=col_b,    # From Body Text Color picker
+    h1_size=f"{size_h1}rem", # From H1 slider
+    p_size=f"{size_p}rem",   # From Body Text slider
+    cta_bg=cta_bg_color,     # From Final CTA Background picker
+    cta_txt=cta_txt_color    # From Final CTA Text picker
+)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
