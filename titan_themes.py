@@ -55,20 +55,9 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-   # SMART ALIGNMENT LOGIC
- h_align_logic = ""
- if hero_align == "Center":
-     h_align_logic = """
-     grid-template-columns: 1fr; 
-     text-align: center; 
-     max-width: 1000px; 
-     margin: 0 auto;
-     """
- else: # Left Align (Asymmetrical)
-     h_align_logic = """
-     grid-template-columns: 1.1fr 1fr; 
-     text-align: left;
-     """
+    h_align = "text-align: center; justify-content: center;"
+    if hero_align == "Left":
+        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
 
     # 3. Now return the CSS f-string
     return f"""
@@ -338,8 +327,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     /* 1. ASYMMETRICAL HERO WITH FLOATING GLASS */
     .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; z-index: 1; }}
     .modern-hero-bg {{ position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(128,128,128,0.05) 0%, transparent 50%); z-index: -1; animation: rotate 60s linear infinite; }}
-.modern-hero-grid {{ display: grid; gap: 4rem; align-items: center; width: 100%; {h_align_logic} }}
- .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; justify-content: {'center' if hero_align == 'Center' else 'flex-start'}; }}
+    .modern-hero-grid {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; width: 100%; }}
     
     .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt); text-transform: uppercase; letter-spacing: 1px; }}
     .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; }}
@@ -361,7 +349,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .stat-divider {{ width: 2px; height: 60px; background: rgba(128,128,128,0.2); }}
 
     /* 3. BENTO-STYLE FEATURES GRID */
-    .section-subtitle {{ font-size: 1.2rem; color: var(--txt); opacity: 0.7; margin-top: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
+    .section-subtitle {{ font-size: 1.2rem; color: var(--txt); opacity: 0.7; margin-top: -1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
     .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }}
     .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
     .modern-feature-card:hover {{ transform: translateY(-10px); border-color: var(--p); }}
