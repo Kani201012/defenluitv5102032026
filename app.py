@@ -164,6 +164,7 @@ with tabs[0]:
     c1, c2 = st.columns(2)
     with c1:
         biz_name = st.text_input("Business Name", "StopWebRent.com")
+        hero_badge_txt = st.text_input("Hero Mini-Badge", "🚀 Next-Generation Architecture")
         biz_tagline = st.text_input("Tagline", "Stop Renting. Start Owning.")
         biz_phone = st.text_input("Phone", "966572562151")
         biz_email = st.text_input("Email", "hello@kaydiemscriptlab.com")
