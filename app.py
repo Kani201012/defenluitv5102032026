@@ -404,14 +404,17 @@ def gen_hero():
     </script>
     """
     if hero_video_id: 
-        bg_media = f'<iframe src="https://www.youtube.com/embed/{hero_video_id}?autoplay=1&mute=1&loop=1&playlist={hero_video_id}&controls=0&showinfo=0&rel=0" class="hero-video" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
+        bg_media = f'<iframe src="https://www.youtube.com/embed/{hero_video_id}?autoplay=1&mute=1&loop=1&playlist={hero_video_id}&controls=0&showinfo=0&rel=0" class="hero-video" style="width:100%; height:100%; object-fit:cover; pointer-events:none;" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
     
+    # Conditional logic: Only build the HTML if hero_badge_txt is not empty
+    badge_html = f'<div class="hero-badge">{hero_badge_txt}</div>' if hero_badge_txt.strip() else ''
+
     return f"""
     <section class="modern-hero">
         <div class="modern-hero-bg"></div>
         <div class="container modern-hero-grid">
             <div class="modern-hero-text reveal active">
-                <div class="hero-badge">🚀 Next-Generation Architecture</div>
+                {badge_html}
                 <h1 id="hero-title">{hero_h}</h1>
                 <p id="hero-sub">{hero_sub}</p>
                 <div class="hero-btn-group">
