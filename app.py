@@ -644,20 +644,47 @@ def gen_popup():
     </script>
     """
 
-// Ensure this part of the string in gen_inventory_js is clean:
-box.innerHTML += `
-    <div class="card reveal">
-        <img src="${mainImg}" class="prod-img" width="300" height="250" loading="lazy" alt="${c[0]}">
-        <div class="card-body">
-            <h3>${c[0]}</h3>
-            <p style="font-weight:bold; color:#059669; margin-bottom:10px;">${c[1]}</p>
-            <p class="card-desc" style="font-size:0.9rem; line-height:1.4; opacity:0.7;">${c[2]}</p>
-            <div style="margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px; padding-top:15px;">
-                <button onclick="addToCart('${c[0]}', '${c[1]}')" class="btn btn-primary" style="padding:0.6rem; font-size:0.75rem; letter-spacing:1px;">ADD</button>
-                <a href="product.html?item=${pName}" class="btn btn-accent" style="padding:0.6rem; font-size:0.75rem; letter-spacing:1px; text-decoration:none; display:flex; align-items:center; justify-content:center;">DETAILS</a>
-            </div>
-        </div>
-    </div>`;
+def gen_inventory_js(is_demo=False):
+    demo_flag = "const isDemo = true;" if is_demo else "const isDemo = false;"
+    return f"""
+    {gen_csv_parser()}
+    <script defer>
+    {demo_flag}
+    async function loadInv() {{
+        try {{
+            const res = await fetch('{sheet_url}'); 
+            const txt = await res.text(); 
+            const lines = txt.split(/\\r\\n|\\n/);
+            const box = document.getElementById('inv-grid'); 
+            if(!box) return; 
+            box.innerHTML = '';
+            for(let i=1; i<lines.length; i++) {{
+                if(!lines[i].trim()) continue;
+                const c = parseCSVLine(lines[i]);
+                let allImgs = c[3] ? c[3].split('|') : []; 
+                let mainImg = allImgs.length > 0 ? allImgs[0] : '{custom_feat}';
+                if(c.length > 1) {{
+                    const pName = encodeURIComponent(c[0]);
+                    box.innerHTML += `
+                        <div class="card reveal">
+                            <img src="${{mainImg}}" class="prod-img" width="300" height="250" loading="lazy" alt="${{c[0]}}">
+                            <div class="card-body">
+                                <h3>${{c[0]}}</h3>
+                                <p style="font-weight:bold; color:#059669; margin-bottom:10px;">${{c[1]}}</p>
+                                <p class="card-desc">${{c[2]}}</p>
+                                <div style="margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px; padding-top:15px;">
+                                    <button onclick="addToCart('${{c[0]}}', '${{c[1]}}')" class="btn btn-primary" style="padding:0.6rem; font-size:0.75rem; letter-spacing:1px;">ADD</button>
+                                    <a href="product.html?item=${{pName}}" class="btn btn-accent" style="padding:0.6rem; font-size:0.75rem; letter-spacing:1px; text-decoration:none; display:flex; align-items:center; justify-content:center;">DETAILS</a>
+                                </div>
+                            </div>
+                        </div>`;
+                }}
+            }}
+        }} catch(e) {{ console.log(e); }}
+    }}
+    if(document.getElementById('inv-grid')) window.addEventListener('load', loadInv);
+    </script>
+    """
 
 def gen_inventory():
     if not show_inventory: return ""
