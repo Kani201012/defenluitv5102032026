@@ -440,9 +440,8 @@ def get_simple_icon(name):
     return f'<svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="{path}"/></svg>'
 
 def gen_features():
-    cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
-    return f'<section id="features" style="background:var(--bg); position:relative; z-index:2;"><div class="container"><div class="section-head reveal"><h2 id="feature-title">{f_title}</h2><p class="section-subtitle">Engineered for absolute dominance.</p></div><div class="modern-grid-3">{cards}</div></div></section>'
-
+    cards = "".join([f'<div class="card reveal"><div style="color:var(--s); margin-bottom:1rem;">{get_simple_icon(p[0])}</div><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
+    return f'<section id="features" style="background:var(--bg); position:relative; z-index:2;"><div class="container"><div class="section-head reveal"><h2>{f_title}</h2><p class="section-subtitle">ENGINEERED FOR ABSOLUTE DOMINANCE.</p></div><div class="modern-grid-3">{cards}</div></div></section>'
 def gen_stats():
     return f"""
     <div class="stats-ribbon-container container reveal">
