@@ -1,6 +1,5 @@
 # titan_themes.py
 # 2050 Titan Architecture Theme Engine - 25 Premium Modern Layouts
-# Version 30.3 - Master Production Build
 
 THEME_REGISTRY = {
     # --- SAAS & TECH (High Conversion, Clean) ---
@@ -39,40 +38,33 @@ THEME_REGISTRY = {
     "25. Midnight Ocean": {"bg": "#0f2027", "txt": "#d1d5db", "card": "#203a43", "p": "#2c5364", "s": "#38ef7d", "nav": "rgba(15,32,39,0.9)", "shadow": "0 15px 25px rgba(0,0,0,0.3)", "radius": "16px", "border": "1px solid #2c5364"}
 }
 
-def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color, h1_size, p_size, cta_bg, cta_txt):
-    # 1. Fetch base theme data
+def generate_modern_css(theme_name, h_font, b_font, hero_align):
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # 2. Logic Variables Setup
+    # Modern Text Gradients for Headings (Only for specific themes to look ultra-modern)
     gradient_text = ""
-    if any(x in theme_name for x in ["SaaS", "Dark", "Creative"]):
+    if "SaaS" in theme_name or "Dark" in theme_name or "Creative" in theme_name:
         gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
 
+    # Layout mapping
+    h_align = "text-align: center; justify-content: center;"
+    if hero_align == "Left":
+        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
+
+    # Brutalist exceptions for buttons
     btn_hover = "transform: translateY(-3px) scale(1.02); filter: brightness(1.15); box-shadow: 0 10px 25px -5px var(--p);"
-    if any(x in theme_name for x in ["Brutalist", "Cyberpunk", "Monochromatic"]):
+    if "Brutalist" in theme_name or "Cyberpunk" in theme_name or "Monochromatic" in theme_name:
         btn_hover = "transform: translate(-4px, -4px); box-shadow: 8px 8px 0px #000;"
 
-    backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
+    # Glassmorphism exceptions
+    backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if "Glass" in theme_name or "Mesh" in theme_name else ""
 
-    h_align_logic = "text-align: center; justify-content: center;"
-    if hero_align == "Left":
-        h_align_logic = "text-align: left; justify-content: flex-start; align-items: center;"
-
-    # 3. Master CSS String
     return f"""
     :root {{
-        --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
-        --nav: {t['nav']}; --card: {t['card']};
+        --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; --txt: {t['txt']}; 
+        --card: {t['card']}; --nav: {t['nav']};
         --radius: {t['radius']}; --shadow: {t['shadow']}; --border: {t['border']};
         --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
-        
-        /* MANUAL OVERRIDES */
-        --txt-h: {h_color};
-        --txt-b: {b_color};
-        --h1-size: {h1_size};
-        --p-size: {p_size};
-        --cta-bg: {cta_bg};
-        --cta-txt: {cta_txt};
     }}
     
     /* GLOBAL RESETS & MODERN TYPOGRAPHY */
@@ -430,6 +422,4 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         .detail-view {{ padding: 2rem; }}
         .pricing-table th, .pricing-table td {{ padding: 1.2rem 1rem; font-size: 0.95rem; }}
     }}
-    """
-
     """
