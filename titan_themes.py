@@ -116,18 +116,74 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
         border: var(--border); 
         box-shadow: var(--shadow);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        display: flex; flex-direction: column; overflow: hidden; position: relative;
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden; 
+        position: relative;
+        color: var(--txt) !important; /* Force readability across all themes */
         {backdrop}
     }}
-    .card::before {{ content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--p), var(--s)); opacity: 0; transition: 0.3s; }}
-    .card:hover {{ transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); }}
-    .card:hover::before {{ opacity: 1; }}
+
+    /* Premium Top-Border Glow */
+    .card::before {{ 
+        content: ''; 
+        position: absolute; 
+        top: 0; left: 0; right: 0; 
+        height: 4px; 
+        background: linear-gradient(90deg, var(--p), var(--s)); 
+        opacity: 0; 
+        transition: 0.3s; 
+        z-index: 5;
+    }}
+
+    .card:hover {{ 
+        transform: translateY(-10px); 
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); 
+    }}
+
+    .card:hover::before {{ 
+        opacity: 1; 
+    }}
     
-    .card h3, .card h4, .card a:not(.btn) {{ color: var(--txt) !important; text-decoration: none; }}
-    .card-body {{ padding: 2.5rem; display: flex; flex-direction: column; flex-grow: 1; }}
-    .card-desc {{ font-size: 1.05rem; opacity: 0.75; margin-bottom: 2rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }}
-    .prod-img {{ width: 100%; height: 300px; object-fit: cover; transition: transform 0.5s ease; }}
-    .card:hover .prod-img {{ transform: scale(1.05); }}
+    /* REFINED PRODUCT TYPOGRAPHY */
+    .card h3 {{ 
+        font-size: 1.35rem !important; /* Scaled down for elegance */
+        font-weight: 800; 
+        line-height: 1.2; 
+        margin-bottom: 0.4rem; 
+        color: var(--txt) !important;
+        letter-spacing: -0.02em;
+    }}
+
+    .card-body {{ 
+        padding: 2rem; 
+        display: flex; 
+        flex-direction: column; 
+        flex-grow: 1; 
+    }}
+
+    .card-desc {{ 
+        font-size: 0.95rem; 
+        line-height: 1.6;
+        opacity: 0.7; 
+        margin-bottom: 1.5rem; 
+        display: -webkit-box; 
+        -webkit-line-clamp: 2; /* Force-align grid by limiting to 2 lines */
+        -webkit-box-orient: vertical; 
+        overflow: hidden; 
+        color: var(--txt);
+    }}
+
+    .prod-img {{ 
+        width: 100%; 
+        height: 260px; /* Standardized height for better grid symmetry */
+        object-fit: cover; 
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+    }}
+
+    .card:hover .prod-img {{ 
+        transform: scale(1.08); 
+    }}
     
     /* ENTERPRISE BUTTON COMPONENTS */
     .btn {{ 
