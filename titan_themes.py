@@ -55,9 +55,20 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    h_align = "text-align: center; justify-content: center;"
-    if hero_align == "Left":
-        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
+    # SMART ALIGNMENT LOGIC
+ h_align_logic = ""
+ if hero_align == "Center":
+     h_align_logic = """
+     grid-template-columns: 1fr; 
+     text-align: center; 
+     max-width: 1000px; 
+     margin: 0 auto;
+     """
+ else: # Left Align (Asymmetrical)
+     h_align_logic = """
+     grid-template-columns: 1.1fr 1fr; 
+     text-align: left;
+     """
 
     # 3. Now return the CSS f-string
     return f"""
