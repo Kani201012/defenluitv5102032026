@@ -207,6 +207,53 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     #lead-popup {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 3.5rem; text-align: center; border-radius: var(--radius); z-index: 2000; box-shadow: 0 30px 60px rgba(0,0,0,0.5); width: 90%; max-width: 500px; border: var(--border); color: var(--txt); }}
     .close-popup {{ position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 2rem; opacity: 0.5; transition: 0.3s; }}
     .close-popup:hover {{ opacity: 1; color: var(--s); }}
+
+    /* =========================================
+       2026 STRUCTURAL LAYOUT UPGRADES 
+       ========================================= */
+       
+    /* 1. ASYMMETRICAL HERO WITH FLOATING GLASS */
+    .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; z-index: 1; }}
+    .modern-hero-bg {{ position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(128,128,128,0.05) 0%, transparent 50%); z-index: -1; animation: rotate 60s linear infinite; }}
+    .modern-hero-grid {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; width: 100%; }}
+    
+    .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt); text-transform: uppercase; letter-spacing: 1px; }}
+    .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; }}
+    .btn-outline-light {{ background: transparent; color: var(--txt) !important; border: 2px solid var(--txt); }}
+    .btn-outline-light:hover {{ background: var(--txt); color: var(--bg) !important; }}
+    
+    .modern-hero-visual {{ position: relative; width: 100%; height: 600px; display: flex; align-items: center; justify-content: center; }}
+    .visual-frame {{ width: 100%; height: 100%; border-radius: 32px; overflow: hidden; position: relative; z-index: 2; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card); }}
+    .floating-element {{ position: absolute; border-radius: 50%; filter: blur(60px); z-index: 1; opacity: 0.6; }}
+    .glow-1 {{ width: 300px; height: 300px; background: var(--p); top: -50px; right: -50px; }}
+    .glow-2 {{ width: 250px; height: 250px; background: var(--s); bottom: -50px; left: -50px; }}
+    
+    /* 2. FLOATING STATS RIBBON */
+    .stats-ribbon-container {{ margin-top: -60px; position: relative; z-index: 10; padding: 0 20px; }}
+    .stats-ribbon {{ background: var(--card); border-radius: 24px; padding: 3rem; display: flex; justify-content: space-around; align-items: center; box-shadow: var(--shadow); border: var(--border); backdrop-filter: blur(20px); }}
+    .stat-block {{ text-align: center; }}
+    .stat-block h3 {{ font-size: 3.5rem; color: var(--p); margin-bottom: 0.5rem; line-height: 1; }}
+    .stat-block p {{ font-size: 1.1rem; font-weight: 600; color: var(--txt); text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin: 0; }}
+    .stat-divider {{ width: 2px; height: 60px; background: rgba(128,128,128,0.2); }}
+
+    /* 3. BENTO-STYLE FEATURES GRID */
+    .section-subtitle {{ font-size: 1.2rem; color: var(--txt); opacity: 0.7; margin-top: -1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
+    .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }}
+    .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
+    .modern-feature-card:hover {{ transform: translateY(-10px); border-color: var(--p); }}
+    .feature-icon-wrapper {{ width: 64px; height: 64px; border-radius: 16px; background: rgba(128,128,128,0.05); display: flex; align-items: center; justify-content: center; color: var(--s); border: 1px solid rgba(128,128,128,0.1); }}
+    .feature-content h3 {{ font-size: 1.5rem; margin-bottom: 1rem; color: var(--txt); }}
+    
+    /* 4. PREMIUM ABOUT SECTION */
+    .modern-about {{ background: rgba(128,128,128,0.02); overflow: hidden; }}
+    .about-visual {{ position: relative; }}
+    .about-main-img {{ width: 100%; height: 600px; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow); }}
+    .about-experience-badge {{ position: absolute; bottom: -30px; right: -30px; background: var(--p); color: #fff; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 1rem; border: 4px solid var(--card); }}
+    .about-experience-badge strong {{ font-size: 3rem; line-height: 1; color: #fff; }}
+    .about-experience-badge span {{ font-size: 1rem; font-weight: 700; text-transform: uppercase; line-height: 1.2; }}
+    .about-lead {{ font-size: 1.25rem; line-height: 1.8; opacity: 0.9; color: var(--txt); border-left: 4px solid var(--s); padding-left: 1.5rem; }}
+    
+    @keyframes rotate {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
     
     /* MOBILE OPTIMIZATION */
     @media (max-width: 992px) {{
