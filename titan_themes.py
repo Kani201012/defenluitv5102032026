@@ -188,6 +188,25 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     details {{ background: var(--card); border: var(--border); border-radius: var(--radius); margin-bottom: 1.5rem; padding: 1.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition:0.3s; }}
     details:hover {{ box-shadow: var(--shadow); transform: translateX(5px); border-left: 4px solid var(--p); }}
     details summary {{ font-weight: 800; font-size: 1.2rem; outline: none; }}
+
+    /* SMART CART PHYSICS & OVERLAYS */
+    #cart-float {{ position: fixed; bottom: 100px; right: 30px; background: var(--p); color: #fff; padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); cursor: pointer; z-index: 998; display: flex; align-items: center; gap: 10px; font-weight: 800; transition: 0.3s; border: 2px solid rgba(255,255,255,0.1); }}
+    #cart-float:hover {{ transform: scale(1.05) translateY(-5px); }}
+    
+    #cart-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; }}
+    
+    #cart-modal {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); width: 90%; max-width: 500px; padding: 2.5rem; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); z-index: 1001; border: var(--border); color: var(--txt); }}
+    #cart-modal h3 {{ margin-bottom: 1.5rem; color: var(--p); font-size: 1.8rem; border-bottom: 1px solid rgba(128,128,128,0.1); padding-bottom: 1rem; }}
+    
+    .cart-item {{ display: flex; justify-content: space-between; border-bottom: 1px solid rgba(128,128,128,0.1); padding: 15px 0; font-size: 1.1rem; }}
+    
+    .local-vault {{ background: rgba(128,128,128,0.05); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border: 1px solid rgba(128,128,128,0.1); }}
+    .local-vault input {{ width: 100%; padding: 1rem; margin-top: 0.5rem; border-radius: 8px; border: var(--border); background: var(--bg); color: var(--txt); font-size: 1rem; }}
+    
+    /* POPUP PHYSICS */
+    #lead-popup {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 3.5rem; text-align: center; border-radius: var(--radius); z-index: 2000; box-shadow: 0 30px 60px rgba(0,0,0,0.5); width: 90%; max-width: 500px; border: var(--border); color: var(--txt); }}
+    .close-popup {{ position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 2rem; opacity: 0.5; transition: 0.3s; }}
+    .close-popup:hover {{ opacity: 1; color: var(--s); }}
     
     /* MOBILE OPTIMIZATION */
     @media (max-width: 992px) {{
