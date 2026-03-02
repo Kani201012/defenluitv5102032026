@@ -109,6 +109,22 @@ with st.sidebar:
             
         overlay_opacity = st.slider("Hero Image Darkness", 0.1, 0.9, 0.5, help="Increases text readability over busy background images.")
 
+    # 3.1.2 TYPOGRAPHY & COLOR MASTERY
+    with st.expander("👁️ Typography & Color Mastery", expanded=False):
+        st.markdown("**Global Text Colors**")
+        col_h = st.color_picker("Headings Color", "#0f172a")
+        col_b = st.color_picker("Body Text Color", "#475569")
+        
+        st.divider()
+        st.markdown("**Global Font Sizes (Rem)**")
+        size_h1 = st.slider("H1 Main Heading Size", 1.0, 8.0, 4.5)
+        size_p = st.slider("Body Text Size", 0.8, 2.0, 1.1)
+        
+        st.divider()
+        st.markdown("**CTA Section Adjustment**")
+        cta_bg_color = st.color_picker("Final CTA Background", "#10b981")
+        cta_txt_color = st.color_picker("Final CTA Text Color", "#ffffff")
+
     # 3.2 2050 FEATURE FLAGS
     with st.expander("🚀 2050 Feature Flags", expanded=True):
         st.write("Enable Next-Gen Capabilities:")
