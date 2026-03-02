@@ -155,13 +155,62 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align):
     .nav-links a:hover {{ color: var(--p); }}
     .mobile-menu {{ display: none; font-size: 1.8rem; cursor: pointer; background:none; border:none; color:var(--txt); }}
     
-    /* PREMIUM PRODUCT DETAIL PAGE */
+    /* PREMIUM ASYMMETRICAL PRODUCT VIEW */
     .detail-view {{ 
-        display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: start; 
-        background: var(--card); padding: 4rem; border-radius: var(--radius); 
-        box-shadow: var(--shadow); border: var(--border); {backdrop}
+        display: grid; 
+        grid-template-columns: 0.8fr 1.2fr; /* Asymmetrical split */
+        gap: 6rem; 
+        align-items: start; 
+        background: var(--card); 
+        padding: 5rem; 
+        border-radius: 32px; 
+        box-shadow: var(--shadow); 
+        border: var(--border); 
+        position: relative;
     }}
-    .product-price-tag {{ font-size: 3rem; color: var(--s); font-weight: 900; margin-bottom: 2rem; display: block; }}
+
+    /* STICKY IMAGE LOGIC */
+    .product-media-column {{ 
+        position: sticky; 
+        top: 150px; /* Locks image near top while text scrolls */
+    }}
+
+    .product-price-tag {{ 
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: rgba(5, 150, 105, 0.1);
+        color: #059669; 
+        font-size: 2rem; 
+        font-weight: 900; 
+        border-radius: 50px;
+        margin-bottom: 2rem; 
+    }}
+
+    .product-info-column h1 {{ 
+        font-size: clamp(2.5rem, 4vw, 4.5rem); 
+        margin-bottom: 1.5rem; 
+        line-height: 1;
+    }}
+
+    .product-specs-container {{
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: var(--txt);
+        opacity: 0.9;
+    }}
+
+    .product-specs-container strong {{
+        display: block;
+        margin-top: 2rem;
+        font-size: 1.3rem;
+        color: var(--p);
+    }}
+
+    /* RESPONSIVE FIX */
+    @media (max-width: 1100px) {{
+        .detail-view {{ grid-template-columns: 1fr; gap: 3rem; padding: 2rem; }}
+        .product-media-column {{ position: relative; top: 0; }}
+    }}
     .product-meta-box {{ background: rgba(128,128,128,0.05); padding: 2rem; border-radius: var(--radius); margin-bottom: 2.5rem; border-left: 5px solid var(--p); }}
     .gallery-thumbs {{ display: flex; gap: 15px; margin-top: 20px; overflow-x: auto; padding-bottom:10px; }}
     .thumb {{ width: 80px; height: 80px; border-radius: var(--radius); object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: 0.3s; }}
