@@ -1011,7 +1011,14 @@ def gen_blog_post_html():
     """
 
 def gen_inner_header(title):
-    return f'<div class="hero" style="min-height: 40vh; background:var(--p);"><div class="container hero-content"><h1>{title}</h1></div></div>'
+    # Added padding-top: 150px to ensure it clears the fixed navbar and top promo bar
+    return f"""
+    <div style="min-height: 40vh; background:var(--p); display:flex; align-items:center; justify-content:center; text-align:center; padding-top: 150px; padding-bottom: 50px;">
+        <div class="container">
+            <h1 style="color:#ffffff !important; margin:0; text-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: clamp(3rem, 6vw, 4.5rem);">{title}</h1>
+        </div>
+    </div>
+    """
 
 # --- 6. PAGE ASSEMBLY ---
 home_content = ""
