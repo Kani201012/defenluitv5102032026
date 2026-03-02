@@ -39,10 +39,12 @@ THEME_REGISTRY = {
 }
 
 def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color, h1_size, p_size, cta_bg, cta_txt):
-    # 1. Fetch base theme data
+    # 1. First, fetch the base colors from the registry
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # 2. Handle Logic Variables (Prevents NameError)
+    # 2. Define the logic for special effects (Gradient, Hover, Backdrop)
+    # This prevents the "NameError" because these are now defined before the CSS string starts
+    
     gradient_text = ""
     if any(x in theme_name for x in ["SaaS", "Dark", "Creative"]):
         gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
@@ -53,11 +55,11 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    h_align_logic = "text-align: center; justify-content: center;"
+    h_align = "text-align: center; justify-content: center;"
     if hero_align == "Left":
-        h_align_logic = "text-align: left; justify-content: flex-start; align-items: center;"
+        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
 
-    # 3. Compile Master CSS String
+    # 3. Now return the CSS f-string
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
@@ -65,7 +67,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         --radius: {t['radius']}; --shadow: {t['shadow']}; --border: {t['border']};
         --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
         
-        /* MANUAL OVERRIDES FROM SIDEBAR */
+        /* MANUAL OVERRIDES */
         --txt-h: {h_color};
         --txt-b: {b_color};
         --h1-size: {h1_size};
@@ -74,31 +76,29 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         --cta-txt: {cta_txt};
     }}
     
-    /* GLOBAL RESETS & MODERN TYPOGRAPHY */
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
     html {{ scroll-behavior: smooth; font-size: 16px; }}
+    
     body {{ 
-        background: var(--bg); color: var(--txt); 
-        font-family: var(--b-font); line-height: 1.6; 
-        overflow-x: hidden; transition: background 0.4s ease;
-        -webkit-font-smoothing: antialiased; /* Mac crispness */
-        -moz-osx-font-smoothing: grayscale;
+        background: var(--bg); 
+        color: var(--txt-b); 
+        font-family: var(--b-font); 
+        font-size: var(--p-size); 
+        line-height: 1.6; 
+        overflow-x: hidden;
     }}
     
-    body.dark-mode {{ --bg: #0f172a; --txt: #f8fafc; --card: #1e293b; --nav: rgba(15,23,42,0.95); --border: 1px solid #334155; }}
-    /* ADD THIS NEW LINK FIX: */
-    a {{ color: var(--s); text-decoration: none; transition: 0.3s; }}
-    a:hover {{ color: var(--p); }}
-    
-    p, span, li, div {{ color: inherit; }}
-    h1, h2, h3, h4 {{ font-family: var(--h-font); color: var(--txt); line-height: 1.1; margin-bottom: 1rem; font-weight: 800; letter-spacing:-0.03em; }}
-    strong {{ font-weight: 800; color: var(--p); }}
-    
-    /* MODERN RESPONSIVE FLUID TYPOGRAPHY */
-    h1 {{ font-size: clamp(3rem, 8vw, 5.5rem); {gradient_text} }}
-    h2 {{ font-size: clamp(2.5rem, 5vw, 4rem); }}
-    h3 {{ font-size: clamp(1.5rem, 3vw, 2rem); }}
-    p {{ margin-bottom: 1.2rem; font-size: 1.1rem; opacity: 0.9; }}
+    h1, h2, h3, h4 {{ 
+        font-family: var(--h-font); 
+        color: var(--txt-h); 
+        line-height: 1.1; 
+        font-weight: 800;
+    }}
+
+    h1 {{ font-size: var(--h1-size); {gradient_text} }}
+    h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
+    h3 {{ font-size: 1.5rem; }}
+    p {{ margin-bottom: 1.2rem; }}
     
     /* 2026 ADVANCED HERO ENGINE */
     .hero {{ position: relative; min-height: 95vh; overflow: hidden; display: flex; {h_align} padding-top: 120px; }}
