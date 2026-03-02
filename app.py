@@ -5,6 +5,7 @@ import json
 import datetime
 import re
 import requests
+import titan_themes # <--- ADD THIS LINE
 
 # --- 0. STATE MANAGEMENT ---
 def init_state(key, default_val):
@@ -85,26 +86,28 @@ with st.sidebar:
                             st.rerun()
                 except Exception as e: st.error(f"Error: {e}")
 
-    # 3.1 VISUAL DNA & UI VARIATIONS
+    # 3.1 VISUAL DNA & UI VARIATIONS (2026 ENGINE)
     with st.expander("🎨 Design Studio", expanded=True):
-        theme_mode = st.selectbox("Base Theme", ["Clean Corporate (Light)", "Midnight SaaS (Dark)", "Glassmorphism (Blur)", "Cyberpunk Neon", "Luxury Gold", "Forest Eco", "Ocean Breeze", "Stark Minimalist"])
+        st.markdown("**1-Click Global Themes**")
+        theme_names = list(titan_themes.THEME_REGISTRY.keys())
+        theme_mode = st.selectbox("Select 2026 Architecture Theme", theme_names)
         
-        c1, c2, c3 = st.columns(3)
-        p_color = c1.color_picker("Primary Brand", "#0F172A") 
-        s_color = c2.color_picker("Action (CTA)", "#EF4444")  
-        btn_txt_color = c3.color_picker("Btn Text", "#FFFFFF")
+        st.divider()
         
-        st.markdown("**Layout & Physics**")
-        hero_layout = st.selectbox("Hero Alignment", ["Center", "Left"])
-        btn_style = st.selectbox("Button Style", ["Rounded (Default)", "Sharp (Square)", "Pill (Full Round)"])
-        border_rad = "8px" if btn_style == "Rounded (Default)" else ("0px" if btn_style == "Sharp (Square)" else "50px")
-        
-        card_hover_style = st.selectbox("Card Hover Border", ["Soft Shadow (Modern)", "Primary Color Border", "Accent Color Border (Red)"])
-        overlay_opacity = st.slider("Hero Image Darkness", 0.1, 0.9, 0.5, help="Higher number makes text easier to read over images.")
-        
-        anim_type = st.selectbox("Animation Style", ["Fade Up", "Zoom In", "Slide Right", "None"])
-        h_font = st.selectbox("Headings Font", ["Montserrat", "Space Grotesk", "Playfair Display", "Oswald", "Clash Display"])
-        b_font = st.selectbox("Body Font", ["Inter", "Open Sans", "Roboto", "Satoshi", "Lora"])
+        st.markdown("**Layout & Typography**")
+        c1, c2 = st.columns(2)
+        with c1:
+            hero_layout = st.selectbox("Hero Alignment", ["Center", "Left"])
+        with c2:
+            anim_type = st.selectbox("Animation Style", ["Fade Up", "Zoom In", "Slide Right", "None"])
+            
+        c3, c4 = st.columns(2)
+        with c3:
+            h_font = st.selectbox("Headings Font", ["Space Grotesk", "Montserrat", "Playfair Display", "Outfit", "Clash Display"])
+        with c4:
+            b_font = st.selectbox("Body Font", ["Inter", "Plus Jakarta Sans", "Satoshi", "Roboto"])
+            
+        overlay_opacity = st.slider("Hero Image Darkness", 0.1, 0.9, 0.5, help="Increases text readability over busy background images.")
 
     # 3.2 2050 FEATURE FLAGS
     with st.expander("🚀 2050 Feature Flags", expanded=True):
