@@ -709,13 +709,17 @@ def gen_footer():
     if li_link: icons += f'<a href="{li_link}" target="_blank" style="display:inline-block; margin-right:15px;" aria-label="LinkedIn"><svg class="social-icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2a2 2 0 0 1 2-2z"></path></svg></a>'
     if yt_link: icons += f'<a href="{yt_link}" target="_blank" style="display:inline-block; margin-right:15px;" aria-label="YouTube"><svg class="social-icon" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>'
     
-    # FIXED: Forced high-contrast Service Area section
+    # High-contrast Service Area section
     service_area_html = f'''
     <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
         <span style="color: #ffffff !important; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 5px;">Service Area</span>
         <span style="color: rgba(255,255,255,0.85) !important; font-size: 0.95rem; line-height: 1.5; display: block;">{seo_area}</span>
     </div>
     ''' if seo_area else ""
+
+    # Conditional Footer Links
+    footer_blog = f'<a href="blog.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Blog</a>' if show_blog else ""
+    footer_book = f'<a href="booking.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Book Now</a>' if show_booking else ""
 
     return f"""
     <footer><div class="container"><div class="footer-grid">
@@ -725,8 +729,18 @@ def gen_footer():
         <div style="margin-top:1.5rem;">{icons}</div>
         {service_area_html}
     </div>
-    <div><h4 style="color:white; text-transform:uppercase;">Links</h4><a href="index.html" style="color:white!important; display:block; margin-bottom:0.5rem;" id="footer-home">Home</a><a href="blog.html" style="color:white!important; display:block; margin-bottom:0.5rem;" id="footer-blog">Blog</a><a href="booking.html" style="color:white!important; display:block; margin-bottom:0.5rem;" id="footer-book">Book Now</a></div>
-    <div><h4 style="color:white; text-transform:uppercase;">Legal</h4><a href="privacy.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Privacy</a><a href="terms.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Terms</a></div>
+    <div>
+        <h4 style="color:white; text-transform:uppercase;">Links</h4>
+        <a href="index.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Home</a>
+        <a href="about.html" style="color:white!important; display:block; margin-bottom:0.5rem;">About</a>
+        {footer_blog}
+        {footer_book}
+    </div>
+    <div>
+        <h4 style="color:white; text-transform:uppercase;">Legal</h4>
+        <a href="privacy.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Privacy</a>
+        <a href="terms.html" style="color:white!important; display:block; margin-bottom:0.5rem;">Terms</a>
+    </div>
     </div><div style="border-top:1px solid rgba(255,255,255,0.1); margin-top:3rem; padding-top:2rem; text-align:center; color:rgba(255,255,255,0.5);">&copy; {datetime.datetime.now().year} {biz_name}. Powered by Titan Engine.</div></div></footer>
     """
 
