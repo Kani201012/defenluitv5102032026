@@ -919,17 +919,61 @@ st.divider()
 st.subheader("🚀 2050 Launchpad")
 preview_mode = st.radio("Preview Page:", ["Home", "About", "Contact", "Blog Index", "Blog Post (Demo)", "Privacy", "Terms", "Product Detail (Demo)", "Booking Page"], horizontal=True)
 
-contact_content = f"""{gen_inner_header("Contact Us")}<section><div class="container"><div class="contact-grid"><div><div style="background:var(--card); padding:2rem; border-radius:12px; border:1px solid #eee;"><h3>Get In Touch</h3><p>{biz_addr}</p><p><a href="tel:{biz_phone}">{biz_phone}</a></p><p>{biz_email}</p><br><a href="https://wa.me/{wa_num}" target="_blank" class="btn btn-accent" style="width:100%;">WhatsApp Us</a></div></div><div class="card"><h3>Send Message</h3><form action="https://formsubmit.co/{biz_email}" method="POST"><label>Name</label><input type="text" name="name" required><label>Email</label><input type="email" name="email" required><label>Message</label><textarea name="msg" rows="4" required></textarea><button class="btn btn-primary" type="submit">Send</button></form></div></div><br><div style="border-radius:12px;overflow:hidden;">{map_iframe}</div></div></section>"""
+# THE UPGRADED 2026 CONTACT CONTENT
+contact_content = f"""
+{gen_inner_header("Contact Us")}
+<section style="background:var(--bg);">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="card" style="padding: 3rem; background:var(--card); border:var(--border); border-radius:var(--radius); box-shadow:var(--shadow);">
+                <h3 style="margin-bottom:1.5rem; color:var(--p); font-size:2rem;">Get In Touch</h3>
+                <div style="margin-bottom:1.5rem;">
+                    <strong style="color:var(--txt); font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Headquarters</strong>
+                    <p style="font-size:1.1rem; color:var(--txt); opacity:0.9; margin-top:0.5rem;">{biz_addr}</p>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <strong style="color:var(--txt); font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Direct Line</strong>
+                    <p style="font-size:1.1rem; margin-top:0.5rem;"><a href="tel:{biz_phone}" style="color:var(--s); text-decoration:none; font-weight:bold;">{biz_phone}</a></p>
+                </div>
+                <div style="margin-bottom:2.5rem;">
+                    <strong style="color:var(--txt); font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Email</strong>
+                    <p style="font-size:1.1rem; margin-top:0.5rem;"><a href="mailto:{biz_email}" style="color:var(--txt); text-decoration:none; opacity:0.9;">{biz_email}</a></p>
+                </div>
+                <a href="https://wa.me/{wa_num}" target="_blank" class="btn btn-accent" style="width:100%;">WhatsApp Us Instantly</a>
+            </div>
+            
+            <div class="card" style="padding: 3rem; background:var(--card); border:var(--border); border-radius:var(--radius); box-shadow:var(--shadow);">
+                <h3 style="margin-bottom:1.5rem; font-size:2rem; color:var(--txt);">Send a Message</h3>
+                <form action="https://formsubmit.co/{biz_email}" method="POST" style="display:flex; flex-direction:column; gap:1.5rem;">
+                    <div>
+                        <label style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; color:var(--txt); margin-bottom:0.5rem; display:block;">Full Name</label>
+                        <input type="text" name="name" required style="width:100%; padding:1.2rem; border:1px solid rgba(128,128,128,0.2); border-radius:8px; background:var(--bg); color:var(--txt); font-size:1rem; font-family:inherit; outline:none;">
+                    </div>
+                    <div>
+                        <label style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; color:var(--txt); margin-bottom:0.5rem; display:block;">Email Address</label>
+                        <input type="email" name="email" required style="width:100%; padding:1.2rem; border:1px solid rgba(128,128,128,0.2); border-radius:8px; background:var(--bg); color:var(--txt); font-size:1rem; font-family:inherit; outline:none;">
+                    </div>
+                    <div>
+                        <label style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; color:var(--txt); margin-bottom:0.5rem; display:block;">Your Message</label>
+                        <textarea name="msg" rows="5" required style="width:100%; padding:1.2rem; border:1px solid rgba(128,128,128,0.2); border-radius:8px; background:var(--bg); color:var(--txt); font-size:1rem; font-family:inherit; outline:none; resize:vertical;"></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit" style="height:4rem; font-size:1.1rem; margin-top:1rem; border:none; cursor:pointer;">Send Secure Message</button>
+                </form>
+            </div>
+        </div>
+        <div style="border-radius:var(--radius); overflow:hidden; border:var(--border); margin-top:4rem; box-shadow:var(--shadow);">
+            {map_iframe}
+        </div>
+    </div>
+</section>
+"""
 
 c1, c2 = st.columns([3, 1])
 with c1:
     if preview_mode == "Home": st.components.v1.html(build_page("Home", home_content), height=600, scrolling=True)
-    # ADDED <section> tag here:
     elif preview_mode == "About": st.components.v1.html(build_page("About", f"{gen_inner_header('About')}<section><div class='container'>{format_text(about_long)}</div></section>"), height=600, scrolling=True)
     elif preview_mode == "Contact": st.components.v1.html(build_page("Contact", contact_content), height=600, scrolling=True)
-    # ADDED <section> tag here:
     elif preview_mode == "Privacy": st.components.v1.html(build_page("Privacy", f"{gen_inner_header('Privacy')}<section><div class='container'>{format_text(priv_txt)}</div></section>"), height=600, scrolling=True)
-    # ADDED <section> tag here:
     elif preview_mode == "Terms": st.components.v1.html(build_page("Terms", f"{gen_inner_header('Terms')}<section><div class='container'>{format_text(term_txt)}</div></section>"), height=600, scrolling=True)
     elif preview_mode == "Blog Index": st.components.v1.html(build_page("Blog", gen_blog_index_html()), height=600, scrolling=True)
     elif preview_mode == "Blog Post (Demo)": st.components.v1.html(build_page("Article", gen_blog_post_html()), height=600, scrolling=True)
@@ -963,7 +1007,6 @@ with c2:
         zf.writestr("service-worker.js", gen_sw())
         zf.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}/sitemap.xml")
         zf.writestr("sitemap.xml", f"""<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{prod_url}/</loc></url></urlset>""")
-
     # IPFS OR ZIP DOWNLOAD
     if pinata_jwt:
         if st.button("🌌 PUSH TO Web3 (IPFS)", type="primary"):
