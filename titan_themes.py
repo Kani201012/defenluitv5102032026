@@ -111,7 +111,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     
     /* BENTO-STYLE GRID LAYOUTS */
     .container {{ max-width: 1300px; margin: 0 auto; padding: 0 2rem; }}
-    main section {{ padding: clamp(6rem, 8vw, 8rem) 0; position: relative; }}
+    main section {{ padding: clamp(2rem, 8vw, 8rem) 0; position: relative; }}
     .section-head {{ text-align: center; margin-bottom: clamp(3rem, 5vw, 5rem); }}
     .grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }}
     .about-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }}
