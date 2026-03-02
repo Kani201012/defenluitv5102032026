@@ -38,54 +38,58 @@ THEME_REGISTRY = {
     "25. Midnight Ocean": {"bg": "#0f2027", "txt": "#d1d5db", "card": "#203a43", "p": "#2c5364", "s": "#38ef7d", "nav": "rgba(15,32,39,0.9)", "shadow": "0 15px 25px rgba(0,0,0,0.3)", "radius": "16px", "border": "1px solid #2c5364"}
 }
 
-def generate_modern_css(theme_name, h_font, b_font, hero_align):
+def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color, h1_size, p_size, cta_bg, cta_txt):
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # Modern Text Gradients for Headings (Only for specific themes to look ultra-modern)
-    gradient_text = ""
-    if "SaaS" in theme_name or "Dark" in theme_name or "Creative" in theme_name:
-        gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
-
-    # Layout mapping
+    # Text align mapping
     h_align = "text-align: center; justify-content: center;"
     if hero_align == "Left":
         h_align = "text-align: left; justify-content: flex-start; align-items: center;"
 
-    # Brutalist exceptions for buttons
-    btn_hover = "transform: translateY(-3px) scale(1.02); filter: brightness(1.15); box-shadow: 0 10px 25px -5px var(--p);"
-    if "Brutalist" in theme_name or "Cyberpunk" in theme_name or "Monochromatic" in theme_name:
-        btn_hover = "transform: translate(-4px, -4px); box-shadow: 8px 8px 0px #000;"
-
-    # Glassmorphism exceptions
-    backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if "Glass" in theme_name or "Mesh" in theme_name else ""
-
     return f"""
     :root {{
-        --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; --txt: {t['txt']}; 
-        --card: {t['card']}; --nav: {t['nav']};
+        --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
+        --nav: {t['nav']}; --card: {t['card']};
         --radius: {t['radius']}; --shadow: {t['shadow']}; --border: {t['border']};
         --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
+        
+        /* MANUAL OVERRIDES */
+        --txt-h: {h_color};
+        --txt-b: {b_color};
+        --h1-size: {h1_size};
+        --p-size: {p_size};
+        --cta-bg: {cta_bg};
+        --cta-txt: {cta_txt};
     }}
     
-    /* GLOBAL RESETS & MODERN TYPOGRAPHY */
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    html {{ scroll-behavior: smooth; font-size: 16px; }}
     body {{ 
-        background: var(--bg); color: var(--txt); 
-        font-family: var(--b-font); line-height: 1.6; 
-        overflow-x: hidden; transition: background 0.4s ease;
-        -webkit-font-smoothing: antialiased; /* Mac crispness */
-        -moz-osx-font-smoothing: grayscale;
+        background: var(--bg); 
+        color: var(--txt-b); /* Applies your manual body color */
+        font-family: var(--b-font); 
+        font-size: var(--p-size); /* Applies your manual body size */
+        line-height: 1.6; 
     }}
     
-    body.dark-mode {{ --bg: #0f172a; --txt: #f8fafc; --card: #1e293b; --nav: rgba(15,23,42,0.95); --border: 1px solid #334155; }}
-    /* ADD THIS NEW LINK FIX: */
-    a {{ color: var(--s); text-decoration: none; transition: 0.3s; }}
-    a:hover {{ color: var(--p); }}
+    h1, h2, h3, h4 {{ 
+        font-family: var(--h-font); 
+        color: var(--txt-h); /* Applies your manual heading color */
+        line-height: 1.1; 
+    }}
+
+    h1 {{ font-size: var(--h1-size); }} /* Applies your manual H1 size */
+    p {{ font-size: var(--p-size); opacity: 0.9; }}
+
+    /* THE FIX FOR THE SCREENSHOT SECTION (Final CTA) */
+    section[style*="background:var(--s)"], 
+    section[style*="background: var(--s)"] {{
+        background: var(--cta-bg) !important;
+        color: var(--cta-txt) !important;
+    }}
     
-    p, span, li, div {{ color: inherit; }}
-    h1, h2, h3, h4 {{ font-family: var(--h-font); color: var(--txt); line-height: 1.1; margin-bottom: 1rem; font-weight: 800; letter-spacing:-0.03em; }}
-    strong {{ font-weight: 800; color: var(--p); }}
+    section[style*="background:var(--s)"] h2,
+    section[style*="background:var(--s)"] p {{
+        color: var(--cta-txt) !important;
+    }}
     
     /* MODERN RESPONSIVE FLUID TYPOGRAPHY */
     h1 {{ font-size: clamp(3rem, 8vw, 5.5rem); {gradient_text} }}
