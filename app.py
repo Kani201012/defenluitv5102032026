@@ -923,7 +923,7 @@ def gen_product_page_content(is_demo=False):
                         mainMedia = `<model-viewer src="${{clean[5]}}" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" auto-rotate style="width:100%; height:500px; border-radius:24px;"></model-viewer>`;
                     }}
 
-                    let btnAction = `<button onclick="addToCart('${clean[0]}', '${clean[1]}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:4rem; box-shadow: 0 20px 40px -10px var(--s);">ADD TO CART</button>`;
+                    let btnAction = `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:4rem; box-shadow: 0 20px 40px -10px var(--s);">ADD TO CART</button>`;
                     
                     const u = encodeURIComponent(window.location.href); 
                     const t = encodeURIComponent(clean[0]);
