@@ -418,6 +418,40 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         100% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }} 
     }}
 
+/* --- SHARE BUTTON & ICON CONSTRAINTS --- */
+    .share-row {{ 
+        display: flex; 
+        gap: 12px; 
+        flex-wrap: wrap; 
+        align-items: center;
+        margin-top: 1.5rem;
+    }}
+
+    .share-btn {{ 
+        width: 45px !important; 
+        height: 45px !important; 
+        display: flex !important; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 12px; 
+        transition: 0.3s;
+        text-decoration: none;
+    }}
+
+    /* This targets the SVGs specifically to stop them from becoming giant */
+    .share-btn svg, .share-row svg {{ 
+        width: 22px !important; 
+        height: 22px !important; 
+        fill: white; 
+    }}
+
+    .bg-wa {{ background: #25D366; }}
+    .bg-fb {{ background: #1877F2; }}
+    .bg-x {{ background: #000000; }}
+    .bg-li {{ background: #0A66C2; }}
+    .bg-link {{ background: #64748b; }}
+    
+
     /* --- PRODUCT DETAIL SIZE OVERRIDES --- */
     
     /* 1. The Title (The Consultant Pro) */
