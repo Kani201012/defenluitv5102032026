@@ -490,31 +490,40 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     }}
     
     @media (max-width: 480px) {{
-        /* Shrink H1 so it doesn't wrap awkwardly */
-        h1, .modern-hero-text h1 {{ 
-            font-size: clamp(1.8rem, 8vw, 2.2rem) !important; 
-            line-height: 1.1 !important;
-            margin-bottom: 1rem !important;
+        /* Shrink the overall detail container to fit the phone screen */
+        .detail-view {{ 
+            padding: 1.5rem !important; 
+            margin: 10px !important;
+            gap: 1.5rem !important;
+            border-radius: 20px !important;
         }}
-        
-        /* Shrink the About section header */
-        h2, .modern-about h2 {{ 
-            font-size: 1.5rem !important; 
+
+        /* Fix the "Add to Cart" button overlap */
+        .product-info-column {{
+            padding-bottom: 80px !important; /* Creates space for the floating buttons */
+        }}
+
+        .product-price-tag {{
+            font-size: 1.5rem !important;
             margin-bottom: 1rem !important;
         }}
 
-        /* Clean up the lead text formatting */
-        .about-lead {{ 
-            font-size: 1rem !important; 
-            padding-left: 1rem !important; 
-            line-height: 1.5 !important;
+        /* Scale down the main product image so it doesn't tower over the text */
+        #main-img, model-viewer {{
+            height: 300px !important;
         }}
 
-        /* Fix the "Read Our Story" button width */
-        .btn {{ 
-            width: 100% !important; 
-            padding: 1rem !important; 
-            font-size: 0.85rem !important;
+        /* FINAL FIX: Ensure the Add to Cart button is always reachable */
+        .btn-accent {{
+            width: 100% !important;
+            min-width: unset !important;
+            padding: 1rem !important;
+            font-size: 0.9rem !important;
         }}
+
+        /* Reposition Floating Icons to the VERY edge */
+        #wa-widget {{ bottom: 10px !important; right: 10px !important; scale: 0.8; }}
+        #theme-toggle {{ bottom: 10px !important; left: 10px !important; scale: 0.8; }}
+        #voice-btn {{ bottom: 70px !important; right: 10px !important; scale: 0.8; }}
     }}
     """
