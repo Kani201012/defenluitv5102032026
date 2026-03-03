@@ -1033,14 +1033,21 @@ if show_pricing: home_content += gen_pricing_table()
 if show_inventory: home_content += gen_inventory()
 if show_gallery: home_content += gen_about_section()
 if show_testimonials: 
-    # Upgraded Testimonial UI with Quote Icon and Avatar
+    # Bulletproof Inline Styled Testimonials
     t_cards = "".join([
-        f'''<div class="card reveal testimonial-card">
-                <div class="quote-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="var(--p)" opacity="0.2"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg></div>
-                <p class="testimonial-text">"{x.split("|")[1].strip()}"</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">{x.split("|")[0].strip()[0]}</div>
-                    <b>{x.split("|")[0].strip()}</b>
+        f'''<div class="card reveal" style="padding: 2.5rem; display: flex; flex-direction: column; height: 100%; text-align: left;">
+                <div style="margin-bottom: 1.5rem;">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--p)" style="opacity: 0.4;"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                </div>
+                <p style="font-size: 1.1rem; font-style: italic; line-height: 1.7; opacity: 0.9; flex-grow: 1; margin-bottom: 2rem;">"{x.split("|")[1].strip()}"</p>
+                <div style="display: flex; align-items: center; gap: 15px; border-top: 1px solid rgba(128,128,128,0.1); padding-top: 1.5rem;">
+                    <div style="width: 45px; height: 45px; min-width: 45px; border-radius: 50%; background: var(--p); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; text-transform: uppercase;">
+                        {x.split("|")[0].strip()[0]}
+                    </div>
+                    <div>
+                        <b style="color: var(--txt-h); font-size: 1.1rem; display: block;">{x.split("|")[0].strip()}</b>
+                        <span style="display: block; font-size: 0.8rem; opacity: 0.6; margin-top: 2px;">Verified Client</span>
+                    </div>
                 </div>
             </div>''' 
         for x in testi_data.split('\n') if "|" in x
