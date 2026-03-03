@@ -862,7 +862,23 @@ def gen_blog_index_html():
             for(let i=1; i<lines.length; i++) {{ 
                 const r = parseCSVLine(lines[i]); 
                 if(r.length > 4) {{ 
-                    box.innerHTML += `<article class="card reveal" style="display:flex; flex-direction:column; justify-content:space-between;"><div><img src="${{r[5]}}" class="prod-img" loading="lazy" alt="${{r[1]}}"><span class="blog-badge" style="margin-top:1rem;">${{r[3]}}</span><h3 style="margin-top:0.5rem;"><a href="post.html?id=${{r[0]}}">${{r[1]}}</a></h3><p>${{r[4]}}</p></div><a href="post.html?id=${{r[0]}}" class="btn btn-primary" style="margin-top:1rem; width:100%;">Read More</a></article>`; 
+                    box.innerHTML += `
+                    <article class="card reveal" style="display:flex; flex-direction:column; height:100%; padding:0; overflow:hidden;">
+                        <div style="width:100%; height:220px; overflow:hidden;">
+                            <img src="${{r[5]}}" style="width:100%; height:100%; object-fit:cover; transition:transform 0.5s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" loading="lazy" alt="${{r[1]}}">
+                        </div>
+                        <div style="padding: 2.5rem; display:flex; flex-direction:column; flex-grow:1; background:var(--card);">
+                            <span style="display:inline-block; padding:0.4rem 1rem; background:rgba(128,128,128,0.08); color:var(--p); border-radius:50px; font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; width:fit-content; border:1px solid rgba(128,128,128,0.15); margin-bottom:1rem;">${{r[3]}}</span>
+                            
+                            <h3 style="margin-bottom:1rem; line-height:1.3; font-size:1.4rem;">
+                                <a href="post.html?id=${{r[0]}}" style="color:var(--txt-h); text-decoration:none; transition:0.3s;" onmouseover="this.style.color='var(--p)'" onmouseout="this.style.color='var(--txt-h)'">${{r[1]}}</a>
+                            </h3>
+                            
+                            <p style="flex-grow:1; margin-bottom: 2rem; opacity:0.8; line-height:1.6; font-size:0.95rem;">${{r[4]}}</p>
+                            
+                            <a href="post.html?id=${{r[0]}}" class="btn btn-primary" style="width:100%; margin-top:auto;">Read Article</a>
+                        </div>
+                    </article>`; 
                 }} 
             }} 
         }} catch(e) {{ console.log(e); }} 
