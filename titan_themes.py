@@ -146,6 +146,17 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         max-width: 100%;
     }}
 
+    /* Rest of your existing CSS classes below... */
+    .container {{ max-width: 1300px; margin: 0 auto; padding: 0 2rem; }}
+    .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; }}
+    .visual-frame {{ width: 100%; height: 100%; border-radius: 32px; overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card); }}
+    .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt-h); text-transform: uppercase; letter-spacing: 1px; }}
+    .btn {{ display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 2.5rem; border-radius: var(--radius); font-weight: 800; text-decoration: none; transition: all 0.3s ease; text-transform: uppercase; cursor: pointer; border: none; font-size: 0.95rem; letter-spacing: 1.5px; }}
+    .btn-primary {{ background: var(--p); color: #fff !important; }}
+    .btn-accent {{ background: var(--s); color: #fff !important; }}
+    .btn:hover {{ {btn_hover} }}
+
+
     
     /* 2026 ADVANCED HERO ENGINE */
     .hero {{ position: relative; min-height: 95vh; overflow: hidden; display: flex; {h_align} padding-top: 120px; }}
