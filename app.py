@@ -923,10 +923,7 @@ def gen_product_page_content(is_demo=False):
                         mainMedia = `<model-viewer src="${{clean[5]}}" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" auto-rotate style="width:100%; height:500px; border-radius:24px;"></model-viewer>`;
                     }}
 
-                    let stripe = (clean.length > 4 && clean[4].includes('http') && !clean[4].match(/\\.(jpg|jpeg|png|gif|webp)$/i)) ? clean[4] : '';
-                    let btnAction = stripe ? 
-                        `<a href="${{stripe}}" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; text-decoration:none; display: inline-flex; align-items:center; justify-content:center; height:4rem; box-shadow: 0 20px 40px -10px var(--s);">SECURE THIS ARCHITECTURE</a>` : 
-                        `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:4rem;">ADD TO CART</button>`;
+                    let btnAction = `<button onclick="addToCart('${clean[0]}', '${clean[1]}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:4rem; box-shadow: 0 20px 40px -10px var(--s);">ADD TO CART</button>`;
                     
                     const u = encodeURIComponent(window.location.href); 
                     const t = encodeURIComponent(clean[0]);
