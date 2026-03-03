@@ -1033,8 +1033,19 @@ if show_pricing: home_content += gen_pricing_table()
 if show_inventory: home_content += gen_inventory()
 if show_gallery: home_content += gen_about_section()
 if show_testimonials: 
-    t_cards = "".join([f'<div class="card reveal" style="text-align:center;"><i>"{x.split("|")[1]}"</i><br><b>- {x.split("|")[0]}</b></div>' for x in testi_data.split('\n') if "|" in x])
-    home_content += f'<section style="background:#f8fafc"><div class="container"><div class="section-head reveal"><h2>Client Stories</h2></div><div class="grid-3">{t_cards}</div></div></section>'
+    # Upgraded Testimonial UI with Quote Icon and Avatar
+    t_cards = "".join([
+        f'''<div class="card reveal testimonial-card">
+                <div class="quote-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="var(--p)" opacity="0.2"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg></div>
+                <p class="testimonial-text">"{x.split("|")[1].strip()}"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">{x.split("|")[0].strip()[0]}</div>
+                    <b>{x.split("|")[0].strip()}</b>
+                </div>
+            </div>''' 
+        for x in testi_data.split('\n') if "|" in x
+    ])
+    home_content += f'<section id="testimonials" style="background:rgba(128,128,128,0.02)"><div class="container"><div class="section-head reveal"><h2>Client Stories</h2></div><div class="grid-3">{t_cards}</div></div></section>'
 if show_faq: home_content += gen_faq_section()
 if show_cta: home_content += f'<section style="background:var(--s); color:white; text-align:center;"><div class="container reveal"><h2>Start Owning Your Future</h2><p style="margin-bottom:2rem;">Stop paying rent.</p><a href="contact.html" class="btn" style="background:white; color:var(--s) !important;">Get Started</a></div></section>'
 
