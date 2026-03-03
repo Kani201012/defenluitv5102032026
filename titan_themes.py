@@ -377,7 +377,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     /* TOP PROMO BAR PHYSICS */
     #top-bar {{ position: fixed; top: 0; left: 0; width: 100%; background: var(--s); color: #fff; text-align: center; padding: 12px; z-index: 2005; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; transition: transform 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }}
-    #top-bar a {{ color: #fff !important; text-decoration: underline; text-underline-offset: 4px; margin-left: 10px; transition: 0.3s; }}
+    #top-bar a {{ color: #fff !important; text-decoration: none; text-underline-offset: 4px; margin-left: 10px; transition: 0.3s; }}
     #top-bar a:hover {{ opacity: 0.8; }}
 
     /* DARK MODE TOGGLE PHYSICS */
