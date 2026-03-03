@@ -39,24 +39,10 @@ THEME_REGISTRY = {
 }
 
 def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color, h1_size, p_size, cta_bg, cta_txt):
+    # 1. Fetch the base colors from the registry
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # Hero Alignment Logic
-    if hero_align == "Center":
-        h_grid_cols = "1fr"
-        h_text_align = "center"
-        h_flex_align = "center"
-        h_btn_justify = "center"
-        h_visual_margin = "0 auto"
-        h_align = "text-align: center; justify-content: center;"
-    else:
-        h_grid_cols = "1.1fr 1fr"
-        h_text_align = "left"
-        h_flex_align = "flex-start"
-        h_btn_justify = "flex-start"
-        h_visual_margin = "0"
-        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
-
+    # 2. Define special effects (Gradient, Hover, Backdrop)
     gradient_text = ""
     if any(x in theme_name for x in ["SaaS", "Dark", "Creative"]):
         gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
@@ -67,28 +53,53 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
+    h_align = "text-align: center; justify-content: center;"
+    if hero_align == "Left":
+        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
+
+    # 3. Return exact CSS with added Mobile Fixes (.contact-grid, iframes, z-indexes, @media queries)
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
         --nav: {t['nav']}; --card: {t['card']};
         --radius: {t['radius']}; --shadow: {t['shadow']}; --border: {t['border']};
         --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
-        --txt-h: {h_color}; --txt-b: {b_color};
-        --h1-size: {h1_size}; --p-size: {p_size};
-        --cta-bg: {cta_bg}; --cta-txt: {cta_txt};
-        --h-grid-cols: {h_grid_cols}; --h-text-align: {h_text_align};
-        --h-flex-align: {h_flex_align}; --h-btn-justify: {h_btn_justify};
-        --h-visual-margin: {h_visual_margin};
+        
+        /* MANUAL OVERRIDES */
+        --txt-h: {h_color};
+        --txt-b: {b_color};
+        --h1-size: {h1_size};
+        --p-size: {p_size};
+        --cta-bg: {cta_bg};
+        --cta-txt: {cta_txt};
     }}
     
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
     html {{ scroll-behavior: smooth; font-size: 16px; }}
-    body {{ background: var(--bg); color: var(--txt-b); font-family: var(--b-font); font-size: var(--p-size); line-height: 1.6; overflow-x: hidden; width: 100vw; max-width: 100%; }}
+    
+    body {{ 
+        background: var(--bg); 
+        color: var(--txt-b); 
+        font-family: var(--b-font); 
+        font-size: var(--p-size); 
+        line-height: 1.6; 
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        width: 100vw; max-width: 100%;
+    }}
+    
+    /* FIX: Stop iframes from breaking layout on mobile */
     iframe, model-viewer {{ max-width: 100%; }}
     
-    h1, h2, h3, h4 {{ font-family: var(--h-font); color: var(--txt-h); line-height: 1.1; font-weight: 800; }}
+    h1, h2, h3, h4 {{ 
+        font-family: var(--h-font); 
+        color: var(--txt-h); 
+        line-height: 1.1; 
+        font-weight: 800;
+    }}
+
     h1 {{ font-size: var(--h1-size); {gradient_text} }}
     h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
+    h3 {{ font-size: 1.5rem; }}
     p {{ margin-bottom: 1.2rem; }}
 
     
