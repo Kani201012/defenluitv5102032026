@@ -42,21 +42,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     # 1. Fetch the base colors from the registry
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # 2. Define Hero Alignment Logic (FIXED for Grid Support)
-    if hero_align == "Center":
-        h_grid_cols = "1fr"
-        h_text_align = "center"
-        h_flex_align = "center"
-        h_btn_justify = "center"
-        h_visual_margin = "0 auto"
-    else:
-        h_grid_cols = "1.1fr 1fr"
-        h_text_align = "left"
-        h_flex_align = "flex-start"
-        h_btn_justify = "flex-start"
-        h_visual_margin = "0"
-
-    # 3. Define special effects
+    # 2. Define special effects (Gradient, Hover, Backdrop)
     gradient_text = ""
     if any(x in theme_name for x in ["SaaS", "Dark", "Creative"]):
         gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
@@ -67,7 +53,11 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    # 4. Return exact CSS with added Hero Alignment variables
+    h_align = "text-align: center; justify-content: center;"
+    if hero_align == "Left":
+        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
+
+    # 3. Return exact CSS with added Mobile Fixes (.contact-grid, iframes, z-indexes, @media queries)
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
@@ -82,13 +72,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         --p-size: {p_size};
         --cta-bg: {cta_bg};
         --cta-txt: {cta_txt};
-
-        /* ALIGNMENT DYNAMICS */
-        --h-grid-cols: {h_grid_cols};
-        --h-text-align: {h_text_align};
-        --h-flex-align: {h_flex_align};
-        --h-btn-justify: {h_btn_justify};
-        --h-visual-margin: {h_visual_margin};
     }}
     
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -100,10 +83,11 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         font-family: var(--b-font); 
         font-size: var(--p-size); 
         line-height: 1.6; 
-        overflow-x: hidden; 
+        overflow-x: hidden; /* Prevent horizontal scroll */
         width: 100vw; max-width: 100%;
     }}
     
+    /* FIX: Stop iframes from breaking layout on mobile */
     iframe, model-viewer {{ max-width: 100%; }}
     
     h1, h2, h3, h4 {{ 
@@ -117,45 +101,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
     h3 {{ font-size: 1.5rem; }}
     p {{ margin-bottom: 1.2rem; }}
-
-    /* MODERN HERO GRID FIX */
-    .modern-hero-grid {{
-        display: grid;
-        grid-template-columns: var(--h-grid-cols);
-        gap: 4rem;
-        align-items: center;
-        width: 100%;
-    }}
-
-    .modern-hero-text {{
-        text-align: var(--h-text-align);
-        display: flex;
-        flex-direction: column;
-        align-items: var(--h-flex-align);
-    }}
-
-    .hero-btn-group {{
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: var(--h-btn-justify);
-    }}
-
-    .modern-hero-visual {{
-        margin: var(--h-visual-margin);
-        max-width: 100%;
-    }}
-
-    /* Rest of your existing CSS classes below... */
-    .container {{ max-width: 1300px; margin: 0 auto; padding: 0 2rem; }}
-    .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; }}
-    .visual-frame {{ width: 100%; height: 100%; border-radius: 32px; overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card); }}
-    .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt-h); text-transform: uppercase; letter-spacing: 1px; }}
-    .btn {{ display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 2.5rem; border-radius: var(--radius); font-weight: 800; text-decoration: none; transition: all 0.3s ease; text-transform: uppercase; cursor: pointer; border: none; font-size: 0.95rem; letter-spacing: 1.5px; }}
-    .btn-primary {{ background: var(--p); color: #fff !important; }}
-    .btn-accent {{ background: var(--s); color: #fff !important; }}
-    .btn:hover {{ {btn_hover} }}
-
 
     
     /* 2026 ADVANCED HERO ENGINE */
