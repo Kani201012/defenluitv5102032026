@@ -42,21 +42,25 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     # 1. Fetch the base colors from the registry
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # 2. Define Hero Alignment Logic (FIXED for Grid Support)
+    # 2. Define Hero Alignment Logic (FIXED for both Grid and Legacy Flex)
     if hero_align == "Center":
         h_grid_cols = "1fr"
         h_text_align = "center"
         h_flex_align = "center"
         h_btn_justify = "center"
         h_visual_margin = "0 auto"
+        # This fixes the NameError for your legacy .hero class
+        h_align = "text-align: center; justify-content: center;"
     else:
         h_grid_cols = "1.1fr 1fr"
         h_text_align = "left"
         h_flex_align = "flex-start"
         h_btn_justify = "flex-start"
         h_visual_margin = "0"
+        # This fixes the NameError for your legacy .hero class
+        h_align = "text-align: left; justify-content: flex-start; align-items: center;"
 
-    # 3. Define special effects
+    # 3. Define special effects (Gradient, Hover, Backdrop)
     gradient_text = ""
     if any(x in theme_name for x in ["SaaS", "Dark", "Creative"]):
         gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
@@ -67,7 +71,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    # 4. Return exact CSS with added Hero Alignment variables
+    # 4. Return complete CSS
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
@@ -75,7 +79,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         --radius: {t['radius']}; --shadow: {t['shadow']}; --border: {t['border']};
         --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
         
-        /* MANUAL OVERRIDES */
         --txt-h: {h_color};
         --txt-b: {b_color};
         --h1-size: {h1_size};
@@ -95,30 +98,21 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     html {{ scroll-behavior: smooth; font-size: 16px; }}
     
     body {{ 
-        background: var(--bg); 
-        color: var(--txt-b); 
-        font-family: var(--b-font); 
-        font-size: var(--p-size); 
-        line-height: 1.6; 
-        overflow-x: hidden; 
-        width: 100vw; max-width: 100%;
+        background: var(--bg); color: var(--txt-b); 
+        font-family: var(--b-font); font-size: var(--p-size); 
+        line-height: 1.6; overflow-x: hidden; width: 100vw; max-width: 100%;
     }}
     
     iframe, model-viewer {{ max-width: 100%; }}
     
-    h1, h2, h3, h4 {{ 
-        font-family: var(--h-font); 
-        color: var(--txt-h); 
-        line-height: 1.1; 
-        font-weight: 800;
-    }}
+    h1, h2, h3, h4 {{ font-family: var(--h-font); color: var(--txt-h); line-height: 1.1; font-weight: 800; }}
 
     h1 {{ font-size: var(--h1-size); {gradient_text} }}
     h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
     h3 {{ font-size: 1.5rem; }}
     p {{ margin-bottom: 1.2rem; }}
 
-    /* MODERN HERO GRID FIX */
+    /* MODERN HERO GRID SYSTEM */
     .modern-hero-grid {{
         display: grid;
         grid-template-columns: var(--h-grid-cols);
@@ -144,7 +138,39 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .modern-hero-visual {{
         margin: var(--h-visual-margin);
         max-width: 100%;
+        display: flex;
+        justify-content: center;
     }}
+
+    /* LEGACY HERO CLASS (Needed for compatibility) */
+    .hero {{ position: relative; min-height: 95vh; overflow: hidden; display: flex; {h_align} padding-top: 120px; }}
+    
+    .container {{ max-width: 1300px; margin: 0 auto; padding: 0 2rem; }}
+    .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; }}
+    .visual-frame {{ width: 100%; height: 100%; border-radius: 32px; overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 8px solid var(--card); }}
+    .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt-h); text-transform: uppercase; letter-spacing: 1px; }}
+    
+    .card {{ background: var(--card); border-radius: var(--radius); border: var(--border); box-shadow: var(--shadow); transition: all 0.4s ease; display: flex; flex-direction: column; overflow: hidden; position: relative; color: var(--txt-b) !important; {backdrop} }}
+    .btn {{ display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 2.5rem; border-radius: var(--radius); font-weight: 800; text-decoration: none; transition: all 0.3s ease; text-transform: uppercase; cursor: pointer; border: none; font-size: 0.95rem; letter-spacing: 1.5px; }}
+    .btn-primary {{ background: var(--p); color: #fff !important; }}
+    .btn-accent {{ background: var(--s); color: #fff !important; }}
+    .btn:hover {{ {btn_hover} }}
+    
+    nav#main-navbar {{ position: fixed; top: 0; width: 100%; z-index: 2000; background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(128,128,128,0.1); padding: 1.2rem 0; }}
+    .nav-flex {{ display: flex; justify-content: space-between; align-items: center; }}
+    .nav-links {{ display: flex; align-items: center; gap: 2rem; }}
+    .nav-links a {{ text-decoration: none; font-weight: 600; color: var(--txt-h); font-size: 0.95rem; }}
+    
+    footer {{ background: #0f172a; color: #f8fafc; padding: 6rem 0 3rem 0; margin-top: auto; border-top: 4px solid var(--p); }}
+    .footer-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 4rem; }}
+    
+    @media (max-width: 992px) {{
+        .modern-hero-grid {{ grid-template-columns: 1fr; text-align: center; }}
+        .modern-hero-text {{ align-items: center; }}
+        .hero-btn-group {{ justify-content: center; }}
+        .nav-links {{ display: none; }}
+    }}
+    """
 
     
     /* 2026 ADVANCED HERO ENGINE */
