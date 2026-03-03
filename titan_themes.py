@@ -539,4 +539,25 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
             height: 40px !important; 
         }}
     }}
+/* --- INDUSTRIAL TYPOGRAPHY UPGRADE --- */
+    
+    .product-specs-container p {
+        margin-bottom: 1.8rem !important; /* Adds space between paragraphs */
+        line-height: 1.8 !important;      /* Increases readability */
+        color: var(--txt-b);
+        opacity: 0.85;
+    }
+
+    /* Target the very first paragraph (The Hook) */
+    .product-specs-container p:first-of-type {
+        font-size: 1.25rem !important;
+        font-weight: 600 !important;
+        color: var(--txt-h) !important;
+        line-height: 1.5 !important;
+        opacity: 1 !important;
+        border-left: 4px solid var(--p);
+        padding-left: 1.5rem;
+        margin-bottom: 2.5rem !important;
+    }
+    
     """
