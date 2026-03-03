@@ -490,10 +490,31 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     }}
     
     @media (max-width: 480px) {{
-        .hero h1, .modern-hero-text h1 {{ font-size: clamp(2rem, 10vw, 2.5rem); }}
-        .modern-hero {{ padding-top: 100px; }}
-        .card-body {{ padding: 1.5rem; }}
-        .modern-feature-card {{ padding: 2rem; }}
-        .stats-ribbon-container {{ padding: 0 10px; }}
+        /* Shrink H1 so it doesn't wrap awkwardly */
+        h1, .modern-hero-text h1 {{ 
+            font-size: clamp(1.8rem, 8vw, 2.2rem) !important; 
+            line-height: 1.1 !important;
+            margin-bottom: 1rem !important;
+        }}
+        
+        /* Shrink the About section header */
+        h2, .modern-about h2 {{ 
+            font-size: 1.5rem !important; 
+            margin-bottom: 1rem !important;
+        }}
+
+        /* Clean up the lead text formatting */
+        .about-lead {{ 
+            font-size: 1rem !important; 
+            padding-left: 1rem !important; 
+            line-height: 1.5 !important;
+        }}
+
+        /* Fix the "Read Our Story" button width */
+        .btn {{ 
+            width: 100% !important; 
+            padding: 1rem !important; 
+            font-size: 0.85rem !important;
+        }}
     }}
     """
