@@ -516,5 +516,27 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
             padding: 1rem !important; 
             font-size: 0.85rem !important;
         }}
+
+        /* Move floating buttons to avoid covering the "Read Our Story" button */
+        #theme-toggle {{ 
+            bottom: 15px !important; 
+            left: 15px !important; 
+            width: 40px !important; 
+            height: 40px !important; 
+        }}
+
+        #wa-widget {{ 
+            bottom: 15px !important; 
+            right: 15px !important; 
+            width: 50px !important; 
+            height: 50px !important; 
+        }}
+
+        #voice-btn {{ 
+            bottom: 75px !important; /* Stack it ABOVE the WhatsApp button */
+            right: 15px !important; 
+            width: 40px !important; 
+            height: 40px !important; 
+        }}
     }}
     """
