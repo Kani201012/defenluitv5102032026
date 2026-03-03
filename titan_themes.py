@@ -417,6 +417,34 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         70% {{ transform: scale(1.2); box-shadow: 0 0 0 20px rgba(255, 0, 60, 0); }} 
         100% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }} 
     }}
+
+    /* --- PRODUCT DETAIL SIZE OVERRIDES --- */
+    
+    /* 1. The Title (The Consultant Pro) */
+    .product-info-column h1 {{ 
+        font-size: clamp(1.8rem, 3vw, 2.5rem) !important; 
+        margin-bottom: 1rem !important;
+    }}
+
+    /* 2. The Price ($499) */
+    .product-price-tag {{ 
+        font-size: 1.4rem !important; 
+        padding: 0.4rem 1.2rem !important;
+        margin-bottom: 1.5rem !important;
+    }}
+
+    /* 3. The Description Text (The Ultimate Industrial...) */
+    .product-specs-container, .product-specs-container p {{
+        font-size: 1rem !important; 
+        line-height: 1.6 !important;
+        opacity: 0.8 !important;
+    }}
+    
+    /* Shrink the back button too for balance */
+    .back-btn {{
+        font-size: 0.75rem !important;
+        margin-bottom: 20px !important;
+    }}
     
     /* ==========================================================
        MOBILE OPTIMIZATION (THE FIX)
