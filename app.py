@@ -1116,8 +1116,20 @@ contact_content = f"""
                 </form>
             </div>
         </div>
-        <div style="border-radius:var(--radius); overflow:hidden; border:var(--border); margin-top:4rem; box-shadow:var(--shadow);">
+        
+        <!-- THE FIX: Container with height and full-width map CSS -->
+        <div class="map-container-2050" style="border-radius:var(--radius); overflow:hidden; border:var(--border); margin-top:4rem; box-shadow:var(--shadow); height: 450px; position: relative;">
             {map_iframe}
+            <style>
+                .map-container-2050 iframe {{
+                    width: 100% !important;
+                    height: 100% !important;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    border: none;
+                }}
+            </style>
         </div>
     </div>
 </section>
