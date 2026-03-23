@@ -456,38 +456,43 @@ def get_simple_icon(name):
 def gen_features():
     raw_lines = [l for l in feat_data_input.split('\n') if len(l.split('|')) >= 3]
     
-    # Standard Symmetrical (Fallback)
-    if "Standard" in site_layout:
-        cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div></div>' for l in raw_lines if (p:=l.split('|'))])
-        return f'<section id="features" class="section-padding"><div class="container"><div class="section-head reveal"><h2>{f_title}</h2></div><div class="grid-3">{cards}</div></div></section>'
+    # 1. BENTO GRID (Apple/Stripe Style)
+    if "Bento" in site_layout:
+        cards = ""
+        for idx, line in enumerate(raw_lines):
+            p = line.split('|')
+            # Make the first card span 2 columns (The Hero Feature)
+            bento_class = "bento-large" if idx == 0 else "bento-standard"
+            
+            cards += f'''
+            <div class="bento-card {bento_class} reveal" style="animation-delay: {idx * 0.1}s;">
+                <div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div>
+                <div class="feature-content">
+                    <h3 style="font-size: {'2rem' if idx==0 else '1.4rem'};">{p[1].strip()}</h3>
+                    <div style="opacity:0.85;">{format_text(p[2].strip())}</div>
+                </div>
+            </div>'''
+            
+        return f'''
+        <section id="features" style="background:var(--bg); padding: 8rem 0; position:relative; z-index:5;">
+            <div class="container">
+                <div class="section-head reveal" style="text-align:left; margin-bottom:4rem;">
+                    <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); max-width:800px;">{f_title}</h2>
+                </div>
+                <div class="bento-grid">{cards}</div>
+            </div>
+        </section>'''
 
-    # THE BENTO GRID (Modern Apple/SaaS Style)
-    cards = ""
-    for idx, line in enumerate(raw_lines):
-        p = line.split('|')
-        # Make the first card span 2 columns and rows (The Hero Feature)
-        bento_class = "bento-large" if idx == 0 else "bento-standard"
-        bento_img = f'<div class="bento-glow"></div>' if idx == 0 else ''
-        
-        cards += f'''
-        <div class="bento-card {bento_class} reveal" style="animation-delay: {idx * 0.1}s;">
-            {bento_img}
-            <div class="feature-icon-wrapper" style="margin-bottom:1.5rem;">{get_simple_icon(p[0])}</div>
-            <div class="feature-content">
-                <h3 style="font-size: {'2.2rem' if idx==0 else '1.3rem'};">{p[1].strip()}</h3>
-                <div style="opacity:0.8;">{format_text(p[2].strip())}</div>
+    # 2. STANDARD / ASYMMETRICAL (3-Column Grid)
+    else:
+        cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div style="opacity:0.85;">{format_text(p[2].strip())}</div></div></div>' for l in raw_lines if (p:=l.split('|'))])
+        return f'''
+        <section id="features" style="padding: 8rem 0; background:var(--bg); position:relative; z-index:5;">
+            <div class="container">
+                <div class="section-head reveal"><h2>{f_title}</h2></div>
+                <div class="grid-3">{cards}</div>
             </div>
-        </div>'''
-        
-    return f'''
-    <section id="features" style="background:var(--bg); padding: 8rem 0;">
-        <div class="container">
-            <div class="section-head reveal" style="text-align:left; margin-bottom:4rem;">
-                <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); max-width:800px;">{f_title}</h2>
-            </div>
-            <div class="bento-grid">{cards}</div>
-        </div>
-    </section>'''
+        </section>'''
 def gen_stats():
     return f"""
     <div class="stats-ribbon-container container reveal">
