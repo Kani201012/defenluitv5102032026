@@ -155,6 +155,16 @@ with st.sidebar:
         ga_tag = st.text_input("Google Analytics ID")
         og_image = st.text_input("Social Share Image URL")
 
+# Add this inside the "🎨 Design Studio" expander in app.py
+site_layout = st.selectbox(
+    "Architecture Layout Style", 
+    [
+        "1. Modern Asymmetrical (Overlapping & Editorial)", 
+        "2. Bento Grid (Apple/Stripe Style)", 
+        "3. Sticky Split-Screen (Immersive)"
+    ]
+)
+
 # --- 4. MAIN WORKSPACE ---
 st.title("🏗️ StopWebRent 2050 Compiler")
 
@@ -444,8 +454,40 @@ def get_simple_icon(name):
     return f'<svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="{path}"/></svg>'
 
 def gen_features():
-    cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
-    return f'<section id="features" style="background:var(--bg); position:relative; z-index:2;"><div class="container"><div class="section-head reveal"><h2>{f_title}</h2><p class="section-subtitle">ENGINEERED FOR ABSOLUTE DOMINANCE.</p></div><div class="modern-grid-3">{cards}</div></div></section>'
+    raw_lines = [l for l in feat_data_input.split('\n') if len(l.split('|')) >= 3]
+    
+    # Standard Symmetrical (Fallback)
+    if "Standard" in site_layout:
+        cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div></div>' for l in raw_lines if (p:=l.split('|'))])
+        return f'<section id="features" class="section-padding"><div class="container"><div class="section-head reveal"><h2>{f_title}</h2></div><div class="grid-3">{cards}</div></div></section>'
+
+    # THE BENTO GRID (Modern Apple/SaaS Style)
+    cards = ""
+    for idx, line in enumerate(raw_lines):
+        p = line.split('|')
+        # Make the first card span 2 columns and rows (The Hero Feature)
+        bento_class = "bento-large" if idx == 0 else "bento-standard"
+        bento_img = f'<div class="bento-glow"></div>' if idx == 0 else ''
+        
+        cards += f'''
+        <div class="bento-card {bento_class} reveal" style="animation-delay: {idx * 0.1}s;">
+            {bento_img}
+            <div class="feature-icon-wrapper" style="margin-bottom:1.5rem;">{get_simple_icon(p[0])}</div>
+            <div class="feature-content">
+                <h3 style="font-size: {'2.2rem' if idx==0 else '1.3rem'};">{p[1].strip()}</h3>
+                <div style="opacity:0.8;">{format_text(p[2].strip())}</div>
+            </div>
+        </div>'''
+        
+    return f'''
+    <section id="features" style="background:var(--bg); padding: 8rem 0;">
+        <div class="container">
+            <div class="section-head reveal" style="text-align:left; margin-bottom:4rem;">
+                <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); max-width:800px;">{f_title}</h2>
+            </div>
+            <div class="bento-grid">{cards}</div>
+        </div>
+    </section>'''
 def gen_stats():
     return f"""
     <div class="stats-ribbon-container container reveal">
