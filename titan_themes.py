@@ -389,47 +389,64 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
      .bento-grid {{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-        align-items: stretch;
+        gap: 1.5rem;
+        align-items: start; /* CRITICAL: Stops cards from stretching to match height */
     }}
 
     .bento-card {{
         background: var(--card);
         border: var(--border);
-        border-radius: 32px;
-        padding: 3rem;
+        border-radius: 24px;
+        padding: 2.5rem;
         box-shadow: var(--shadow);
         position: relative;
         overflow: hidden;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* Keeps items naturally aligned to the top */
-    }}
-
-    .bento-card:hover {{
-        transform: translateY(-5px) scale(1.01);
-        border-color: var(--p);
+        height: auto; /* Allow card to be only as tall as its content */
+        transition: transform 0.3s ease;
     }}
 
     .bento-large {{
-        grid-column: span 2; /* Spans horizontally for a premium wide-card look */
-        /* Removed grid-row: span 2; which was causing the massive blank spaces */
-        background: linear-gradient(135deg, var(--card) 40%, rgba(128,128,128,0.05) 100%);
+        grid-column: span 2; /* Still spans two columns for the Hero look */
+        background: linear-gradient(145deg, var(--card) 0%, rgba(128,128,128,0.02) 100%);
     }}
 
-    .bento-glow {{
-        position: absolute;
-        top: -50px; right: -50px;
-        width: 300px; height: 300px;
-        background: var(--p);
-        filter: blur(80px);
-        opacity: 0.15;
-        z-index: 0;
-        border-radius: 50%;
+    /* Remove the weird gaps inside the card */
+    .feature-icon-wrapper {{
+        width: 50px;
+        height: 50px;
+        background: rgba(var(--p), 0.1);
+        color: var(--p);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem; /* Precise spacing below icon */
     }}
 
-    .bento-card > * {{ position: relative; z-index: 2; }}
+    .feature-content h3 {{
+        margin: 0 0 1rem 0 !important; /* Force zero top margin on titles */
+        padding: 0 !important;
+        line-height: 1.2;
+        color: var(--txt-h);
+    }}
+
+    .feature-content div {{
+        margin: 0;
+        opacity: 0.8;
+        line-height: 1.6;
+    }}
+
+    /* Mobile Fix for Bento */
+    @media (max-width: 992px) {{
+        .bento-grid {{
+            grid-template-columns: 1fr !important;
+        }}
+        .bento-large {{
+            grid-column: span 1 !important;
+        }}
+    }}
 
     /* --- ASYMMETRICAL OVERLAP SYSTEM (BULLETPROOF GRID) --- */
     .asym-container {{
