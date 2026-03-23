@@ -381,61 +381,71 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     
     @keyframes rotate {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
 
-    /* =========================================
-       NEW: ASYMMETRICAL & BENTO LAYOUT ENGINE
-       ========================================= */
 
-    /* --- BENTO GRID SYSTEM --- */
-     /* --- BENTO GRID SYSTEM (2026 MASONRY FIX) --- */
-    .bento-grid {{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        align-items: start; /* This FIXES the huge blank spaces */
+    /* --- BENTO GRID SYSTEM (TIGHT-STACK RESET) --- */
+    #features .container > div:last-child {{
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.5rem !important;
+        align-items: start !important; /* Forces cards to stay as short as possible */
     }}
 
-    .bento-card {{
+    .modern-feature-card, .bento-card {{
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important; /* STOPS the text from jumping to the bottom */
+        align-items: flex-start !important;
+        height: auto !important; /* Kills the forced stretching */
+        min-height: 0 !important;
+        padding: 2.5rem !important;
         background: var(--card);
-        border: var(--border);
         border-radius: 24px;
-        padding: 2.5rem;
+        border: var(--border);
         box-shadow: var(--shadow);
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        height: auto; /* The card only grows as much as the text needs */
     }}
 
-    .bento-card:hover {{
-        transform: translateY(-5px) scale(1.01);
-        border-color: var(--p);
+    /* This targets the first wide card ("Luxury Residential Sales") */
+    #features .container > div:last-child > div:first-child {{
+        grid-column: span 2 !important;
     }}
 
-    .bento-large {{
-        grid-column: span 2; /* Keeps the premium wide look for your first feature */
-        background: linear-gradient(135deg, var(--card) 40%, rgba(128,128,128,0.05) 100%);
-    }}
-
-    .bento-glow {{
-        position: absolute;
-        top: -50px; right: -50px;
-        width: 300px; height: 300px;
-        background: var(--p);
-        filter: blur(80px);
-        opacity: 0.15;
-        z-index: 0;
-        border-radius: 50%;
-    }}
-
-    /* This fixes the icon spacing */
     .feature-icon-wrapper {{
-        margin-bottom: 1.5rem !important;
-        display: inline-flex;
+        margin-bottom: 1.2rem !important;
+        display: flex !important;
+        flex-grow: 0 !important; /* Prevents icon from taking up space */
+        height: fit-content !important;
     }}
 
-    .bento-card > * {{ position: relative; z-index: 2; }}
+    .feature-content {{
+        display: block !important;
+        flex-grow: 0 !important; /* Prevents the text box from expanding and pushing content */
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+    }}
+
+    .feature-content h3 {{
+        margin: 0 0 0.8rem 0 !important; /* Tightens the gap under the title */
+        font-size: 1.5rem !important;
+        line-height: 1.2 !important;
+    }}
+
+    .feature-content p, .feature-content div {{
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.6 !important;
+        opacity: 0.8;
+    }}
+
+    /* Mobile Fix */
+    @media (max-width: 992px) {{
+        #features .container > div:last-child {{
+            grid-template-columns: 1fr !important;
+        }}
+        #features .container > div:last-child > div:first-child {{
+            grid-column: span 1 !important;
+        }}
+    }}
 
     /* --- ASYMMETRICAL OVERLAP SYSTEM (BULLETPROOF GRID) --- */
     .asym-container {{
