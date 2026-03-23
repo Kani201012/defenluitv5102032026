@@ -649,10 +649,27 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         .bento-grid {{ grid-template-columns: 1fr; }}
         .bento-large {{ grid-column: span 1; grid-row: span 1; }}
         
-        .asym-container {{ flex-direction: column; min-height: auto; }}
-        .asym-image {{ position: relative; width: 100%; height: 400px; border-radius: 24px; }}
-        .asym-text-box {{ width: 90%; margin: -80px auto 0 auto; padding: 2rem; }}
-        .asym-badge {{ bottom: 20px; left: 20px; font-size: 1rem; padding: 1rem; }}
+        .asym-container {{ 
+            display: flex !important; 
+            flex-direction: column-reverse; /* Image goes to top, text to bottom */
+        }}
+        .asym-image {{ 
+            width: 100%; 
+            height: 400px; 
+            grid-column: unset;
+        }}
+        .asym-text-box {{ 
+            width: 90%; 
+            margin: -80px auto 0 auto; /* Pulls text box up perfectly over the image */
+            padding: 2.5rem; 
+            border-left: none;
+            border-top: 8px solid var(--p); /* Moves the brand color line to the top */
+            grid-column: unset;
+        }}
+        .asym-badge {{ 
+            bottom: 100px; /* Pushes badge up above the overlapping text */
+            right: 20px; 
+        }}
     }}
     
     @media (max-width: 480px) {{
