@@ -428,51 +428,57 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     .bento-card > * {{ position: relative; z-index: 2; }}
 
-    /* --- ASYMMETRICAL OVERLAP SYSTEM --- */
+    /* --- ASYMMETRICAL OVERLAP SYSTEM (BULLETPROOF GRID) --- */
     .asym-container {{
-        position: relative;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
         align-items: center;
-        min-height: 600px;
+        width: 100%;
+        position: relative;
+    }}
+
+    .asym-text-box {{
+        grid-column: 1 / 7; /* Stays locked in the first 6 columns */
+        grid-row: 1;
+        z-index: 5;
+        background: var(--card);
+        padding: 4rem 3rem;
+        border-radius: 24px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        border-left: 8px solid var(--p);
     }}
 
     .asym-image {{
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 65%;
-        height: 100%;
-        border-radius: 40px;
+        grid-column: 5 / 13; /* Starts exactly under the right edge of the text box */
+        grid-row: 1;
+        z-index: 1;
+        height: 550px;
+        border-radius: 32px;
         overflow: hidden;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        background: #e2e8f0; /* Gray placeholder if image takes a second to load */
     }}
 
     .asym-image img {{
         width: 100%;
         height: 100%;
         object-fit: cover;
-    }}
-
-    .asym-text-box {{
-        position: relative;
-        width: 50%;
-        padding: 4rem;
-        background: var(--card);
-        border-radius: 32px;
-        z-index: 5;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.15);
-        border-left: 8px solid var(--p);
-        margin-top: 10%;
+        display: block;
     }}
 
     .asym-badge {{
         position: absolute;
-        bottom: 30px; left: -30px;
-        background: var(--s); color: white;
-        padding: 1.5rem 2rem;
-        font-weight: 800; font-size: 1.2rem;
-        border-radius: 20px;
+        bottom: 30px; 
+        right: 30px;
+        background: var(--s); 
+        color: #fff !important;
+        padding: 1rem 1.5rem;
+        font-weight: 800; 
+        font-size: 1.1rem;
+        border-radius: 16px;
         z-index: 6;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }}
 
     .tagline {{
@@ -481,6 +487,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-bottom: 1rem;
+        font-size: 0.9rem;
     }}
 
     /* LANGUAGE MODAL PHYSICS */
