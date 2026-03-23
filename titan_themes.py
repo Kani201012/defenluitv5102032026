@@ -667,34 +667,34 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         /* --- NEW: MOBILE BENTO & ASYMMETRICAL --- */
         
         /* 1. Bulletproof Mobile Grid Reset */
-        .bento-grid, .grid-3 {
+        .bento-grid, .grid-3 {{
             grid-template-columns: 1fr !important;
             gap: 2rem !important;
-        }
-        .bento-large { 
+        }}
+        .bento-large {{ 
             grid-column: span 1 !important; 
             grid-row: auto !important; 
-        }
+        }}
         
         /* Forces cards to expand naturally on phones without overlapping */
-        .bento-card, .modern-feature-card {
+        .bento-card, .modern-feature-card {{
             height: auto !important;
             min-height: 100%;
-        }
+        }}
         
         /* 2. Asymmetrical Layout Mobile Fix */
-        .asym-container { 
+        .asym-container {{ 
             display: flex !important; 
             flex-direction: column-reverse; /* Image goes to top, text to bottom */
             gap: 0;
-        }
-        .asym-image { 
+        }}
+        .asym-image {{ 
             width: 100%; 
             height: 350px; 
             grid-column: unset;
             border-radius: 24px 24px 0 0; /* Smooth top corners */
-        }
-        .asym-text-box { 
+        }}
+        .asym-text-box {{ 
             width: 95%; 
             margin: -60px auto 0 auto; /* Pulls text box up perfectly over the image */
             padding: 2.5rem 1.5rem; 
@@ -704,49 +704,49 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
             position: relative;
             z-index: 10; /* Forces text box safely OVER the image */
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        }
-        .asym-badge { 
+        }}
+        .asym-badge {{ 
             bottom: 80px; /* Pushes badge up above the overlapping text */
             right: 15px; 
             z-index: 5;
-        }
-    } /* <-- Closes the @media (max-width: 992px) */
+        }}
+    }} /* <-- Closes the @media (max-width: 992px) */
     
-    @media (max-width: 480px) {
+    @media (max-width: 480px) {{
         /* Shrink the overall detail container to fit the phone screen */
-        .detail-view { 
+        .detail-view {{ 
             padding: 1.5rem !important; 
             margin: 10px !important;
             gap: 1.5rem !important;
             border-radius: 20px !important;
-        }
+        }}
 
         /* Fix the "Add to Cart" button overlap */
-        .product-info-column {
+        .product-info-column {{
             padding-bottom: 80px !important; /* Creates space for the floating buttons */
-        }
+        }}
 
-        .product-price-tag {
+        .product-price-tag {{
             font-size: 1.5rem !important;
             margin-bottom: 1rem !important;
-        }
+        }}
 
         /* Scale down the main product image so it doesn't tower over the text */
-        #main-img, model-viewer {
+        #main-img, model-viewer {{
             height: 300px !important;
-        }
+        }}
 
         /* FINAL FIX: Ensure the Add to Cart button is always reachable */
-        .btn-accent {
+        .btn-accent {{
             width: 100% !important;
             min-width: unset !important;
             padding: 1rem !important;
             font-size: 0.9rem !important;
-        }
+        }}
 
         /* Reposition Floating Icons to the VERY edge, avoiding card overlap */
-        #wa-widget { bottom: 15px !important; right: 15px !important; transform: scale(0.85); transform-origin: bottom right; z-index: 9999 !important; }
-        #theme-toggle { bottom: 15px !important; left: 15px !important; transform: scale(0.85); transform-origin: bottom left; z-index: 9999 !important; }
-        #voice-btn { bottom: 85px !important; right: 15px !important; transform: scale(0.85); transform-origin: bottom right; z-index: 9999 !important; }
-    }
+        #wa-widget {{ bottom: 15px !important; right: 15px !important; transform: scale(0.85); transform-origin: bottom right; z-index: 9999 !important; }}
+        #theme-toggle {{ bottom: 15px !important; left: 15px !important; transform: scale(0.85); transform-origin: bottom left; z-index: 9999 !important; }}
+        #voice-btn {{ bottom: 85px !important; right: 15px !important; transform: scale(0.85); transform-origin: bottom right; z-index: 9999 !important; }}
+    }}
     """
