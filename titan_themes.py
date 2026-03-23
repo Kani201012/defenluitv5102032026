@@ -386,11 +386,11 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
        ========================================= */
 
     /* --- BENTO GRID SYSTEM --- */
-    .bento-grid {{
+     .bento-grid {{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: auto;
-        gap: 1.5rem;
+        gap: 2rem;
+        align-items: stretch;
     }}
 
     .bento-card {{
@@ -402,6 +402,9 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         position: relative;
         overflow: hidden;
         transition: transform 0.4s ease, box-shadow 0.4s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Keeps items naturally aligned to the top */
     }}
 
     .bento-card:hover {{
@@ -410,8 +413,8 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     }}
 
     .bento-large {{
-        grid-column: span 2;
-        grid-row: span 2;
+        grid-column: span 2; /* Spans horizontally for a premium wide-card look */
+        /* Removed grid-row: span 2; which was causing the massive blank spaces */
         background: linear-gradient(135deg, var(--card) 40%, rgba(128,128,128,0.05) 100%);
     }}
 
