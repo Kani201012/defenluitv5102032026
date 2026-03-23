@@ -53,9 +53,9 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    # --- HERO ALIGNMENT LOGIC ---
+    # --- NEW CODE ---
     if hero_align == "Center":
-        h_align = "text-align: center; justify-content: center;"
+        h_align = "text-align: center; justify-content: center;" # Keeps older pages intact
         grid_cols = "1fr"
         flex_align = "center"
         txt_align = "center"
@@ -67,7 +67,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         txt_align = "left"
         p_margin = "0 0 1.5rem 0"
 
-    # 3. Return exact CSS with added Mobile Fixes and Asymmetrical Engine
+    # 3. Return exact CSS with added Mobile Fixes (.contact-grid, iframes, z-indexes, @media queries)
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
@@ -362,7 +362,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .stat-block p {{ font-size: 1.1rem; font-weight: 600; color: var(--txt-b); text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin: 0; }}
     .stat-divider {{ width: 2px; height: 60px; background: rgba(128,128,128,0.2); }}
 
-    /* 3. OLD FEATURE GRID (Fallback) */
+    /* 3. BENTO-STYLE FEATURES GRID */
     .section-subtitle {{ font-size: 1.2rem; color: var(--txt-b); opacity: 0.7; margin-top: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
     .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }}
     .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
@@ -370,7 +370,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .feature-icon-wrapper {{ width: 64px; height: 64px; border-radius: 16px; background: rgba(128,128,128,0.05); display: flex; align-items: center; justify-content: center; color: var(--s); border: 1px solid rgba(128,128,128,0.1); }}
     .feature-content h3 {{ font-size: 1.5rem; margin-bottom: 1rem; color: var(--txt-h); }}
     
-    /* 4. OLD ABOUT SECTION (Fallback) */
+    /* 4. PREMIUM ABOUT SECTION */
     .modern-about {{ background: rgba(128,128,128,0.02); overflow: hidden; }}
     .about-visual {{ position: relative; }}
     .about-main-img {{ width: 100%; height: 600px; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow); }}
@@ -380,134 +380,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .about-lead {{ font-size: 1.25rem; line-height: 1.8; opacity: 0.9; color: var(--txt-b); border-left: 4px solid var(--s); padding-left: 1.5rem; }}
     
     @keyframes rotate {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
-
-
-    /* --- BENTO GRID SYSTEM (TIGHT-STACK RESET) --- */
-    #features .container > div:last-child {{
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 1.5rem !important;
-        align-items: start !important; /* Forces cards to stay as short as possible */
-    }}
-
-    .modern-feature-card, .bento-card {{
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important; /* STOPS the text from jumping to the bottom */
-        align-items: flex-start !important;
-        height: auto !important; /* Kills the forced stretching */
-        min-height: 0 !important;
-        padding: 2.5rem !important;
-        background: var(--card);
-        border-radius: 24px;
-        border: var(--border);
-        box-shadow: var(--shadow);
-    }}
-
-    /* This targets the first wide card ("Luxury Residential Sales") */
-    #features .container > div:last-child > div:first-child {{
-        grid-column: span 2 !important;
-    }}
-
-    .feature-icon-wrapper {{
-        margin-bottom: 1.2rem !important;
-        display: flex !important;
-        flex-grow: 0 !important; /* Prevents icon from taking up space */
-        height: fit-content !important;
-    }}
-
-    .feature-content {{
-        display: block !important;
-        flex-grow: 0 !important; /* Prevents the text box from expanding and pushing content */
-        width: 100%;
-        margin: 0 !important;
-        padding: 0 !important;
-    }}
-
-    .feature-content h3 {{
-        margin: 0 0 0.8rem 0 !important; /* Tightens the gap under the title */
-        font-size: 1.5rem !important;
-        line-height: 1.2 !important;
-    }}
-
-    .feature-content p, .feature-content div {{
-        margin: 0 !important;
-        padding: 0 !important;
-        line-height: 1.6 !important;
-        opacity: 0.8;
-    }}
-
-    /* Mobile Fix */
-    @media (max-width: 992px) {{
-        #features .container > div:last-child {{
-            grid-template-columns: 1fr !important;
-        }}
-        #features .container > div:last-child > div:first-child {{
-            grid-column: span 1 !important;
-        }}
-    }}
-
-    /* --- ASYMMETRICAL OVERLAP SYSTEM (BULLETPROOF GRID) --- */
-    .asym-container {{
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        align-items: center;
-        width: 100%;
-        position: relative;
-    }}
-
-    .asym-text-box {{
-        grid-column: 1 / 7; /* Stays locked in the first 6 columns */
-        grid-row: 1;
-        z-index: 5;
-        background: var(--card);
-        padding: 4rem 3rem;
-        border-radius: 24px;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-        border-left: 8px solid var(--p);
-    }}
-
-    .asym-image {{
-        grid-column: 5 / 13; /* Starts exactly under the right edge of the text box */
-        grid-row: 1;
-        z-index: 1;
-        height: 550px;
-        border-radius: 32px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        background: #e2e8f0; /* Gray placeholder if image takes a second to load */
-    }}
-
-    .asym-image img {{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }}
-
-    .asym-badge {{
-        position: absolute;
-        bottom: 30px; 
-        right: 30px;
-        background: var(--s); 
-        color: #fff !important;
-        padding: 1rem 1.5rem;
-        font-weight: 800; 
-        font-size: 1.1rem;
-        border-radius: 16px;
-        z-index: 6;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }}
-
-    .tagline {{
-        color: var(--p);
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-    }}
 
     /* LANGUAGE MODAL PHYSICS */
     #lang-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 3000; }}
@@ -623,7 +495,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     }}
     
     /* ==========================================================
-       MOBILE OPTIMIZATION (THE FIX WITH BENTO & ASYM SUPPORT)
+       MOBILE OPTIMIZATION (THE FIX)
        ========================================================== */
     @media (max-width: 992px) {{
         /* Nav Menu Collapse Fixed Layering */
@@ -663,32 +535,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         .about-experience-badge {{ position: relative; bottom: 0; right: 0; margin-top: -30px; margin-left: 20px; width: fit-content; z-index: 10; }}
         
         .pricing-table th, .pricing-table td {{ padding: 1.2rem 1rem; font-size: 0.95rem; }}
-
-        /* --- NEW: MOBILE BENTO & ASYMMETRICAL --- */
-        .bento-grid {{ grid-template-columns: 1fr; }}
-        .bento-large {{ grid-column: span 1; grid-row: span 1; }}
-        
-        .asym-container {{ 
-            display: flex !important; 
-            flex-direction: column-reverse; /* Image goes to top, text to bottom */
-        }}
-        .asym-image {{ 
-            width: 100%; 
-            height: 400px; 
-            grid-column: unset;
-        }}
-        .asym-text-box {{ 
-            width: 90%; 
-            margin: -80px auto 0 auto; /* Pulls text box up perfectly over the image */
-            padding: 2.5rem; 
-            border-left: none;
-            border-top: 8px solid var(--p); /* Moves the brand color line to the top */
-            grid-column: unset;
-        }}
-        .asym-badge {{ 
-            bottom: 100px; /* Pushes badge up above the overlapping text */
-            right: 20px; 
-        }}
     }}
     
     @media (max-width: 480px) {{
