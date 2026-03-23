@@ -386,17 +386,17 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     #features .container > div:last-child {{
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
-        gap: 1.5rem !important;
-        align-items: start !important; /* Forces cards to stay as short as possible */
+        gap: 2rem !important;
+        align-items: stretch !important; /* FIXED: Forces cards to share height and not overlap */
     }}
 
     .modern-feature-card, .bento-card {{
         display: flex !important;
         flex-direction: column !important;
-        justify-content: flex-start !important; /* STOPS the text from jumping to the bottom */
+        justify-content: flex-start !important; 
         align-items: flex-start !important;
-        height: auto !important; /* Kills the forced stretching */
-        min-height: 0 !important;
+        height: 100% !important; /* FIXED: Prevents bottom elements from overlapping */
+        min-height: 100% !important; 
         padding: 2.5rem !important;
         background: var(--card);
         border-radius: 24px;
@@ -412,20 +412,21 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .feature-icon-wrapper {{
         margin-bottom: 1.2rem !important;
         display: flex !important;
-        flex-grow: 0 !important; /* Prevents icon from taking up space */
+        flex-grow: 0 !important; 
         height: fit-content !important;
     }}
 
     .feature-content {{
-        display: block !important;
-        flex-grow: 0 !important; /* Prevents the text box from expanding and pushing content */
+        display: flex !important;
+        flex-direction: column !important;
+        flex-grow: 1 !important; /* FIXED: Forces text box to use available space properly */
         width: 100%;
         margin: 0 !important;
         padding: 0 !important;
     }}
 
     .feature-content h3 {{
-        margin: 0 0 0.8rem 0 !important; /* Tightens the gap under the title */
+        margin: 0 0 0.8rem 0 !important;
         font-size: 1.5rem !important;
         line-height: 1.2 !important;
     }}
@@ -665,68 +666,67 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         .pricing-table th, .pricing-table td {{ padding: 1.2rem 1rem; font-size: 0.95rem; }}
 
         /* --- NEW: MOBILE BENTO & ASYMMETRICAL --- */
-.bento-grid {{ grid-template-columns: 1fr; }}
-.bento-large {{ grid-column: span 1; grid-row: span 1; }}
-code
-Code
-.asym-container {{ 
-        display: flex !important; 
-        flex-direction: column-reverse; /* Image goes to top, text to bottom */
-    }}
-    .asym-image {{ 
-        width: 100%; 
-        height: 400px; 
-        grid-column: unset;
-    }}
-    .asym-text-box {{ 
-        width: 90%; 
-        margin: -80px auto 0 auto; /* Pulls text box up perfectly over the image */
-        padding: 2.5rem; 
-        border-left: none;
-        border-top: 8px solid var(--p); /* Moves the brand color line to the top */
-        grid-column: unset;
-    }}
-    .asym-badge {{ 
-        bottom: 100px; /* Pushes badge up above the overlapping text */
-        right: 20px; 
-    }}
-}}
+        .bento-grid, #features .container > div:last-child {{ grid-template-columns: 1fr !important; }}
+        .bento-large, #features .container > div:last-child > div:first-child {{ grid-column: span 1 !important; grid-row: auto !important; }}
 
-@media (max-width: 480px) {{
-    /* Shrink the overall detail container to fit the phone screen */
-    .detail-view {{ 
-        padding: 1.5rem !important; 
-        margin: 10px !important;
-        gap: 1.5rem !important;
-        border-radius: 20px !important;
+        .asym-container {{ 
+            display: flex !important; 
+            flex-direction: column-reverse; /* Image goes to top, text to bottom */
+        }}
+        .asym-image {{ 
+            width: 100%; 
+            height: 400px; 
+            grid-column: unset;
+        }}
+        .asym-text-box {{ 
+            width: 90%; 
+            margin: -80px auto 0 auto; /* Pulls text box up perfectly over the image */
+            padding: 2.5rem; 
+            border-left: none;
+            border-top: 8px solid var(--p); /* Moves the brand color line to the top */
+            grid-column: unset;
+        }}
+        .asym-badge {{ 
+            bottom: 100px; /* Pushes badge up above the overlapping text */
+            right: 20px; 
+        }}
     }}
 
-    /* Fix the "Add to Cart" button overlap */
-    .product-info-column {{
-        padding-bottom: 80px !important; /* Creates space for the floating buttons */
-    }}
+    @media (max-width: 480px) {{
+        /* Shrink the overall detail container to fit the phone screen */
+        .detail-view {{ 
+            padding: 1.5rem !important; 
+            margin: 10px !important;
+            gap: 1.5rem !important;
+            border-radius: 20px !important;
+        }}
 
-    .product-price-tag {{
-        font-size: 1.5rem !important;
-        margin-bottom: 1rem !important;
-    }}
+        /* Fix the "Add to Cart" button overlap */
+        .product-info-column {{
+            padding-bottom: 80px !important; /* Creates space for the floating buttons */
+        }}
 
-    /* Scale down the main product image so it doesn't tower over the text */
-    #main-img, model-viewer {{
-        height: 300px !important;
-    }}
+        .product-price-tag {{
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }}
 
-    /* FINAL FIX: Ensure the Add to Cart button is always reachable */
-    .btn-accent {{
-        width: 100% !important;
-        min-width: unset !important;
-        padding: 1rem !important;
-        font-size: 0.9rem !important;
-    }}
+        /* Scale down the main product image so it doesn't tower over the text */
+        #main-img, model-viewer {{
+            height: 300px !important;
+        }}
 
-    /* Reposition Floating Icons to the VERY edge */
-    #wa-widget {{ bottom: 10px !important; right: 10px !important; scale: 0.8; }}
-    #theme-toggle {{ bottom: 10px !important; left: 10px !important; scale: 0.8; }}
-    #voice-btn {{ bottom: 70px !important; right: 10px !important; scale: 0.8; }}
-}}
-"""
+        /* FINAL FIX: Ensure the Add to Cart button is always reachable */
+        .btn-accent {{
+            width: 100% !important;
+            min-width: unset !important;
+            padding: 1rem !important;
+            font-size: 0.9rem !important;
+        }}
+
+        /* Reposition Floating Icons to the VERY edge */
+        #wa-widget {{ bottom: 10px !important; right: 10px !important; scale: 0.8; }}
+        #theme-toggle {{ bottom: 10px !important; left: 10px !important; scale: 0.8; }}
+        #voice-btn {{ bottom: 70px !important; right: 10px !important; scale: 0.8; }}
+    }}
+    """
