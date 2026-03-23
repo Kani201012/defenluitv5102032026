@@ -755,31 +755,37 @@ def gen_inventory():
 def gen_about_section():
     if not show_gallery: return ""
     
+    # Safe fetch of variables
+    a_title = about_h_in if about_h_in else "Our Philosophy"
+    a_short = about_short_in if about_short_in else "We believe in building fast, secure, and modern architecture."
+    
     # ASYMMETRICAL OVERLAP
     if "Asymmetrical" in site_layout:
         return f"""
-        <section id="about" style="padding: 10rem 0; background: var(--bg); overflow: hidden;">
+        <section id="about" style="padding: 6rem 0; background: var(--bg); overflow: hidden;">
             <div class="container relative">
                 <div class="asym-container reveal">
-                    <!-- Image shifted right -->
-                    <div class="asym-image">
-                        <img src="{about_img}" alt="About" loading="lazy">
-                        <div class="asym-badge">100% Client Satisfaction</div>
-                    </div>
-                    <!-- Text box overlapping the image -->
-                    <div class="asym-text-box card">
-                        <p class="tagline">Our Story</p>
-                        <h2>{about_h_in}</h2>
-                        <div class="about-lead">{format_text(about_short_in)}</div>
+                    <!-- Text box (Left side, layered on top) -->
+                    <div class="asym-text-box">
+                        <div class="tagline">Our Story</div>
+                        <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; color: var(--txt-h); line-height: 1.2;">{a_title}</h2>
+                        <div class="about-lead" style="color: var(--txt-b);">{format_text(a_short)}</div>
                         <a href="about.html" class="btn btn-primary" style="margin-top:2rem;">Discover More &rarr;</a>
+                    </div>
+                    
+                    <!-- Image (Right side, spans underneath) -->
+                    <div class="asym-image">
+                        <!-- Failsafe: If the image link is broken, load a premium unsplash placeholder -->
+                        <img src="{about_img}" alt="About" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600'">
+                        <div class="asym-badge">100% Satisfaction</div>
                     </div>
                 </div>
             </div>
         </section>
         """
     else:
-        # Fallback to standard grid
-        return f'<section id="about" class="modern-about"><div class="container"><div class="about-grid"><div class="about-visual reveal"><img src="{about_img}" width="600" class="about-main-img"></div><div class="about-text reveal"><h2>{about_h_in}</h2><div class="about-lead">{format_text(about_short_in)}</div></div></div></div></section>'
+        # Standard Grid
+        return f'<section id="about" class="modern-about"><div class="container"><div class="about-grid"><div class="about-visual reveal"><img src="{about_img}" width="600" class="about-main-img" onerror="this.src=\'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600\'"></div><div class="about-text reveal"><h2>{a_title}</h2><div class="about-lead">{format_text(a_short)}</div></div></div></div></section>'
 def gen_faq_section():
     if not show_faq: return ""
     items = "".join([f"<details class='reveal'><summary>{l.split('?')[0]}?</summary><p>{l.split('?')[1]}</p></details>" for l in faq_data.split('\n') if "?" in l])
