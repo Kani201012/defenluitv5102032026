@@ -17,7 +17,7 @@ THEME_REGISTRY = {
     "10. Tech Hardware (Neon Dark)": {"bg": "#0d1117", "txt": "#c9d1d9", "card": "#161b22", "p": "#58a6ff", "s": "#238636", "nav": "rgba(13,17,23,0.9)", "shadow": "0 0 20px rgba(88,166,255,0.1)", "radius": "12px", "border": "1px solid #30363d"},
 
     # --- HEALTH & CLINICS ---
-    "11. Medical Platinum (Trust)": {"bg": "#ffffff", "txt": "#1e293b", "card": "#f8fafc", "p": "#0284c7", "s": "#059669", "nav": "rgba(255,255,255,0.95)", "shadow": "0 4px 6px -1px rgba(0,0,0,0.05)", "radius": "12px", "border": "1px solid #e2e8f0"},
+    "11. Medical Platinum (TrusABOUTt)": {"bg": "#ffffff", "txt": "#1e293b", "card": "#f8fafc", "p": "#0284c7", "s": "#059669", "nav": "rgba(255,255,255,0.95)", "shadow": "0 4px 6px -1px rgba(0,0,0,0.05)", "radius": "12px", "border": "1px solid #e2e8f0"},
     "12. Dental Aqua (Clean)": {"bg": "#f0fdfa", "txt": "#0f172a", "card": "#ffffff", "p": "#0d9488", "s": "#0284c7", "nav": "rgba(240,253,250,0.9)", "shadow": "0 10px 25px rgba(13,148,136,0.1)", "radius": "16px", "border": "1px solid #ccfbf1"},
     "13. Fitness Aggressive (Gym)": {"bg": "#0a0a0a", "txt": "#ffffff", "card": "#171717", "p": "#e11d48", "s": "#facc15", "nav": "rgba(10,10,10,0.9)", "shadow": "0 10px 30px rgba(225,29,72,0.2)", "radius": "8px", "border": "1px solid #262626"},
     "14. Spa Therapy (Calm)": {"bg": "#faf5f0", "txt": "#4a443c", "card": "#ffffff", "p": "#bfa58a", "s": "#8c735a", "nav": "rgba(250,245,240,0.9)", "shadow": "0 8px 20px rgba(191,165,138,0.1)", "radius": "24px", "border": "1px solid #f0e6da"},
@@ -53,11 +53,21 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    h_align = "text-align: center; justify-content: center;"
-    if hero_align == "Left":
+    # --- HERO ALIGNMENT LOGIC ---
+    if hero_align == "Center":
+        h_align = "text-align: center; justify-content: center;"
+        grid_cols = "1fr"
+        flex_align = "center"
+        txt_align = "center"
+        p_margin = "0 auto 1.5rem auto"
+    else:
         h_align = "text-align: left; justify-content: flex-start; align-items: center;"
+        grid_cols = "1.1fr 1fr"
+        flex_align = "flex-start"
+        txt_align = "left"
+        p_margin = "0 0 1.5rem 0"
 
-    # 3. Return exact CSS with Professional Typography & Mobile Fixes
+    # 3. Return exact CSS with added Mobile Fixes and Asymmetrical Engine
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
@@ -82,12 +92,12 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         color: var(--txt-b); 
         font-family: var(--b-font); 
         font-size: var(--p-size); 
-        line-height: 1.8; /* Industry standard for high readability */
-        letter-spacing: 0.01em; /* Subtle air between characters */
-        overflow-x: hidden; 
+        line-height: 1.6; 
+        overflow-x: hidden; /* Prevent horizontal scroll */
         width: 100vw; max-width: 100%;
     }}
     
+    /* FIX: Stop iframes from breaking layout on mobile */
     iframe, model-viewer {{ max-width: 100%; }}
     
     h1, h2, h3, h4 {{ 
@@ -95,22 +105,13 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         color: var(--txt-h); 
         line-height: 1.1; 
         font-weight: 800;
-        margin-bottom: 1.5rem;
     }}
 
     h1 {{ font-size: var(--h1-size); {gradient_text} }}
     h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
-    h3 {{ font-size: 1.6rem; color: var(--txt-h); }}
+    h3 {{ font-size: 1.5rem; }}
+    p {{ margin-bottom: 1.2rem; }}
 
-    p {{ 
-        margin-bottom: 2rem; 
-        opacity: 0.9;
-        font-weight: 400;
-        text-align: justify; /* THIS MAKES THE TEXT ARRANGEMENT STRAIGHT */
-        text-justify: inter-word; /* Balances the gaps between words */
-        hyphens: auto; /* Prevents awkward gaps on mobile */
-        -webkit-hyphens: auto;
-    }}
     
     /* 2026 ADVANCED HERO ENGINE */
     .hero {{ position: relative; min-height: 95vh; overflow: hidden; display: flex; {h_align} padding-top: 120px; }}
@@ -334,12 +335,16 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
        ========================================= */
        
     /* 1. ASYMMETRICAL HERO WITH FLOATING GLASS */
-    .modern-hero {{ position: relative; min-height: 100vh; display: flex; {h_align} padding-top: 120px; }}
+    .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; z-index: 1; }}
     .modern-hero-bg {{ position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(128,128,128,0.05) 0%, transparent 50%); z-index: -1; animation: rotate 60s linear infinite; }}
-    .modern-hero-grid {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; width: 100%; }}
+    .modern-hero-grid {{ display: grid; grid-template-columns: {grid_cols}; gap: 4rem; align-items: center; width: 100%; text-align: {txt_align}; }}
     
-    .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt-h); text-transform: uppercase; letter-spacing: 1px; }}
-    .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; }}
+    .modern-hero-text {{ display: flex; flex-direction: column; align-items: {flex_align}; }}
+    .modern-hero-text p {{ margin: {p_margin}; max-width: 800px; }}
+    
+    .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt-h); text-transform: uppercase; letter-spacing: 1px; width: fit-content; }}
+    
+    .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; justify-content: {flex_align}; }}
     .btn-outline-light {{ background: transparent; color: var(--txt-h) !important; border: 2px solid var(--txt-h); }}
     .btn-outline-light:hover {{ background: var(--txt-h); color: var(--bg) !important; }}
     
@@ -357,7 +362,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .stat-block p {{ font-size: 1.1rem; font-weight: 600; color: var(--txt-b); text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin: 0; }}
     .stat-divider {{ width: 2px; height: 60px; background: rgba(128,128,128,0.2); }}
 
-    /* 3. BENTO-STYLE FEATURES GRID */
+    /* 3. OLD FEATURE GRID (Fallback) */
     .section-subtitle {{ font-size: 1.2rem; color: var(--txt-b); opacity: 0.7; margin-top: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
     .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }}
     .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
@@ -365,7 +370,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .feature-icon-wrapper {{ width: 64px; height: 64px; border-radius: 16px; background: rgba(128,128,128,0.05); display: flex; align-items: center; justify-content: center; color: var(--s); border: 1px solid rgba(128,128,128,0.1); }}
     .feature-content h3 {{ font-size: 1.5rem; margin-bottom: 1rem; color: var(--txt-h); }}
     
-    /* 4. PREMIUM ABOUT SECTION */
+    /* 4. OLD ABOUT SECTION (Fallback) */
     .modern-about {{ background: rgba(128,128,128,0.02); overflow: hidden; }}
     .about-visual {{ position: relative; }}
     .about-main-img {{ width: 100%; height: 600px; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow); }}
@@ -375,6 +380,135 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .about-lead {{ font-size: 1.25rem; line-height: 1.8; opacity: 0.9; color: var(--txt-b); border-left: 4px solid var(--s); padding-left: 1.5rem; }}
     
     @keyframes rotate {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
+
+
+    /* --- BENTO GRID SYSTEM (TIGHT-STACK RESET) --- */
+    #features .container > div:last-child {{
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 2rem !important;
+        align-items: stretch !important; /* FIXED: Forces cards to share height and not overlap */
+    }}
+
+    .modern-feature-card, .bento-card {{
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important; 
+        align-items: flex-start !important;
+        height: 100% !important; /* FIXED: Prevents bottom elements from overlapping */
+        min-height: 100% !important; 
+        padding: 2.5rem !important;
+        background: var(--card);
+        border-radius: 24px;
+        border: var(--border);
+        box-shadow: var(--shadow);
+    }}
+
+    /* This targets the first wide card ("Luxury Residential Sales") */
+    #features .container > div:last-child > div:first-child {{
+        grid-column: span 2 !important;
+    }}
+
+    .feature-icon-wrapper {{
+        margin-bottom: 1.2rem !important;
+        display: flex !important;
+        flex-grow: 0 !important; 
+        height: fit-content !important;
+    }}
+
+    .feature-content {{
+        display: flex !important;
+        flex-direction: column !important;
+        flex-grow: 1 !important; /* FIXED: Forces text box to use available space properly */
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+    }}
+
+    .feature-content h3 {{
+        margin: 0 0 0.8rem 0 !important;
+        font-size: 1.5rem !important;
+        line-height: 1.2 !important;
+    }}
+
+    .feature-content p, .feature-content div {{
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.6 !important;
+        opacity: 0.8;
+    }}
+
+    /* Mobile Fix */
+    @media (max-width: 992px) {{
+        #features .container > div:last-child {{
+            grid-template-columns: 1fr !important;
+        }}
+        #features .container > div:last-child > div:first-child {{
+            grid-column: span 1 !important;
+        }}
+    }}
+
+    /* --- ASYMMETRICAL OVERLAP SYSTEM (BULLETPROOF GRID) --- */
+    .asym-container {{
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        align-items: center;
+        width: 100%;
+        position: relative;
+    }}
+
+    .asym-text-box {{
+        grid-column: 1 / 7; /* Stays locked in the first 6 columns */
+        grid-row: 1;
+        z-index: 5;
+        background: var(--card);
+        padding: 4rem 3rem;
+        border-radius: 24px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        border-left: 8px solid var(--p);
+    }}
+
+    .asym-image {{
+        grid-column: 5 / 13; /* Starts exactly under the right edge of the text box */
+        grid-row: 1;
+        z-index: 1;
+        height: 550px;
+        border-radius: 32px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        background: #e2e8f0; /* Gray placeholder if image takes a second to load */
+    }}
+
+    .asym-image img {{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }}
+
+    .asym-badge {{
+        position: absolute;
+        bottom: 30px; 
+        right: 30px;
+        background: var(--s); 
+        color: #fff !important;
+        padding: 1rem 1.5rem;
+        font-weight: 800; 
+        font-size: 1.1rem;
+        border-radius: 16px;
+        z-index: 6;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }}
+
+    .tagline {{
+        color: var(--p);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }}
 
     /* LANGUAGE MODAL PHYSICS */
     #lang-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 3000; }}
@@ -488,20 +622,16 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         font-size: 0.75rem !important;
         margin-bottom: 20px !important;
     }}
-
+    
     /* ==========================================================
-       MOBILE OPTIMIZATION (THE FIX)
+       MOBILE OPTIMIZATION (THE FIX WITH BENTO & ASYM SUPPORT)
        ========================================================== */
     @media (max-width: 992px) {{
         /* Nav Menu Collapse Fixed Layering */
         nav#main-navbar .nav-links {{ 
-            position: absolute; 
-            top: 100%; 
-            left: -100%; 
-            width: 100vw; 
-            height: 100dvh; 
+            position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); 
             background: var(--bg); flex-direction: column; padding: 3rem; 
-            transition: left 0.4s ease; align-items: center; justify-content: flex-start; 
+            transition: 0.4s ease; align-items: center; justify-content: flex-start; 
             gap: 2.5rem; z-index: 1999; overflow-y: auto; 
         }}
         nav#main-navbar .nav-links.active {{ left: 0; }}
@@ -510,6 +640,9 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         
         /* Grid Breakdowns */
         .about-grid, .detail-view, .grid-3, .modern-grid-3, .contact-grid {{ grid-template-columns: 1fr !important; gap: 3rem; }}
+        
+        /* Contact Form Fix */
+        .contact-grid .card {{ padding: 2rem !important; }}
         
         /* Hero Refinements for small screens */
         .modern-hero-grid {{ grid-template-columns: 1fr; text-align: center; }}
@@ -528,99 +661,72 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         .stats-ribbon-container {{ margin-top: -30px; }}
         
         /* Badges overlapping fixed */
-        .about-experience-badge {{ position: relative; bottom: 0; right: 0; margin-top: -30px; margin-left: auto; margin-right: auto; width: fit-content; z-index: 10; }}
+        .about-experience-badge {{ position: relative; bottom: 0; right: 0; margin-top: -30px; margin-left: 20px; width: fit-content; z-index: 10; }}
         
         .pricing-table th, .pricing-table td {{ padding: 1.2rem 1rem; font-size: 0.95rem; }}
-    }}
-    
-   @media (max-width: 480px) {{
-         p {{ 
-            text-align: left; /* Optional: We usually switch back to left-align on very narrow screens to prevent 'rivers' of white space */
-            hyphens: auto; 
-        }}
-        /* 1. ELIMINATE THE BLUE GAP & HORIZONTAL GLITCHES */
-        html, body {{ 
-            width: 100% !important; 
-            margin: 0 !important; 
-            padding: 0 !important; 
-            overflow-x: hidden !important; 
-            background: var(--bg); /* Matches background to theme to hide gaps */
-        }}
 
-        .container {{ 
-            width: 100% !important; 
-            max-width: 100% !important; 
-            padding: 0 24px !important; /* Proper breathing room for text */
-            margin: 0 auto !important;
-            box-sizing: border-box !important;
-        }}
+        /* --- NEW: MOBILE BENTO & ASYMMETRICAL --- */
+        .bento-grid, #features .container > div:last-child {{ grid-template-columns: 1fr !important; }}
+        .bento-large, #features .container > div:last-child > div:first-child {{ grid-column: span 1 !important; grid-row: auto !important; }}
 
-        /* 2. FOOTER SAFE ZONE (Prevents buttons from covering links) */
-        footer {{ 
-            padding: 4rem 0 10rem 0 !important; /* Extra bottom padding so you can scroll past the buttons */
+        .asym-container {{ 
+            display: flex !important; 
+            flex-direction: column-reverse; /* Image goes to top, text to bottom */
         }}
-        .footer-grid {{ 
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 3rem !important; 
-            text-align: left !important;
-        }}
-
-        /* 3. HERO & TEXT SCALING */
-        h1, #hero-title, .modern-hero-text h1 {{ 
-            font-size: 2.4rem !important; 
-            line-height: 1.1 !important; 
-            margin-bottom: 1.5rem !important;
-        }}
-        
-        #hero-sub, .modern-hero-text p {{
-            font-size: 1.1rem !important; 
-            opacity: 0.8;
-            margin-bottom: 2.5rem !important;
-        }}
-
-        /* 4. BUTTON STACKING */
-        .hero-btn-group {{ 
-            display: flex; 
-            flex-direction: column !important; 
-            gap: 12px; 
+        .asym-image {{ 
             width: 100%; 
+            height: 400px; 
+            grid-column: unset;
         }}
-        .hero-btn-group .btn {{ width: 100% !important; }}
+        .asym-text-box {{ 
+            width: 90%; 
+            margin: -80px auto 0 auto; /* Pulls text box up perfectly over the image */
+            padding: 2.5rem; 
+            border-left: none;
+            border-top: 8px solid var(--p); /* Moves the brand color line to the top */
+            grid-column: unset;
+        }}
+        .asym-badge {{ 
+            bottom: 100px; /* Pushes badge up above the overlapping text */
+            right: 20px; 
+        }}
+    }}
 
-        /* 5. FLOATING BUTTON TRAFFIC CONTROL (Corner Pinning) */
-        /* We move them to 10px from the edge so they don't block the center text */
-        #wa-widget {{ 
-            bottom: 15px !important; 
-            right: 10px !important; 
-            scale: 0.8; 
-        }}
-        #theme-toggle {{ 
-            bottom: 15px !important; 
-            left: 10px !important; 
-            scale: 0.8; 
-            background: rgba(255,255,255,0.9); /* Makes toggle stand out on dark footers */
-            border: 1px solid rgba(0,0,0,0.1);
-        }}
-        #cart-float {{ 
-            bottom: 80px !important; 
-            right: 10px !important; 
-            scale: 0.8; 
-        }}
-        #voice-btn {{ 
-            bottom: 140px !important; 
-            right: 10px !important; 
-            scale: 0.8; 
+    @media (max-width: 480px) {{
+        /* Shrink the overall detail container to fit the phone screen */
+        .detail-view {{ 
+            padding: 1.5rem !important; 
+            margin: 10px !important;
+            gap: 1.5rem !important;
+            border-radius: 20px !important;
         }}
 
-        /* 6. COMPONENT FIXES */
-        .modern-hero-visual {{ height: 300px !important; margin-top: 2rem !important; }}
-        .visual-frame {{ border-width: 4px !important; }}
-        .stat-block h3 {{ font-size: 2.8rem !important; }}
-        .modern-feature-card {{ padding: 2rem !important; }}
-        
-        /* Pricing Table Mobile Fix */
-        .pricing-table {{ min-width: 100% !important; }}
-        .pricing-table th, .pricing-table td {{ padding: 1rem 0.5rem !important; font-size: 0.85rem !important; }}
+        /* Fix the "Add to Cart" button overlap */
+        .product-info-column {{
+            padding-bottom: 80px !important; /* Creates space for the floating buttons */
+        }}
+
+        .product-price-tag {{
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }}
+
+        /* Scale down the main product image so it doesn't tower over the text */
+        #main-img, model-viewer {{
+            height: 300px !important;
+        }}
+
+        /* FINAL FIX: Ensure the Add to Cart button is always reachable */
+        .btn-accent {{
+            width: 100% !important;
+            min-width: unset !important;
+            padding: 1rem !important;
+            font-size: 0.9rem !important;
+        }}
+
+        /* Reposition Floating Icons to the VERY edge */
+        #wa-widget {{ bottom: 10px !important; right: 10px !important; scale: 0.8; }}
+        #theme-toggle {{ bottom: 10px !important; left: 10px !important; scale: 0.8; }}
+        #voice-btn {{ bottom: 70px !important; right: 10px !important; scale: 0.8; }}
     }}
     """
