@@ -17,7 +17,7 @@ THEME_REGISTRY = {
     "10. Tech Hardware (Neon Dark)": {"bg": "#0d1117", "txt": "#c9d1d9", "card": "#161b22", "p": "#58a6ff", "s": "#238636", "nav": "rgba(13,17,23,0.9)", "shadow": "0 0 20px rgba(88,166,255,0.1)", "radius": "12px", "border": "1px solid #30363d"},
 
     # --- HEALTH & CLINICS ---
-    "11. Medical Platinum (TrusABOUTt)": {"bg": "#ffffff", "txt": "#1e293b", "card": "#f8fafc", "p": "#0284c7", "s": "#059669", "nav": "rgba(255,255,255,0.95)", "shadow": "0 4px 6px -1px rgba(0,0,0,0.05)", "radius": "12px", "border": "1px solid #e2e8f0"},
+    "11. Medical Platinum (Trust)": {"bg": "#ffffff", "txt": "#1e293b", "card": "#f8fafc", "p": "#0284c7", "s": "#059669", "nav": "rgba(255,255,255,0.95)", "shadow": "0 4px 6px -1px rgba(0,0,0,0.05)", "radius": "12px", "border": "1px solid #e2e8f0"},
     "12. Dental Aqua (Clean)": {"bg": "#f0fdfa", "txt": "#0f172a", "card": "#ffffff", "p": "#0d9488", "s": "#0284c7", "nav": "rgba(240,253,250,0.9)", "shadow": "0 10px 25px rgba(13,148,136,0.1)", "radius": "16px", "border": "1px solid #ccfbf1"},
     "13. Fitness Aggressive (Gym)": {"bg": "#0a0a0a", "txt": "#ffffff", "card": "#171717", "p": "#e11d48", "s": "#facc15", "nav": "rgba(10,10,10,0.9)", "shadow": "0 10px 30px rgba(225,29,72,0.2)", "radius": "8px", "border": "1px solid #262626"},
     "14. Spa Therapy (Calm)": {"bg": "#faf5f0", "txt": "#4a443c", "card": "#ffffff", "p": "#bfa58a", "s": "#8c735a", "nav": "rgba(250,245,240,0.9)", "shadow": "0 8px 20px rgba(191,165,138,0.1)", "radius": "24px", "border": "1px solid #f0e6da"},
@@ -39,10 +39,8 @@ THEME_REGISTRY = {
 }
 
 def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color, h1_size, p_size, cta_bg, cta_txt):
-    # 1. Fetch the base colors from the registry
     t = THEME_REGISTRY.get(theme_name, THEME_REGISTRY["1. Stripe Cloud (Modern SaaS)"])
     
-    # 2. Define special effects (Gradient, Hover, Backdrop)
     gradient_text = ""
     if any(x in theme_name for x in ["SaaS", "Dark", "Creative"]):
         gradient_text = f"background: linear-gradient(90deg, {t['p']}, {t['s']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
@@ -53,7 +51,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     backdrop = "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" if any(x in theme_name for x in ["Glass", "Mesh"]) else ""
 
-    # --- HERO ALIGNMENT LOGIC ---
     if hero_align == "Center":
         h_align = "text-align: center; justify-content: center;"
         grid_cols = "1fr"
@@ -67,15 +64,12 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         txt_align = "left"
         p_margin = "0 0 1.5rem 0"
 
-    # 3. Return exact CSS with added Mobile Fixes and Asymmetrical Engine
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
         --nav: {t['nav']}; --card: {t['card']};
         --radius: {t['radius']}; --shadow: {t['shadow']}; --border: {t['border']};
         --h-font: '{h_font}', sans-serif; --b-font: '{b_font}', sans-serif;
-        
-        /* MANUAL OVERRIDES */
         --txt-h: {h_color};
         --txt-b: {b_color};
         --h1-size: {h1_size};
@@ -93,11 +87,10 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         font-family: var(--b-font); 
         font-size: var(--p-size); 
         line-height: 1.6; 
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-x: hidden; 
         width: 100vw; max-width: 100%;
     }}
     
-    /* FIX: Stop iframes from breaking layout on mobile */
     iframe, model-viewer {{ max-width: 100%; }}
     
     h1, h2, h3, h4 {{ 
@@ -113,190 +106,74 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     p {{ margin-bottom: 1.2rem; }}
 
     
-    /* 2026 ADVANCED HERO ENGINE */
+    /* HERO ENGINE */
     .hero {{ position: relative; min-height: 95vh; overflow: hidden; display: flex; {h_align} padding-top: 120px; }}
     .carousel-slide {{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; transform: scale(1.05); }}
     .carousel-slide.active {{ opacity: 1; transform: scale(1); }}
     .hero-overlay {{ background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }}
     .hero-content {{ z-index: 2; position: relative; width: 100%; padding: 0 5%; max-width: 1400px; }}
     .hero h1 {{ color: #ffffff !important; text-shadow: 0 10px 30px rgba(0,0,0,0.5); -webkit-text-fill-color: #fff; background: none; }}
-    .hero p {{ color: rgba(255,255,255,0.9) !important; font-size: clamp(1.2rem, 2vw, 1.4rem); max-width: 800px; margin: 0 {'auto' if hero_align == 'Center' else '0'} 2.5rem {'auto' if hero_align == 'Center' else '0'}; font-weight: 400; }}
+    .hero p {{ color: rgba(255,255,255,0.9) !important; font-size: clamp(1.2rem, 2vw, 1.4rem); max-width: 800px; margin: {p_margin}; font-weight: 400; }}
     
-    /* BENTO-STYLE GRID LAYOUTS */
+    /* GENERIC LAYOUTS */
     .container {{ max-width: 1300px; margin: 0 auto; padding: 0 2rem; }}
     main section {{ padding: clamp(2rem, 8vw, 8rem) 0; position: relative; }}
     .section-head {{ text-align: center; margin-bottom: clamp(3rem, 5vw, 5rem); }}
-    .grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }}
     .about-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }}
-    
-    /* FIX: Added missing contact-grid */
     .contact-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: stretch; }}
     
-    /* 2026 CARD PHYSICS & MICRO-INTERACTIONS */
+    /* CARD PHYSICS */
     .card {{ 
-        background: var(--card); 
-        border-radius: var(--radius); 
-        border: var(--border); 
-        box-shadow: var(--shadow);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        display: flex; 
-        flex-direction: column; 
-        overflow: hidden; 
-        position: relative;
-        color: var(--txt-b) !important;
-        {backdrop}
+        background: var(--card); border-radius: var(--radius); border: var(--border); box-shadow: var(--shadow);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; 
+        overflow: hidden; position: relative; color: var(--txt-b) !important; {backdrop}
     }}
-
-    /* Premium Top-Border Glow */
-    .card::before {{ 
-        content: ''; 
-        position: absolute; 
-        top: 0; left: 0; right: 0; 
-        height: 4px; 
-        background: linear-gradient(90deg, var(--p), var(--s)); 
-        opacity: 0; 
-        transition: 0.3s; 
-        z-index: 5;
-    }}
-
-    .card:hover {{ 
-        transform: translateY(-10px); 
-        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); 
-    }}
-
-    .card:hover::before {{ 
-        opacity: 1; 
-    }}
+    .card::before {{ content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--p), var(--s)); opacity: 0; transition: 0.3s; z-index: 5; }}
+    .card:hover {{ transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); }}
+    .card:hover::before {{ opacity: 1; }}
     
-    /* REFINED PRODUCT TYPOGRAPHY */
-    .card h3 {{ 
-        font-size: 1.35rem !important;
-        font-weight: 800; 
-        line-height: 1.2; 
-        margin-bottom: 0.4rem; 
-        color: var(--txt-h) !important;
-        letter-spacing: -0.02em;
-    }}
-
-    .card-body {{ 
-        padding: 2rem; 
-        display: flex; 
-        flex-direction: column; 
-        flex-grow: 1; 
-    }}
-
-    .card-desc {{ 
-        font-size: 0.95rem; 
-        line-height: 1.6;
-        opacity: 0.7; 
-        margin-bottom: 1.5rem; 
-        display: -webkit-box; 
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical; 
-        overflow: hidden; 
-        color: var(--txt-b);
-    }}
-
-    .prod-img {{ 
-        width: 100%; 
-        height: 260px;
-        object-fit: cover; 
-        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
-    }}
-
-    .card:hover .prod-img {{ 
-        transform: scale(1.08); 
-    }}
+    .card h3 {{ font-size: 1.35rem !important; font-weight: 800; line-height: 1.2; margin-bottom: 0.4rem; color: var(--txt-h) !important; letter-spacing: -0.02em; }}
+    .card-body {{ padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; }}
+    .card-desc {{ font-size: 0.95rem; line-height: 1.6; opacity: 0.7; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--txt-b); }}
+    .prod-img {{ width: 100%; height: 260px; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }}
+    .card:hover .prod-img {{ transform: scale(1.08); }}
     
-    /* ENTERPRISE BUTTON COMPONENTS */
-    .btn {{ 
-        display: inline-flex; align-items: center; justify-content: center;
-        padding: 1.2rem 2.5rem; border-radius: var(--radius); 
-        font-weight: 800; text-decoration: none; transition: all 0.3s ease; 
-        text-transform: uppercase; cursor: pointer; border: none; text-align: center;
-        font-size: 0.95rem; letter-spacing: 1.5px; position: relative; overflow: hidden;
-    }}
+    /* BUTTONS */
+    .btn {{ display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 2.5rem; border-radius: var(--radius); font-weight: 800; text-decoration: none; transition: all 0.3s ease; text-transform: uppercase; cursor: pointer; border: none; text-align: center; font-size: 0.95rem; letter-spacing: 1.5px; position: relative; overflow: hidden; }}
     .btn-primary {{ background: var(--p); color: #fff !important; }}
     .btn-accent {{ background: var(--s); color: #fff !important; }}
     .btn:hover {{ {btn_hover} }}
     
-    /* GLASSMORPHISM NAVIGATION */
-    nav#main-navbar {{ 
-        position: fixed; top: 0; width: 100%; z-index: 2000; /* FIXED: Elevated above everything */
-        background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(128,128,128,0.1); padding: 1.2rem 0; transition: top 0.3s, background 0.3s; 
-    }}
+    /* NAVIGATION */
+    nav#main-navbar {{ position: fixed; top: 0; width: 100%; z-index: 2000; background: var(--nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(128,128,128,0.1); padding: 1.2rem 0; transition: top 0.3s, background 0.3s; }}
     .nav-flex {{ display: flex; justify-content: space-between; align-items: center; }}
     .nav-links {{ display: flex; align-items: center; gap: 2rem; }}
     .nav-links a {{ text-decoration: none; font-weight: 600; color: var(--txt-h); font-size: 0.95rem; transition: 0.2s; position: relative; }}
     .nav-links a::after {{ content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: var(--p); transition: 0.3s; }}
     .nav-links a:hover::after {{ width: 100%; }}
     .nav-links a:hover {{ color: var(--p); }}
-    .mobile-menu {{ display: none; font-size: 1.8rem; cursor: pointer; background:none; border:none; color:var(--txt-h); z-index: 2001; }} /* Ensure hamburger is clickable */
+    .mobile-menu {{ display: none; font-size: 1.8rem; cursor: pointer; background:none; border:none; color:var(--txt-h); z-index: 2001; }}
     
-    /* PREMIUM ASYMMETRICAL PRODUCT VIEW */
-    .detail-view {{ 
-        display: grid; 
-        grid-template-columns: 0.8fr 1.2fr;
-        gap: 6rem; 
-        align-items: start; 
-        background: var(--card); 
-        padding: 5rem; 
-        border-radius: 32px; 
-        box-shadow: var(--shadow); 
-        border: var(--border); 
-        position: relative;
-    }}
-
-    .product-media-column {{ 
-        position: sticky; 
-        top: 150px;
-    }}
-
-    .product-price-tag {{ 
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        background: rgba(5, 150, 105, 0.1);
-        color: #059669; 
-        font-size: 2rem; 
-        font-weight: 900; 
-        border-radius: 50px;
-        margin-bottom: 2rem; 
-    }}
-
-    .product-info-column h1 {{ 
-        font-size: clamp(2.5rem, 4vw, 4.5rem); 
-        margin-bottom: 1.5rem; 
-        line-height: 1;
-    }}
-
-    .product-specs-container {{
-        font-size: 1.15rem;
-        line-height: 1.8;
-        color: var(--txt-b);
-        opacity: 0.9;
-    }}
-
-    .product-specs-container strong {{
-        display: block;
-        margin-top: 2rem;
-        font-size: 1.3rem;
-        color: var(--p);
-    }}
-
+    /* ASYMMETRICAL PRODUCT VIEW */
+    .detail-view {{ display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 6rem; align-items: start; background: var(--card); padding: 5rem; border-radius: 32px; box-shadow: var(--shadow); border: var(--border); position: relative; }}
+    .product-media-column {{ position: sticky; top: 150px; }}
+    .product-price-tag {{ display: inline-block; padding: 0.5rem 1.5rem; background: rgba(5, 150, 105, 0.1); color: #059669; font-size: 2rem; font-weight: 900; border-radius: 50px; margin-bottom: 2rem; }}
+    .product-info-column h1 {{ font-size: clamp(2.5rem, 4vw, 4.5rem); margin-bottom: 1.5rem; line-height: 1; }}
+    .product-specs-container {{ font-size: 1.15rem; line-height: 1.8; color: var(--txt-b); opacity: 0.9; }}
+    .product-specs-container strong {{ display: block; margin-top: 2rem; font-size: 1.3rem; color: var(--p); }}
     .product-meta-box {{ background: rgba(128,128,128,0.05); padding: 2rem; border-radius: var(--radius); margin-bottom: 2.5rem; border-left: 5px solid var(--p); }}
     .gallery-thumbs {{ display: flex; gap: 15px; margin-top: 20px; overflow-x: auto; padding-bottom:10px; }}
     .thumb {{ width: 80px; height: 80px; border-radius: var(--radius); object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: 0.3s; }}
     .thumb:hover, .thumb.active {{ border-color: var(--p); opacity: 1; transform: translateY(-5px); }}
     
-    /* RESPONSIVE PRICING TABLES */
+    /* PRICING */
     .pricing-wrapper {{ overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; margin: 0 auto; box-shadow: var(--shadow); border-radius: var(--radius); background: var(--card); border: var(--border); }}
     .pricing-table {{ width: 100%; border-collapse: collapse; min-width: 800px; }}
     .pricing-table th {{ background: var(--p); color: white; padding: 2rem; text-align: left; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }}
     .pricing-table td {{ padding: 2rem; border-bottom: 1px solid rgba(128,128,128,0.1); color: var(--txt-b); font-size: 1.1rem; }}
     .pricing-table tr:hover td {{ background: rgba(128,128,128,0.03); }}
 
-    /* MODERN FOOTER */
+    /* FOOTER */
     footer {{ background: #0f172a; color: #f8fafc; padding: 6rem 0 3rem 0; margin-top: auto; border-top: 4px solid var(--p); }}
     .footer-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 4rem; }}
     footer a {{ color: #94a3b8 !important; text-decoration: none; display: block; margin-bottom: 1rem; transition: 0.3s; font-size: 1.05rem; }}
@@ -304,7 +181,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .social-icon {{ width: 28px; height: 28px; fill: #94a3b8; transition: 0.3s; }}
     .social-icon:hover {{ fill: var(--p); transform: scale(1.2) translateY(-3px); }}
 
-    /* ACCESSIBILITY & UTILS */
+    /* UTILS */
     .reveal {{ opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 10; position:relative; }}
     .reveal.active {{ opacity: 1; transform: translateY(0); }}
     details {{ background: var(--card); border: var(--border); border-radius: var(--radius); margin-bottom: 1.5rem; padding: 1.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition:0.3s; }}
@@ -314,14 +191,10 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     /* SMART CART PHYSICS & OVERLAYS */
     #cart-float {{ position: fixed; bottom: 100px; right: 30px; background: var(--p); color: #fff; padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000; display: flex; align-items: center; gap: 10px; font-weight: 800; transition: 0.3s; border: 2px solid rgba(255,255,255,0.1); }}
     #cart-float:hover {{ transform: scale(1.05) translateY(-5px); }}
-    
     #cart-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 3000; }}
-    
     #cart-modal {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 2.5rem; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); z-index: 3001; border: var(--border); color: var(--txt-b); }}
     #cart-modal h3 {{ margin-bottom: 1.5rem; color: var(--p); font-size: 1.8rem; border-bottom: 1px solid rgba(128,128,128,0.1); padding-bottom: 1rem; }}
-    
     .cart-item {{ display: flex; justify-content: space-between; border-bottom: 1px solid rgba(128,128,128,0.1); padding: 15px 0; font-size: 1.1rem; }}
-    
     .local-vault {{ background: rgba(128,128,128,0.05); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border: 1px solid rgba(128,128,128,0.1); }}
     .local-vault input {{ width: 100%; padding: 1rem; margin-top: 0.5rem; border-radius: 8px; border: var(--border); background: var(--bg); color: var(--txt-b); font-size: 1rem; }}
     
@@ -334,16 +207,12 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
        2026 STRUCTURAL LAYOUT UPGRADES 
        ========================================= */
        
-    /* 1. ASYMMETRICAL HERO WITH FLOATING GLASS */
     .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; z-index: 1; }}
     .modern-hero-bg {{ position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(128,128,128,0.05) 0%, transparent 50%); z-index: -1; animation: rotate 60s linear infinite; }}
     .modern-hero-grid {{ display: grid; grid-template-columns: {grid_cols}; gap: 4rem; align-items: center; width: 100%; text-align: {txt_align}; }}
-    
     .modern-hero-text {{ display: flex; flex-direction: column; align-items: {flex_align}; }}
     .modern-hero-text p {{ margin: {p_margin}; max-width: 800px; }}
-    
     .hero-badge {{ display: inline-block; padding: 0.5rem 1rem; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--txt-h); text-transform: uppercase; letter-spacing: 1px; width: fit-content; }}
-    
     .hero-btn-group {{ display: flex; gap: 1rem; flex-wrap: wrap; justify-content: {flex_align}; }}
     .btn-outline-light {{ background: transparent; color: var(--txt-h) !important; border: 2px solid var(--txt-h); }}
     .btn-outline-light:hover {{ background: var(--txt-h); color: var(--bg) !important; }}
@@ -354,7 +223,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .glow-1 {{ width: 300px; height: 300px; background: var(--p); top: -50px; right: -50px; }}
     .glow-2 {{ width: 250px; height: 250px; background: var(--s); bottom: -50px; left: -50px; }}
     
-    /* 2. FLOATING STATS RIBBON */
     .stats-ribbon-container {{ margin-top: -60px; position: relative; z-index: 100; padding: 0 20px; }}
     .stats-ribbon {{ background: var(--card); border-radius: 24px; padding: 3rem; display: flex; justify-content: space-around; align-items: center; box-shadow: var(--shadow); border: var(--border); backdrop-filter: blur(20px); }}
     .stat-block {{ text-align: center; }}
@@ -362,15 +230,6 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .stat-block p {{ font-size: 1.1rem; font-weight: 600; color: var(--txt-b); text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin: 0; }}
     .stat-divider {{ width: 2px; height: 60px; background: rgba(128,128,128,0.2); }}
 
-    /* 3. OLD FEATURE GRID (Fallback) */
-    .section-subtitle {{ font-size: 1.2rem; color: var(--txt-b); opacity: 0.7; margin-top: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }}
-    .modern-grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }}
-    .modern-feature-card {{ background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: var(--shadow); border: var(--border); transition: 0.4s; display: flex; flex-direction: column; gap: 1.5rem; }}
-    .modern-feature-card:hover {{ transform: translateY(-10px); border-color: var(--p); }}
-    .feature-icon-wrapper {{ width: 64px; height: 64px; border-radius: 16px; background: rgba(128,128,128,0.05); display: flex; align-items: center; justify-content: center; color: var(--s); border: 1px solid rgba(128,128,128,0.1); }}
-    .feature-content h3 {{ font-size: 1.5rem; margin-bottom: 1rem; color: var(--txt-h); }}
-    
-    /* 4. OLD ABOUT SECTION (Fallback) */
     .modern-about {{ background: rgba(128,128,128,0.02); overflow: hidden; }}
     .about-visual {{ position: relative; }}
     .about-main-img {{ width: 100%; height: 600px; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow); }}
@@ -381,13 +240,16 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     
     @keyframes rotate {{ from {{ transform: rotate(0deg); }} to {{ transform: rotate(360deg); }} }}
 
-
-    /* --- BENTO GRID SYSTEM (TIGHT-STACK RESET) --- */
+    /* ========================================================================= */
+    /* --- RESTORED SYMMETRICAL 3-COLUMN FEATURE GRID --- */
+    /* ========================================================================= */
+    
+    /* Applies a perfectly symmetrical 3-column grid */
     #features .container > div:last-child {{
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 2rem !important;
-        align-items: stretch !important; /* FIXED: Forces cards to share height and not overlap */
+        align-items: stretch !important; /* Forces all cards in a row to match height */
     }}
 
     .modern-feature-card, .bento-card {{
@@ -395,7 +257,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         flex-direction: column !important;
         justify-content: flex-start !important; 
         align-items: flex-start !important;
-        height: 100% !important; /* FIXED: Prevents bottom elements from overlapping */
+        height: 100% !important; 
         min-height: 100% !important; 
         padding: 2.5rem !important;
         background: var(--card);
@@ -404,22 +266,26 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         box-shadow: var(--shadow);
     }}
 
-    /* This targets the first wide card ("Luxury Residential Sales") */
-    #features .container > div:last-child > div:first-child {{
-        grid-column: span 2 !important;
-    }}
-
     .feature-icon-wrapper {{
         margin-bottom: 1.2rem !important;
         display: flex !important;
         flex-grow: 0 !important; 
         height: fit-content !important;
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        background: rgba(128,128,128,0.05);
+        align-items: center;
+        justify-content: center;
+        color: var(--s);
+        border: 1px solid rgba(128,128,128,0.1);
+        flex-shrink: 0;
     }}
 
     .feature-content {{
         display: flex !important;
         flex-direction: column !important;
-        flex-grow: 1 !important; /* FIXED: Forces text box to use available space properly */
+        flex-grow: 1 !important; 
         width: 100%;
         margin: 0 !important;
         padding: 0 !important;
@@ -438,79 +304,18 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         opacity: 0.8;
     }}
 
-    /* Mobile Fix */
-    @media (max-width: 992px) {{
-        #features .container > div:last-child {{
-            grid-template-columns: 1fr !important;
-        }}
-        #features .container > div:last-child > div:first-child {{
-            grid-column: span 1 !important;
-        }}
-    }}
+    /* ========================================================================= */
+    /* --- ASYMMETRICAL OVERLAP SYSTEM --- */
+    /* ========================================================================= */
+    
+    .asym-container {{ display: grid; grid-template-columns: repeat(12, 1fr); align-items: center; width: 100%; position: relative; }}
+    .asym-text-box {{ grid-column: 1 / 7; grid-row: 1; z-index: 5; background: var(--card); padding: 4rem 3rem; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); border-left: 8px solid var(--p); }}
+    .asym-image {{ grid-column: 5 / 13; grid-row: 1; z-index: 1; height: 550px; border-radius: 32px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); background: #e2e8f0; }}
+    .asym-image img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+    .asym-badge {{ position: absolute; bottom: 30px; right: 30px; background: var(--s); color: #fff !important; padding: 1rem 1.5rem; font-weight: 800; font-size: 1.1rem; border-radius: 16px; z-index: 6; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }}
+    .tagline {{ color: var(--p); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; font-size: 0.9rem; }}
 
-    /* --- ASYMMETRICAL OVERLAP SYSTEM (BULLETPROOF GRID) --- */
-    .asym-container {{
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        align-items: center;
-        width: 100%;
-        position: relative;
-    }}
-
-    .asym-text-box {{
-        grid-column: 1 / 7; /* Stays locked in the first 6 columns */
-        grid-row: 1;
-        z-index: 5;
-        background: var(--card);
-        padding: 4rem 3rem;
-        border-radius: 24px;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-        border-left: 8px solid var(--p);
-    }}
-
-    .asym-image {{
-        grid-column: 5 / 13; /* Starts exactly under the right edge of the text box */
-        grid-row: 1;
-        z-index: 1;
-        height: 550px;
-        border-radius: 32px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        background: #e2e8f0; /* Gray placeholder if image takes a second to load */
-    }}
-
-    .asym-image img {{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }}
-
-    .asym-badge {{
-        position: absolute;
-        bottom: 30px; 
-        right: 30px;
-        background: var(--s); 
-        color: #fff !important;
-        padding: 1rem 1.5rem;
-        font-weight: 800; 
-        font-size: 1.1rem;
-        border-radius: 16px;
-        z-index: 6;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }}
-
-    .tagline {{
-        color: var(--p);
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-    }}
-
-    /* LANGUAGE MODAL PHYSICS */
+    /* LANGUAGE & TOP BAR */
     #lang-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 3000; }}
     #lang-modal {{ display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); width: 90%; max-width: 500px; padding: 3rem; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); z-index: 3001; border: var(--border); color: var(--txt-b); }}
     #lang-modal h3 {{ margin-bottom: 1.5rem; color: var(--p); font-size: 1.8rem; border-bottom: 1px solid rgba(128,128,128,0.1); padding-bottom: 1rem; text-align:center; }}
@@ -518,213 +323,73 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     .lang-opt {{ display: flex; align-items: center; justify-content: center; width: 100%; padding: 1.2rem; border: var(--border); border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; background: var(--bg); }}
     .lang-opt:hover {{ background: var(--p); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }}
 
-    /* TOP PROMO BAR PHYSICS */
     #top-bar {{ position: fixed; top: 0; left: 0; width: 100%; background: var(--s); color: #fff; text-align: center; padding: 12px; z-index: 2005; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; transition: transform 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }}
     #top-bar a {{ color: #fff !important; text-decoration: none; text-underline-offset: 4px; margin-left: 10px; transition: 0.3s; }}
     #top-bar a:hover {{ opacity: 0.8; }}
 
-    /* DARK MODE TOGGLE PHYSICS */
     #theme-toggle {{ position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; font-size: 1.5rem; border: var(--border); transition: 0.3s; }}
     #theme-toggle:hover {{ transform: scale(1.1) rotate(15deg); border-color: var(--p); }}
 
-    /* VOICE SEARCH FLOATING PHYSICS */
-    #voice-btn {{ 
-        position: fixed; 
-        bottom: 170px;
-        right: 30px; 
-        background: var(--p); 
-        color: #fff; 
-        border-radius: 50%; 
-        width: 50px; 
-        height: 50px; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        font-size: 1.2rem; 
-        cursor: pointer; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
-        z-index: 1000; 
-        border: 2px solid rgba(255,255,255,0.1);
-        transition: 0.3s;
-    }}
+    #voice-btn {{ position: fixed; bottom: 170px; right: 30px; background: var(--p); color: #fff; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; border: 2px solid rgba(255,255,255,0.1); transition: 0.3s; }}
     #voice-btn:hover {{ transform: scale(1.1); background: var(--s); }}
-
-    /* VOICE LISTENING ANIMATION */
-    .listening {{ 
-        animation: voice-pulse 1.5s infinite; 
-        background: var(--s) !important; 
-    }}
+    .listening {{ animation: voice-pulse 1.5s infinite; background: var(--s) !important; }}
     
-    @keyframes voice-pulse {{ 
-        0% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.4); }} 
-        70% {{ transform: scale(1.2); box-shadow: 0 0 0 20px rgba(255, 0, 60, 0); }} 
-        100% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }} 
-    }}
+    @keyframes voice-pulse {{ 0% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.4); }} 70% {{ transform: scale(1.2); box-shadow: 0 0 0 20px rgba(255, 0, 60, 0); }} 100% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }} }}
 
-/* --- SHARE BUTTON & ICON CONSTRAINTS --- */
-    .share-row {{ 
-        display: flex; 
-        gap: 12px; 
-        flex-wrap: wrap; 
-        align-items: center;
-        margin-top: 1.5rem;
-    }}
-
-    .share-btn {{ 
-        width: 45px !important; 
-        height: 45px !important; 
-        display: flex !important; 
-        align-items: center; 
-        justify-content: center; 
-        border-radius: 12px; 
-        transition: 0.3s;
-        text-decoration: none;
-    }}
-
-    /* This targets the SVGs specifically to stop them from becoming giant */
-    .share-btn svg, .share-row svg {{ 
-        width: 22px !important; 
-        height: 22px !important; 
-        fill: white; 
-    }}
-
-    .bg-wa {{ background: #25D366; }}
-    .bg-fb {{ background: #1877F2; }}
-    .bg-x {{ background: #000000; }}
-    .bg-li {{ background: #0A66C2; }}
-    .bg-link {{ background: #64748b; }}
+    .share-row {{ display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 1.5rem; }}
+    .share-btn {{ width: 45px !important; height: 45px !important; display: flex !important; align-items: center; justify-content: center; border-radius: 12px; transition: 0.3s; text-decoration: none; }}
+    .share-btn svg, .share-row svg {{ width: 22px !important; height: 22px !important; fill: white; }}
+    .bg-wa {{ background: #25D366; }} .bg-fb {{ background: #1877F2; }} .bg-x {{ background: #000000; }} .bg-li {{ background: #0A66C2; }} .bg-link {{ background: #64748b; }}
     
-
-    /* --- PRODUCT DETAIL SIZE OVERRIDES --- */
-    
-    /* 1. The Title (The Consultant Pro) */
-    .product-info-column h1 {{ 
-        font-size: clamp(1.8rem, 3vw, 2.5rem) !important; 
-        margin-bottom: 1rem !important;
-    }}
-
-    /* 2. The Price ($499) */
-    .product-price-tag {{ 
-        font-size: 1.4rem !important; 
-        padding: 0.4rem 1.2rem !important;
-        margin-bottom: 1.5rem !important;
-    }}
-
-    /* 3. The Description Text (The Ultimate Industrial...) */
-    .product-specs-container, .product-specs-container p {{
-        font-size: 1rem !important; 
-        line-height: 1.6 !important;
-        opacity: 0.8 !important;
-    }}
-    
-    /* Shrink the back button too for balance */
-    .back-btn {{
-        font-size: 0.75rem !important;
-        margin-bottom: 20px !important;
-    }}
+    .product-info-column h1 {{ font-size: clamp(1.8rem, 3vw, 2.5rem) !important; margin-bottom: 1rem !important; }}
+    .product-price-tag {{ font-size: 1.4rem !important; padding: 0.4rem 1.2rem !important; margin-bottom: 1.5rem !important; }}
+    .product-specs-container, .product-specs-container p {{ font-size: 1rem !important; line-height: 1.6 !important; opacity: 0.8 !important; }}
+    .back-btn {{ font-size: 0.75rem !important; margin-bottom: 20px !important; }}
     
     /* ==========================================================
-       MOBILE OPTIMIZATION (THE FIX WITH BENTO & ASYM SUPPORT)
+       MOBILE OPTIMIZATION 
        ========================================================== */
     @media (max-width: 992px) {{
-        /* Nav Menu Collapse Fixed Layering */
-        nav#main-navbar .nav-links {{ 
-            position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); 
-            background: var(--bg); flex-direction: column; padding: 3rem; 
-            transition: 0.4s ease; align-items: center; justify-content: flex-start; 
-            gap: 2.5rem; z-index: 1999; overflow-y: auto; 
-        }}
+        nav#main-navbar .nav-links {{ position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); background: var(--bg); flex-direction: column; padding: 3rem; transition: 0.4s ease; align-items: center; justify-content: flex-start; gap: 2.5rem; z-index: 1999; overflow-y: auto; }}
         nav#main-navbar .nav-links.active {{ left: 0; }}
         .nav-links a {{ font-size: 1.5rem; }}
         .mobile-menu {{ display: block; }}
         
-        /* Grid Breakdowns */
         .about-grid, .detail-view, .grid-3, .modern-grid-3, .contact-grid {{ grid-template-columns: 1fr !important; gap: 3rem; }}
-        
-        /* Contact Form Fix */
         .contact-grid .card {{ padding: 2rem !important; }}
         
-        /* Hero Refinements for small screens */
         .modern-hero-grid {{ grid-template-columns: 1fr; text-align: center; }}
         .modern-hero-text {{ text-align: center; align-items: center; justify-content: center; }}
         .hero-btn-group {{ justify-content: center; }}
         .modern-hero-visual {{ height: 400px; }}
         .hero {{ padding-top: 100px; text-align: center; }}
         
-        /* Detail View Reset */
         .detail-view {{ padding: 2rem; gap: 2rem; }}
         .product-media-column {{ position: relative; top: 0; margin-bottom: 2rem; }}
         
-        /* Stats Ribbon Stacking securely */
         .stats-ribbon {{ flex-direction: column; padding: 2.5rem 1.5rem; gap: 2rem; }}
         .stat-divider {{ width: 100%; height: 2px; }}
         .stats-ribbon-container {{ margin-top: -30px; }}
         
-        /* Badges overlapping fixed */
         .about-experience-badge {{ position: relative; bottom: 0; right: 0; margin-top: -30px; margin-left: 20px; width: fit-content; z-index: 10; }}
-        
         .pricing-table th, .pricing-table td {{ padding: 1.2rem 1rem; font-size: 0.95rem; }}
 
-        /* --- NEW: MOBILE BENTO & ASYMMETRICAL --- */
-        .bento-grid, #features .container > div:last-child {{ grid-template-columns: 1fr !important; }}
-        .bento-large, #features .container > div:last-child > div:first-child {{ grid-column: span 1 !important; grid-row: auto !important; }}
+        /* Re-stack symmetric grid for tablet/mobile */
+        #features .container > div:last-child {{ grid-template-columns: 1fr !important; }}
 
-        .asym-container {{ 
-            display: flex !important; 
-            flex-direction: column-reverse; /* Image goes to top, text to bottom */
-        }}
-        .asym-image {{ 
-            width: 100%; 
-            height: 400px; 
-            grid-column: unset;
-        }}
-        .asym-text-box {{ 
-            width: 90%; 
-            margin: -80px auto 0 auto; /* Pulls text box up perfectly over the image */
-            padding: 2.5rem; 
-            border-left: none;
-            border-top: 8px solid var(--p); /* Moves the brand color line to the top */
-            grid-column: unset;
-        }}
-        .asym-badge {{ 
-            bottom: 100px; /* Pushes badge up above the overlapping text */
-            right: 20px; 
-        }}
+        .asym-container {{ display: flex !important; flex-direction: column-reverse; }}
+        .asym-image {{ width: 100%; height: 400px; grid-column: unset; }}
+        .asym-text-box {{ width: 90%; margin: -80px auto 0 auto; padding: 2.5rem; border-left: none; border-top: 8px solid var(--p); grid-column: unset; }}
+        .asym-badge {{ bottom: 100px; right: 20px; }}
     }}
 
     @media (max-width: 480px) {{
-        /* Shrink the overall detail container to fit the phone screen */
-        .detail-view {{ 
-            padding: 1.5rem !important; 
-            margin: 10px !important;
-            gap: 1.5rem !important;
-            border-radius: 20px !important;
-        }}
+        .detail-view {{ padding: 1.5rem !important; margin: 10px !important; gap: 1.5rem !important; border-radius: 20px !important; }}
+        .product-info-column {{ padding-bottom: 80px !important; }}
+        .product-price-tag {{ font-size: 1.5rem !important; margin-bottom: 1rem !important; }}
+        #main-img, model-viewer {{ height: 300px !important; }}
+        .btn-accent {{ width: 100% !important; min-width: unset !important; padding: 1rem !important; font-size: 0.9rem !important; }}
 
-        /* Fix the "Add to Cart" button overlap */
-        .product-info-column {{
-            padding-bottom: 80px !important; /* Creates space for the floating buttons */
-        }}
-
-        .product-price-tag {{
-            font-size: 1.5rem !important;
-            margin-bottom: 1rem !important;
-        }}
-
-        /* Scale down the main product image so it doesn't tower over the text */
-        #main-img, model-viewer {{
-            height: 300px !important;
-        }}
-
-        /* FINAL FIX: Ensure the Add to Cart button is always reachable */
-        .btn-accent {{
-            width: 100% !important;
-            min-width: unset !important;
-            padding: 1rem !important;
-            font-size: 0.9rem !important;
-        }}
-
-        /* Reposition Floating Icons to the VERY edge */
         #wa-widget {{ bottom: 10px !important; right: 10px !important; scale: 0.8; }}
         #theme-toggle {{ bottom: 10px !important; left: 10px !important; scale: 0.8; }}
         #voice-btn {{ bottom: 70px !important; right: 10px !important; scale: 0.8; }}
