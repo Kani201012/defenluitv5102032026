@@ -754,26 +754,32 @@ def gen_inventory():
 
 def gen_about_section():
     if not show_gallery: return ""
-    return f"""
-    <section id="about" class="modern-about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-visual reveal">
-                    <img src="{about_img}" width="600" height="500" loading="lazy" alt="About Us" class="about-main-img">
-                    <div class="about-experience-badge">
-                        <strong>100%</strong>
-                        <span>Client<br>Satisfaction</span>
+    
+    # ASYMMETRICAL OVERLAP
+    if "Asymmetrical" in site_layout:
+        return f"""
+        <section id="about" style="padding: 10rem 0; background: var(--bg); overflow: hidden;">
+            <div class="container relative">
+                <div class="asym-container reveal">
+                    <!-- Image shifted right -->
+                    <div class="asym-image">
+                        <img src="{about_img}" alt="About" loading="lazy">
+                        <div class="asym-badge">100% Client Satisfaction</div>
+                    </div>
+                    <!-- Text box overlapping the image -->
+                    <div class="asym-text-box card">
+                        <p class="tagline">Our Story</p>
+                        <h2>{about_h_in}</h2>
+                        <div class="about-lead">{format_text(about_short_in)}</div>
+                        <a href="about.html" class="btn btn-primary" style="margin-top:2rem;">Discover More &rarr;</a>
                     </div>
                 </div>
-                <div class="about-text reveal" style="transition-delay:0.2s;">
-                    <h2 id="about-title">{about_h_in}</h2>
-                    <div class="about-lead">{format_text(about_short_in)}</div>
-                    <div style="margin-top:2rem;"><a href="about.html" class="btn btn-primary">Read Our Story →</a></div>
-                </div>
             </div>
-        </div>
-    </section>
-    """
+        </section>
+        """
+    else:
+        # Fallback to standard grid
+        return f'<section id="about" class="modern-about"><div class="container"><div class="about-grid"><div class="about-visual reveal"><img src="{about_img}" width="600" class="about-main-img"></div><div class="about-text reveal"><h2>{about_h_in}</h2><div class="about-lead">{format_text(about_short_in)}</div></div></div></div></section>'
 def gen_faq_section():
     if not show_faq: return ""
     items = "".join([f"<details class='reveal'><summary>{l.split('?')[0]}?</summary><p>{l.split('?')[1]}</p></details>" for l in faq_data.split('\n') if "?" in l])
